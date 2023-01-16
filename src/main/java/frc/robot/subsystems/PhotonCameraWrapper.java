@@ -25,9 +25,11 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
@@ -36,6 +38,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Optional;
 import org.photonvision.PhotonCamera;
@@ -47,15 +50,17 @@ public class PhotonCameraWrapper extends SubsystemBase{
     public RobotPoseEstimator robotPoseEstimator;
     public AprilTagFieldLayout atfl;
     private GenericEntry poseX, poseY;
-    private double poseXNum, poseYNum;
+    private double x, y;
+    private Pair<Pose2d, Double> pair;
+    private Pose2d pose2d;
 
     public PhotonCameraWrapper() {
-        poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", poseXNum).withPosition(0, 0).getEntry();
-        poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", poseYNum).withPosition(1, 0).getEntry();
+        poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
+        poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", y).withPosition(0, 0).getEntry();
         try {
-                atfl = new AprilTagFieldLayout("apriltag/src/main/native/resources/edu/wpi/first/apriltag/2023-chargedup.json");
+            atfl = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
         } catch (IOException e) {
-                e.printStackTrace();
+            e.printStackTrace();
         }
 
         // Forward Camera
@@ -72,11 +77,11 @@ public class PhotonCameraWrapper extends SubsystemBase{
         camList.add(new Pair<PhotonCamera, Transform3d>(photonCamera, VisionConstants.ROBOT_TO_CAM));
 
         robotPoseEstimator =
-                new RobotPoseEstimator(atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camList);
+                new RobotPoseEstimator(atfl, PoseStrategy.AVERAGE_BEST_TARGETS, camList);
     }
 
     /**
-     * @param estimatedRobotPose The current best guess at robot pose
+     * @param estimatedRobotPose The current best guess at robot PoseX
      * @return A pair of the fused camera observations to a single Pose2d on the field, and the time
      *     of the observation. Assumes a planar field and the robot is always firmly on the ground
      */
@@ -95,7 +100,16 @@ public class PhotonCameraWrapper extends SubsystemBase{
 
     @Override
     public void periodic(){
-        poseX.setDouble(poseXNum);
-        poseY.setDouble(poseYNum);
+        for(int i = 1; i < 9; i++){
+            if(photonCamera.getLatestResult().getBestTarget().getFiducialId() == i){
+                pose2d = new Pose2d(1, 1, new Rotation2d(1));
+                pair = getEstimatedGlobalPose(pose2d);
+                pose2d = pair.getFirst();
+                double x = pose2d.getX();
+                double y = pose2d.getY();
+                poseX.setDouble(x);
+                poseY.setDouble(y);
+            }
+        }
     }
 }

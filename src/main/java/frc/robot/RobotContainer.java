@@ -36,18 +36,15 @@ public class RobotContainer {
   private final boolean fieldRelative = Constants.FIELD_RELATIVE;
 
   /* Driver Buttons */
-  private final JoystickButton rotationButton = new JoystickButton(rotationController, Constants.Controllers.ROTATION_BUTTON);
   private final JoystickButton translationButton = new JoystickButton(translationController, Constants.Controllers.TRANSLATION_BUTTON);
 
 
   /* Subsystems */
   public final DriveTrain s_DriveTrain = new DriveTrain();
-  public final LimeLight s_LimeLight = new LimeLight();
   private final CANdleSystem s_Candle = new CANdleSystem(xboxController);
   private final PhotonCameraWrapper PCW = new PhotonCameraWrapper();
   
   /* Commands */
-  private final AutoTargetDetection c_AutoTargetDetection = new AutoTargetDetection(s_DriveTrain, s_LimeLight);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -68,8 +65,6 @@ public class RobotContainer {
     /*rotationButton.whenPressed(c_AutoTargetDetection)
                   .whenReleased(new InstantCommand(() -> c_AutoTargetDetection.cancel()));*/
     translationButton.onTrue(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
-    rotationButton.onTrue(c_AutoTargetDetection)
-                  .onFalse(new InstantCommand(() -> c_AutoTargetDetection.cancel()));
     /*new JoystickButton(xboxController, Constants.BLOCK_BUTTON).whenPressed(s_Candle::setColors, s_Candle);
     new JoystickButton(xboxController, Constants.INCREMENT_ANIM_BUTTON).whenPressed(s_Candle::incrementAnimation, s_Candle);
     new JoystickButton(xboxController, Constants.DECREMENT_ANIM_BUTTON).whenPressed(s_Candle::decrementAnimation, s_Candle);*/
