@@ -44,6 +44,7 @@ public class RobotContainer {
   public final DriveTrain s_DriveTrain = new DriveTrain();
   public final LimeLight s_LimeLight = new LimeLight();
   private final CANdleSystem s_Candle = new CANdleSystem(xboxController);
+  private final PhotonCameraWrapper PCW = new PhotonCameraWrapper();
   
   /* Commands */
   private final AutoTargetDetection c_AutoTargetDetection = new AutoTargetDetection(s_DriveTrain, s_LimeLight);

@@ -2,7 +2,10 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -20,6 +23,17 @@ public final class Constants {
     public static final int INCREMENT_ANIM_BUTTON = XboxController.Button.kRightBumper.value;
     public static final int DECREMENT_ANIM_BUTTON = XboxController.Button.kLeftBumper.value;
     public static final int BLOCK_BUTTON = XboxController.Button.kStart.value;
+
+    public static class VisionConstants {
+        public static final Transform3d ROBOT_TO_CAM =
+                new Transform3d(
+                        new Translation3d(0, 0, 0.3),
+                        new Rotation3d(
+                                0, 0,
+                                0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
+        // from center.
+        public static final String CAMERA_NAME = "Global_Shutter_Camera";
+    }
 
     public static final class Controllers{
         public static final GenericHID TRANSLATION_CONTROLLER = new GenericHID(0);
