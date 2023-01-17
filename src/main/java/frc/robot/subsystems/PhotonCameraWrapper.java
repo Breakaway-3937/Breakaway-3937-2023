@@ -38,7 +38,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Optional;
 import org.photonvision.PhotonCamera;
@@ -52,7 +51,7 @@ public class PhotonCameraWrapper extends SubsystemBase{
     private GenericEntry poseX, poseY;
     private double x, y;
     private Pair<Pose2d, Double> pair;
-    private Pose2d pose2d;
+    private Pose2d pose2d = new Pose2d(1, 1, new Rotation2d(1));;
 
     public PhotonCameraWrapper() {
         poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
@@ -102,7 +101,6 @@ public class PhotonCameraWrapper extends SubsystemBase{
     public void periodic(){
         for(int i = 1; i < 9; i++){
             if(photonCamera.getLatestResult().getBestTarget().getFiducialId() == i){
-                pose2d = new Pose2d(1, 1, new Rotation2d(1));
                 pair = getEstimatedGlobalPose(pose2d);
                 pose2d = pair.getFirst();
                 double x = pose2d.getX();
