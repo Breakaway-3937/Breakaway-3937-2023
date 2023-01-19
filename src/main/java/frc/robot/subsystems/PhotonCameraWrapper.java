@@ -28,7 +28,6 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.networktables.GenericEntry;
@@ -40,43 +39,49 @@ import frc.robot.Constants.VisionConstants;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
-import org.photonvision.RobotPoseEstimator;
-import org.photonvision.RobotPoseEstimator.PoseStrategy;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 public class PhotonCameraWrapper extends SubsystemBase{
-    public PhotonCamera photonCamera;
-    public RobotPoseEstimator robotPoseEstimator;
-    public AprilTagFieldLayout atfl;
-    private GenericEntry poseX, poseY;
-    private double x, y;
+    private PhotonCamera photonCamera;
+    private PhotonPoseEstimator photonPoseEstimator;
+    private AprilTagFieldLayout atfl;
+    private GenericEntry poseX, poseY, distanceBoard, angleBoard;
+    private double x, y, d, a;
     private Pair<Pose2d, Double> pair;
-    private Pose2d pose2d = new Pose2d(1, 1, new Rotation2d(1));;
+    private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));;
+    private double distanceToTag;
+    private double tagToBotAngle;
+    private double tagToTargetAngle;
+    private double distanceToTarget;
+    private double distance;
+    private double angle;
 
     public PhotonCameraWrapper() {
         poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
-        poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", y).withPosition(0, 0).getEntry();
+        poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", y).withPosition(1, 0).getEntry();
+        distanceBoard = Shuffleboard.getTab("SyrupTag").add("Distance", d).withPosition(2, 0).getEntry();
+        angleBoard = Shuffleboard.getTab("SyrupTag").add("Angle", a).withPosition(3, 0).getEntry();
+
         try {
             atfl = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        // Forward Camera
         photonCamera =
                 new PhotonCamera(
                         VisionConstants
-                                .CAMERA_NAME); // Change the name of your camera here to whatever it is in the
-        // PhotonVision UI.
+                                .CAMERA_NAME);
 
-        // ... Add other cameras here
-
-        // Assemble the list of cameras & mount locations
         var camList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
         camList.add(new Pair<PhotonCamera, Transform3d>(photonCamera, VisionConstants.ROBOT_TO_CAM));
 
-        robotPoseEstimator =
-                new RobotPoseEstimator(atfl, PoseStrategy.AVERAGE_BEST_TARGETS, camList);
+        photonPoseEstimator =
+                new PhotonPoseEstimator(atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCamera, camList.get(1).getSecond());
     }
 
     /**
@@ -85,28 +90,45 @@ public class PhotonCameraWrapper extends SubsystemBase{
      *     of the observation. Assumes a planar field and the robot is always firmly on the ground
      */
     public Pair<Pose2d, Double> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
-        robotPoseEstimator.setReferencePose(prevEstimatedRobotPose);
+        photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
 
         double currentTime = Timer.getFPGATimestamp();
-        Optional<Pair<Pose3d, Double>> result = robotPoseEstimator.update();
+        Optional<EstimatedRobotPose> result = photonPoseEstimator.update();
         if (result.isPresent()) {
             return new Pair<Pose2d, Double>(
-                    result.get().getFirst().toPose2d(), currentTime - result.get().getSecond());
+                    result.get().estimatedPose.toPose2d(), currentTime - result.get().timestampSeconds);
         } else {
             return new Pair<Pose2d, Double>(null, 0.0);
         }
     }
 
+
+    public Pair<Double, Double> getArmStuff(){
+        if(photonCamera.getLatestResult().getBestTarget() != null){
+            distanceToTag = Math.sqrt(Math.pow(photonCamera.getLatestResult().getBestTarget().getBestCameraToTarget().getX(), 2) + Math.pow(photonCamera.getLatestResult().getBestTarget().getBestCameraToTarget().getY(), 2));
+            tagToBotAngle = 90 - photonCamera.getLatestResult().getBestTarget().getYaw();
+        }
+        tagToTargetAngle = 49.214;
+        distanceToTarget = 0.8554466;
+        distance = Math.sqrt(Math.pow(distanceToTag, 2) + Math.pow(distanceToTarget, 2) - 2 * distanceToTag * distanceToTarget * Math.cos(tagToBotAngle + tagToTargetAngle));
+        angle = Math.asin((Math.sin(tagToBotAngle + tagToTargetAngle) / distance) * distanceToTarget);
+        return new Pair<Double, Double>(distance, angle);
+    }
+
     @Override
     public void periodic(){
         for(int i = 1; i < 9; i++){
-            if(photonCamera.getLatestResult().getBestTarget().getFiducialId() == i){
+            if(photonCamera.getLatestResult().getBestTarget() != null && photonCamera.getLatestResult().getBestTarget().getFiducialId() == i){
                 pair = getEstimatedGlobalPose(pose2d);
                 pose2d = pair.getFirst();
-                double x = pose2d.getX();
-                double y = pose2d.getY();
+                x = pose2d.getX();
+                y = pose2d.getY();
+                d = getArmStuff().getFirst();
+                a = getArmStuff().getSecond();
                 poseX.setDouble(x);
                 poseY.setDouble(y);
+                distanceBoard.setDouble(d);
+                angleBoard.setDouble(a);
             }
         }
     }
