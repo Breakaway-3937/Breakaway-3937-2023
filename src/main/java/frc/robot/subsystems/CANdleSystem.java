@@ -4,10 +4,10 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
 
 import com.ctre.phoenix.led.*;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
@@ -16,6 +16,7 @@ import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 
 public class CANdleSystem extends SubsystemBase {
     private final CANdle candle = new CANdle(Constants.CANDLE_ID, "CANivore");
+    private final Timer timer = new Timer();
     //private final int ledCount = 300;
     //private XboxController xboxController;
 
@@ -36,6 +37,7 @@ public class CANdleSystem extends SubsystemBase {
     //private AnimationTypes currentAnimation;
 
     public CANdleSystem(XboxController xboxController) {
+        timer.start();
         //this.xboxController = xboxController;
         //changeAnimation(AnimationTypes.SetAll);
         CANdleConfiguration configAll = new CANdleConfiguration();
@@ -132,7 +134,7 @@ public class CANdleSystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        if(Robot.m_robotContainer.s_DriveTrain.mod0Cancoder.getDouble(0.0) > 50 && Robot.m_robotContainer.s_DriveTrain.mod0Cancoder.getDouble(0.0) < 145){
+        /*if(Robot.m_robotContainer.s_DriveTrain.mod0Cancoder.getDouble(0.0) > 50 && Robot.m_robotContainer.s_DriveTrain.mod0Cancoder.getDouble(0.0) < 145){
             candle.setLEDs(255, 0, 0, 0, 54, 18);
         }
         else{
@@ -155,8 +157,18 @@ public class CANdleSystem extends SubsystemBase {
         }
         else{
             candle.setLEDs(0, 0, 0, 0, 8, 18);
-        }
+        }*/
         //white = 234,221,202
+        for(int i = 0; i < 300; i++){
+            if(timer.get() > 0.25 && i % 2 != 0){
+                candle.setLEDs(255, 0, 0);
+                timer.start();
+            }
+            else if(timer.get() > 0.25 && i % 2 == 0){
+                candle.setLEDs(0, 0, 255);
+                timer.reset();
+            }
+        }
     }
 
     @Override
