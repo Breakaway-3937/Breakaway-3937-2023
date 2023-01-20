@@ -17,6 +17,7 @@ import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 public class CANdleSystem extends SubsystemBase {
     private final CANdle candle = new CANdle(Constants.CANDLE_ID, "CANivore");
     private final Timer timer = new Timer();
+    private boolean flag = false;
     //private final int ledCount = 300;
     //private XboxController xboxController;
 
@@ -160,13 +161,15 @@ public class CANdleSystem extends SubsystemBase {
         }*/
         //white = 234,221,202
         for(int i = 0; i < 300; i++){
-            if(timer.get() > 0.25 && i % 2 != 0){
+            if(timer.get() > 0.25 && i % 2 != 0 && !flag){
                 candle.setLEDs(255, 0, 0);
-                timer.start();
+                timer.reset();
+                flag = true;
             }
-            else if(timer.get() > 0.25 && i % 2 == 0){
+            else if(timer.get() > 0.25 && i % 2 == 0 && flag){
                 candle.setLEDs(0, 0, 255);
                 timer.reset();
+                flag = false;
             }
         }
     }

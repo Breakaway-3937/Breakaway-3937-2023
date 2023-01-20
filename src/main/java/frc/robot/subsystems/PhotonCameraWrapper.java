@@ -81,7 +81,7 @@ public class PhotonCameraWrapper extends SubsystemBase{
         camList.add(new Pair<PhotonCamera, Transform3d>(photonCamera, VisionConstants.ROBOT_TO_CAM));
 
         photonPoseEstimator =
-                new PhotonPoseEstimator(atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCamera, camList.get(1).getSecond());
+                new PhotonPoseEstimator(atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCamera, camList.get(0).getSecond());
     }
 
     /**
@@ -117,19 +117,18 @@ public class PhotonCameraWrapper extends SubsystemBase{
 
     @Override
     public void periodic(){
-        for(int i = 1; i < 9; i++){
-            if(photonCamera.getLatestResult().getBestTarget() != null && photonCamera.getLatestResult().getBestTarget().getFiducialId() == i){
-                pair = getEstimatedGlobalPose(pose2d);
-                pose2d = pair.getFirst();
-                x = pose2d.getX();
-                y = pose2d.getY();
-                d = getArmStuff().getFirst();
-                a = getArmStuff().getSecond();
-                poseX.setDouble(x);
-                poseY.setDouble(y);
-                distanceBoard.setDouble(d);
-                angleBoard.setDouble(a);
-            }
+        try{
+            pair = getEstimatedGlobalPose(pose2d);
+            pose2d = pair.getFirst();
+            x = pose2d.getX();
+            y = pose2d.getY();
+            d = getArmStuff().getFirst();
+            a = getArmStuff().getSecond();
+            poseX.setDouble(x);
+            poseY.setDouble(y);
+            distanceBoard.setDouble(d);
+            angleBoard.setDouble(a);
         }
+        catch(Exception e){}
     }
 }
