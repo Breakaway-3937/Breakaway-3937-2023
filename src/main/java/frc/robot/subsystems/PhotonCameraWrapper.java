@@ -34,6 +34,7 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
 
 import java.io.IOException;
@@ -53,12 +54,7 @@ public class PhotonCameraWrapper extends SubsystemBase{
     private double x, y, d, a;
     private Pair<Pose2d, Double> pair;
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));;
-    private double distanceToTag;
-    private double tagToBotAngle;
-    private double tagToTargetAngle;
-    private double distanceToTarget;
-    private double distance;
-    private double angle;
+    private double rY, rX, rR, dP, pR, theta;
 
     public PhotonCameraWrapper() {
         poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
@@ -104,15 +100,13 @@ public class PhotonCameraWrapper extends SubsystemBase{
 
 
     public Pair<Double, Double> getArmStuff(){
-        if(photonCamera.getLatestResult().getBestTarget() != null){
-            distanceToTag = Math.sqrt(Math.pow(photonCamera.getLatestResult().getBestTarget().getBestCameraToTarget().getX(), 2) + Math.pow(photonCamera.getLatestResult().getBestTarget().getBestCameraToTarget().getY(), 2));
-            tagToBotAngle = 90 - photonCamera.getLatestResult().getBestTarget().getYaw();
-        }
-        tagToTargetAngle = 49.214;
-        distanceToTarget = 0.8554466;
-        distance = Math.sqrt(Math.pow(distanceToTag, 2) + Math.pow(distanceToTarget, 2) - 2 * distanceToTag * distanceToTarget * Math.cos(tagToBotAngle + tagToTargetAngle));
-        angle = Math.asin((Math.sin(tagToBotAngle + tagToTargetAngle) / distance) * distanceToTarget);
-        return new Pair<Double, Double>(distance, angle);
+        rY = photonCamera.getLatestResult().getBestTarget().getBestCameraToTarget().getY();
+        rX = photonCamera.getLatestResult().getBestTarget().getBestCameraToTarget().getX();
+        rR = Math.sqrt(Math.pow(rX, 2) + Math.pow(rY, 2));
+        dP = Math.sqrt(Math.pow((Constants.VisionConstants.HIGH_LEFT_POST_X - rX), 2) + Math.pow((Constants.VisionConstants.HIGH_LEFT_POST_Y - rY), 2));
+        pR = Constants.VisionConstants.HIGH_DISTANCE;
+        theta = Math.acos((pR * pR)/((dP * dP) + (rR * rR) + 2 * rR * dP));
+        return new Pair<Double, Double>(dP, theta);
     }
 
     @Override

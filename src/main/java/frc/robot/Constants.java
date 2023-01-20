@@ -30,9 +30,18 @@ public final class Constants {
                         new Translation3d(-0.15, -.10, 0.36),
                         new Rotation3d(
                                 0, 0,
-                                0)); // Cam mounted facing forward, half a meter forward of center, half a meter up
-        // from center.
+                                0));
         public static final String CAMERA_NAME = "Global_Shutter_Camera";
+        public static final double HIGH_LEFT_POST_X = 1.01;
+        public static final double HIGH_LEFT_POST_Y = 0.560;
+        public static final double HIGH_RIGHT_POST_X = -1.01;
+        public static final double HIGH_RIGHT_POST_Y = -0.560;
+        public static final double LOW_LEFT_POST_X = 0.220;
+        public static final double LOW_LEFT_POST_Y = 0.560;
+        public static final double LOW_RIGHT_POST_X = 0.220;
+        public static final double LOW_RIGHT_POST_Y = -0.560;
+        public static final double HIGH_DISTANCE = 1.15486;
+        public static final double LOW_DISTANCE = 0.60166;
     }
 
     public static final class Controllers{
