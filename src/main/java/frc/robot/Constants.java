@@ -40,7 +40,7 @@ public final class Constants {
         public static final double LOW_LEFT_POST_Y = 0.560;
         public static final double LOW_RIGHT_POST_X = 0.220;
         public static final double LOW_RIGHT_POST_Y = -0.560;
-        public static final double HIGH_DISTANCE = 1.15486;
+        public static final double HIGH_DISTANCE = 0.85796; //Orginal value 1.15486
         public static final double LOW_DISTANCE = 0.60166;
     }
 
