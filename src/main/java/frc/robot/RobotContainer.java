@@ -5,12 +5,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
 /**
@@ -24,31 +20,31 @@ import frc.robot.subsystems.*;
 
 public class RobotContainer {
   /* Controllers */
-  private final Joystick translationController = new Joystick(0);
-  private final Joystick rotationController = new Joystick(1);
+  //private final Joystick translationController = new Joystick(0);
+  //private final Joystick rotationController = new Joystick(1);
   public final XboxController xboxController = new XboxController(2);
 
   /* Drive Controls */
-  private final int translationAxis = Constants.Controllers.TRANSLATION_AXIS;
+  /*private final int translationAxis = Constants.Controllers.TRANSLATION_AXIS;
   private final int strafeAxis = Constants.Controllers.STRAFE_AXIS;
   private final int rotationAxis = Constants.Controllers.ROTATION_AXIS;
   private final boolean openLoop = Constants.OPEN_LOOP;
-  private final boolean fieldRelative = Constants.FIELD_RELATIVE;
+  private final boolean fieldRelative = Constants.FIELD_RELATIVE;*/
 
   /* Driver Buttons */
-  private final JoystickButton translationButton = new JoystickButton(translationController, Constants.Controllers.TRANSLATION_BUTTON);
+  //private final JoystickButton translationButton = new JoystickButton(translationController, Constants.Controllers.TRANSLATION_BUTTON);
 
 
   /* Subsystems */
-  public final DriveTrain s_DriveTrain = new DriveTrain();
-  private final CANdleSystem s_Candle = new CANdleSystem(xboxController);
-  private final PhotonCameraWrapper PCW = new PhotonCameraWrapper();
+  //public final DriveTrain s_DriveTrain = new DriveTrain();
+  //private final CANdleSystem s_Candle = new CANdleSystem(xboxController);
+  private final PhotonCameraWrapper s_PCW = new PhotonCameraWrapper();
   
   /* Commands */
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    //s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -62,12 +58,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* Driver Buttons */
     //translationButton.whenPressed(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
-    /*rotationButton.whenPressed(c_AutoTargetDetection)
-                  .whenReleased(new InstantCommand(() -> c_AutoTargetDetection.cancel()));*/
-    translationButton.onTrue(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
-    /*new JoystickButton(xboxController, Constants.BLOCK_BUTTON).whenPressed(s_Candle::setColors, s_Candle);
-    new JoystickButton(xboxController, Constants.INCREMENT_ANIM_BUTTON).whenPressed(s_Candle::incrementAnimation, s_Candle);
-    new JoystickButton(xboxController, Constants.DECREMENT_ANIM_BUTTON).whenPressed(s_Candle::decrementAnimation, s_Candle);*/
+    //translationButton.onTrue(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
   } 
 
   /**
