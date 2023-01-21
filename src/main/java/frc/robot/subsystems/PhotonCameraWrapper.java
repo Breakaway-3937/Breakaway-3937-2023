@@ -160,7 +160,6 @@ public class PhotonCameraWrapper extends SubsystemBase{
             poseY.setDouble(y);
             distanceBoard.setDouble(d);
             angleBoard.setDouble(a);
-            
         
     }
 }

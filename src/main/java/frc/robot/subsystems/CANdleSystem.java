@@ -160,6 +160,9 @@ public class CANdleSystem extends SubsystemBase {
             candle.setLEDs(0, 0, 0, 0, 8, 18);
         }*/
         //white = 234,221,202
+
+        if(1.15 =< (Robot.m_robotContainer.s_PCW.getArmStuff().getFirst() - 50) =< 1.17){ candle.setLEDs(0, 255, 0, 0, 0, 8);}
+        else{candle.setLEDs(255, 0, 0, 0, 0, 18);}
         for(int i = 0; i < 300; i++){
             if(timer.get() > 0.25 && i % 2 != 0 && !flag){
                 candle.setLEDs(255, 0, 0);
