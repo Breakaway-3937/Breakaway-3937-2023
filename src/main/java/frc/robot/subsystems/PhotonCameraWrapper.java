@@ -50,11 +50,11 @@ public class PhotonCameraWrapper extends SubsystemBase{
     private PhotonCamera photonCamera;
     private PhotonPoseEstimator photonPoseEstimator;
     private AprilTagFieldLayout atfl;
-    private GenericEntry poseX, poseY, distanceBoard, angleBoard, test, test1, test2;
+    private GenericEntry poseX, poseY, distanceBoard, angleBoard, test, test1, test2, testRx, testRy;
     private double x, y, d, a;
     private Pair<Pose2d, Double> pair;
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));;
-    private double rY, rX, rR, dP, pR, theta;
+    private double rY, rX, rR, /*test doubles ->*/dP, pR, theta, testRx1, testRy1;
 
     public PhotonCameraWrapper() {
         poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
@@ -64,6 +64,8 @@ public class PhotonCameraWrapper extends SubsystemBase{
         test = Shuffleboard.getTab("SyrupTag").add("rR", a).withPosition(4, 0).getEntry();
         test1 = Shuffleboard.getTab("SyrupTag").add("dP", dP).withPosition(4, 1).getEntry();
         test2 = Shuffleboard.getTab("SyrupTag").add("theta", theta).withPosition(6, 0).getEntry();
+        testRx = Shuffleboard.getTab("SyrupTag").add("testRx", testRx1).withPosition(6, 1).getEntry();
+        testRy = Shuffleboard.getTab("SyrupTag").add("testRy", testRy1).withPosition(6, 2).getEntry();
         try {
             atfl = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
         } catch (IOException e) {}
@@ -101,7 +103,9 @@ public class PhotonCameraWrapper extends SubsystemBase{
 
     public Pair<Double, Double> getArmStuff(){
         rY = photonCamera.getLatestResult().getBestTarget().getBestCameraToTarget().getY();
+        testRy.setDouble(rY);
         rX = photonCamera.getLatestResult().getBestTarget().getBestCameraToTarget().getX();
+        testRx.setDouble(rX);
         rR = Math.sqrt(Math.pow(rX, 2) + Math.pow(rY, 2));
         test.setDouble(rR);
         dP = Math.sqrt(Math.pow((Constants.VisionConstants.HIGH_LEFT_POST_X - rX), 2) + Math.pow((Constants.VisionConstants.HIGH_LEFT_POST_Y - rY), 2));
