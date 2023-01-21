@@ -38,6 +38,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
 
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -82,7 +83,7 @@ public class PhotonCameraWrapper extends SubsystemBase{
         camList.add(new Pair<PhotonCamera, Transform3d>(photonCamera, VisionConstants.ROBOT_TO_CAM));
         
         photonPoseEstimator =
-                new PhotonPoseEstimator(atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCamera, camList.get(0).getSecond());
+                new PhotonPoseEstimator(atfl, PoseStrategy.AVERAGE_BEST_TARGETS, photonCamera, camList.get(0).getSecond());
         
         
     }
@@ -108,9 +109,11 @@ public class PhotonCameraWrapper extends SubsystemBase{
 
 
     public Pair<Double, Double> getArmStuff(){
-        rY = photonCamera.getLatestResult().getBestTarget().getBestCameraToTarget().getY();
+        var result = photonCamera.getLatestResult();
+        if(result.hasTargets()){
+        rY = result.getBestTarget().getBestCameraToTarget().getY();
         testRy.setDouble(rY);
-        rX = photonCamera.getLatestResult().getBestTarget().getBestCameraToTarget().getX();
+        rX = result.getBestTarget().getBestCameraToTarget().getX();;
         testRx.setDouble(rX);
         rR = Math.sqrt(Math.pow(rX, 2) + Math.pow(rY, 2));
         test.setDouble(rR);
@@ -123,6 +126,10 @@ public class PhotonCameraWrapper extends SubsystemBase{
         theta = Math.toDegrees(Math.acos(noCos));
         test2.setDouble(theta);
         return new Pair<Double, Double>(dP, theta);
+        }
+        else{
+            return new Pair<Double,Double>(0.0, 0.0);
+        }
     }
 
     @Override
