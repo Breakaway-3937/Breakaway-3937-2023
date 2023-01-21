@@ -36,12 +36,18 @@ public final class Constants {
         public static final double HIGH_LEFT_POST_Y = 0.560;
         public static final double HIGH_RIGHT_POST_X = -0.65; //Orginal Value 1.01
         public static final double HIGH_RIGHT_POST_Y = -0.560;
-        public static final double LOW_LEFT_POST_X = 0.220;
+        public static final double HIGH_CUBE_BOX_X = -0.65;
+        public static final double HIGH_CUBE_BOX_Y = 0.0;
+        public static final double LOW_CUBE_BOX_X = -0.22;
+        public static final double LOW_CUBE_BOX_Y = 0.0;
+        public static final double LOW_LEFT_POST_X = -0.220;
         public static final double LOW_LEFT_POST_Y = 0.560;
-        public static final double LOW_RIGHT_POST_X = 0.220;
+        public static final double LOW_RIGHT_POST_X = -0.220;
         public static final double LOW_RIGHT_POST_Y = -0.560;
         public static final double HIGH_DISTANCE = 0.85796; //Orginal value 1.15486
         public static final double LOW_DISTANCE = 0.60166;
+        public static final double HIGH_CUBE_BOX_DISTANCE = 0.65;
+        public static final double LOW_CUBE_BOX_DISTANCE = 0.22;
     }
 
     public static final class Controllers{

@@ -102,9 +102,8 @@ public class PhotonCameraWrapper extends SubsystemBase{
             return new Pair<Pose2d, Double>(
                     result.get().estimatedPose.toPose2d(), currentTime - result.get().timestampSeconds);
         } else {
-            return new Pair<Pose2d, Double>(null, 0.0);
+            return new Pair<Pose2d, Double>(prevEstimatedRobotPose, 0.0);
         }
-    
     }
 
 
@@ -117,11 +116,11 @@ public class PhotonCameraWrapper extends SubsystemBase{
         testRx.setDouble(rX);
         rR = Math.sqrt(Math.pow(rX, 2) + Math.pow(rY, 2));
         test.setDouble(rR);
-        pX = Constants.VisionConstants.HIGH_LEFT_POST_X;
-        pY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
-        dP = Math.sqrt(Math.pow((Constants.VisionConstants.HIGH_LEFT_POST_X - rX), 2) + Math.pow((Constants.VisionConstants.HIGH_LEFT_POST_Y - rY), 2));
+        //pX = Constants.VisionConstants.HIGH_LEFT_POST_X; //
+        //pY = Constants.VisionConstants.HIGH_LEFT_POST_Y; //
+        dP = Math.sqrt(Math.pow((pX - rX), 2) + Math.pow((pY - rY), 2));
         test1.setDouble(dP);
-        pR = Constants.VisionConstants.HIGH_DISTANCE;
+        //pR = Constants.VisionConstants.HIGH_DISTANCE; //
         double noCos = Math.abs((Math.pow(pR, 2) - Math.pow(rR, 2) - Math.pow(dP, 2)) / (2 * (rR * dP)));
         theta = Math.toDegrees(Math.acos(noCos));
         test2.setDouble(theta);
@@ -132,9 +131,25 @@ public class PhotonCameraWrapper extends SubsystemBase{
         }
     }
 
+    public void changepX(double buttonpX)
+    {
+        pX = buttonpX;
+    }
+
+    public void changepY(double buttonpY)
+    {
+        pY = buttonpY;
+    }
+
+    public void changeHeight(double height)
+    {
+        pR = height;
+    }
+
+
+
     @Override
     public void periodic(){
-        try{
             pair = getEstimatedGlobalPose(pose2d);
             pose2d = pair.getFirst();
             x = pose2d.getX();
@@ -146,7 +161,6 @@ public class PhotonCameraWrapper extends SubsystemBase{
             distanceBoard.setDouble(d);
             angleBoard.setDouble(a);
             
-        }
-        catch(Exception e){}
+        
     }
 }

@@ -5,8 +5,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.*;
 
 /**
@@ -33,6 +36,12 @@ public class RobotContainer {
 
   /* Driver Buttons */
   //private final JoystickButton translationButton = new JoystickButton(translationController, Constants.Controllers.TRANSLATION_BUTTON);
+  private final JoystickButton aButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_A_BUTTON);
+  private final JoystickButton bButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_B_BUTTON);
+  private final JoystickButton xButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_X_BUTTON);
+  private final JoystickButton yButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_Y_BUTTON);
+  private final JoystickButton backButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_BACK_BUTTON);
+  private final JoystickButton startButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_START_BUTTON);
 
 
   /* Subsystems */
@@ -59,6 +68,20 @@ public class RobotContainer {
     /* Driver Buttons */
     //translationButton.whenPressed(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
     //translationButton.onTrue(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
+    aButton.onTrue(new InstantCommand(() -> s_PCW.changepX(Constants.VisionConstants.HIGH_LEFT_POST_X)).alongWith(new InstantCommand(() -> s_PCW.changepY(Constants.VisionConstants.HIGH_LEFT_POST_Y))).alongWith(new InstantCommand(() -> s_PCW.changeHeight(Constants.VisionConstants.HIGH_DISTANCE))));
+    
+    bButton.onTrue(new InstantCommand(() -> s_PCW.changepX(Constants.VisionConstants.HIGH_RIGHT_POST_X)).alongWith(new InstantCommand(() -> s_PCW.changepY(Constants.VisionConstants.HIGH_RIGHT_POST_Y))).alongWith(new InstantCommand(() -> s_PCW.changeHeight(Constants.VisionConstants.HIGH_DISTANCE))));
+    
+    xButton.onTrue(new InstantCommand(() -> s_PCW.changepX(Constants.VisionConstants.LOW_LEFT_POST_X)).alongWith(new InstantCommand(() -> s_PCW.changepY(Constants.VisionConstants.LOW_LEFT_POST_Y))).alongWith(new InstantCommand(() -> s_PCW.changeHeight(Constants.VisionConstants.LOW_DISTANCE))));
+    
+    yButton.onTrue(new InstantCommand(() -> s_PCW.changepX(Constants.VisionConstants.LOW_RIGHT_POST_X)).alongWith(new InstantCommand(() -> s_PCW.changepY(Constants.VisionConstants.LOW_RIGHT_POST_Y))).alongWith(new InstantCommand(() -> s_PCW.changeHeight(Constants.VisionConstants.LOW_DISTANCE))));
+    
+    //high cube
+    backButton.onTrue(new InstantCommand(() -> s_PCW.changepX(Constants.VisionConstants.HIGH_CUBE_BOX_X)).alongWith(new InstantCommand(() -> s_PCW.changepY(0))).alongWith(new InstantCommand(() -> s_PCW.changeHeight(Constants.VisionConstants.HIGH_CUBE_BOX_DISTANCE))));
+    
+    //low cube
+    startButton.onTrue(new InstantCommand(() -> s_PCW.changepX(Constants.VisionConstants.LOW_CUBE_BOX_X)).alongWith(new InstantCommand(() -> s_PCW.changepY(0))).alongWith(new InstantCommand(() -> s_PCW.changeHeight(Constants.VisionConstants.LOW_CUBE_BOX_DISTANCE))));
+
   } 
 
   /**
