@@ -44,7 +44,10 @@ import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonUtils;
+import org.photonvision.PhotonVersion;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
 
 public class PhotonCameraWrapper extends SubsystemBase{
     private PhotonCamera photonCamera;
@@ -54,7 +57,7 @@ public class PhotonCameraWrapper extends SubsystemBase{
     private double x, y, d, a;
     private Pair<Pose2d, Double> pair;
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));;
-    private double rY, rX, rR, /*test doubles ->*/dP, pR, theta, testRx1, testRy1;
+    private double rY, rX, rR, /*test doubles ->*/dP, pR, theta, testRx1, testRy1, pX, pY;
 
     public PhotonCameraWrapper() {
         poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
@@ -77,9 +80,11 @@ public class PhotonCameraWrapper extends SubsystemBase{
 
         var camList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
         camList.add(new Pair<PhotonCamera, Transform3d>(photonCamera, VisionConstants.ROBOT_TO_CAM));
-
+        
         photonPoseEstimator =
                 new PhotonPoseEstimator(atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCamera, camList.get(0).getSecond());
+        
+        
     }
 
     /**
@@ -98,6 +103,7 @@ public class PhotonCameraWrapper extends SubsystemBase{
         } else {
             return new Pair<Pose2d, Double>(null, 0.0);
         }
+    
     }
 
 
@@ -108,10 +114,13 @@ public class PhotonCameraWrapper extends SubsystemBase{
         testRx.setDouble(rX);
         rR = Math.sqrt(Math.pow(rX, 2) + Math.pow(rY, 2));
         test.setDouble(rR);
+        pX = Constants.VisionConstants.HIGH_LEFT_POST_X;
+        pY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
         dP = Math.sqrt(Math.pow((Constants.VisionConstants.HIGH_LEFT_POST_X - rX), 2) + Math.pow((Constants.VisionConstants.HIGH_LEFT_POST_Y - rY), 2));
         test1.setDouble(dP);
         pR = Constants.VisionConstants.HIGH_DISTANCE;
-        theta = Math.abs(Math.acos((Math.pow(pR, 2) - Math.pow(rR, 2) - Math.pow(dP, 2)) / (2 * (rR * dP))));
+        double noCos = Math.abs((Math.pow(pR, 2) - Math.pow(rR, 2) - Math.pow(dP, 2)) / (2 * (rR * dP)));
+        theta = Math.toDegrees(Math.acos(noCos));
         test2.setDouble(theta);
         return new Pair<Double, Double>(dP, theta);
     }
@@ -129,6 +138,7 @@ public class PhotonCameraWrapper extends SubsystemBase{
             poseY.setDouble(y);
             distanceBoard.setDouble(d);
             angleBoard.setDouble(a);
+            
         }
         catch(Exception e){}
     }

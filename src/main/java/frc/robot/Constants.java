@@ -32,7 +32,7 @@ public final class Constants {
                                 0, 0,
                                 0));
         public static final String CAMERA_NAME = "Global_Shutter_Camera";
-        public static final double HIGH_LEFT_POST_X = 0.65; //Orginal Value 1.01
+        public static final double HIGH_LEFT_POST_X = -0.65; //Orginal Value 1.01
         public static final double HIGH_LEFT_POST_Y = 0.560;
         public static final double HIGH_RIGHT_POST_X = -0.65; //Orginal Value 1.01
         public static final double HIGH_RIGHT_POST_Y = -0.560;
