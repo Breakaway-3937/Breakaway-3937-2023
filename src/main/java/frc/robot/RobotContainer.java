@@ -47,7 +47,7 @@ public class RobotContainer {
   /* Subsystems */
   //public final DriveTrain s_DriveTrain = new DriveTrain();
   //private final CANdleSystem s_Candle = new CANdleSystem(xboxController);
-  public static final PhotonCameraWrapper s_PCW = new PhotonCameraWrapper();
+  public final PhotonCameraWrapper s_PCW = new PhotonCameraWrapper();
   
   /* Commands */
 
