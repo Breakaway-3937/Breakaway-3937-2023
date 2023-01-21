@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 import com.ctre.phoenix.led.*;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
@@ -48,7 +49,7 @@ public class CANdleSystem extends SubsystemBase {
         configAll.brightnessScalar = 0.1;
         configAll.vBatOutputMode = VBatOutputMode.Modulated;
         candle.configAllSettings(configAll, 100);
-        candle.setLEDs(0, 0, 0, 0, 0, 400);
+        //candle.setLEDs(0, 0, 0, 0, 0, 400);
     }
 
     /*public void incrementAnimation() {
@@ -161,7 +162,7 @@ public class CANdleSystem extends SubsystemBase {
         }*/
         //white = 234,221,202
 
-        if(((Robot.m_robotContainer.s_PCW.getArmStuff().getFirst() - 50) <= 1.17) && ((Robot.m_robotContainer.s_PCW.getArmStuff().getFirst() - 50) >=1.15  )){ candle.setLEDs(0, 255, 0, 0, 0, 8);}
+        if(((Robot.m_robotContainer.s_PCW.getArmStuff().getFirst() - .05) <= 1.35) && ((Robot.m_robotContainer.s_PCW.getArmStuff().getFirst() - .05) >=1.25  )){ candle.setLEDs(0, 255, 0, 0, 0, 8);}
         else{candle.setLEDs(255, 0, 0, 0, 0, 18);}
         for(int i = 0; i < 300; i++){
             if(timer.get() > 0.25 && i % 2 != 0 && !flag){
