@@ -164,7 +164,7 @@ public class CANdleSystem extends SubsystemBase {
 
         if(((Robot.m_robotContainer.s_PCW.getArmStuff().getFirst() - .05) <= 1.35) && ((Robot.m_robotContainer.s_PCW.getArmStuff().getFirst() - .05) >=1.25  )){ candle.setLEDs(0, 255, 0, 0, 0, 8);}
         else{candle.setLEDs(255, 0, 0, 0, 0, 18);}
-        for(int i = 0; i < 300; i++){
+        /*for(int i = 0; i < 300; i++){
             if(timer.get() > 0.25 && i % 2 != 0 && !flag){
                 candle.setLEDs(255, 0, 0);
                 timer.reset();
@@ -175,7 +175,7 @@ public class CANdleSystem extends SubsystemBase {
                 timer.reset();
                 flag = false;
             }
-        }
+        }*/
     }
 
     @Override
