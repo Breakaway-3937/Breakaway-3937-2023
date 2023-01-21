@@ -50,7 +50,7 @@ public class PhotonCameraWrapper extends SubsystemBase{
     private PhotonCamera photonCamera;
     private PhotonPoseEstimator photonPoseEstimator;
     private AprilTagFieldLayout atfl;
-    private GenericEntry poseX, poseY, distanceBoard, angleBoard;
+    private GenericEntry poseX, poseY, distanceBoard, angleBoard, test, test1, test2;
     private double x, y, d, a;
     private Pair<Pose2d, Double> pair;
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));;
@@ -61,12 +61,12 @@ public class PhotonCameraWrapper extends SubsystemBase{
         poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", y).withPosition(1, 0).getEntry();
         distanceBoard = Shuffleboard.getTab("SyrupTag").add("Distance", d).withPosition(2, 0).getEntry();
         angleBoard = Shuffleboard.getTab("SyrupTag").add("Angle", a).withPosition(3, 0).getEntry();
-
+        test = Shuffleboard.getTab("SyrupTag").add("rR", a).withPosition(4, 0).getEntry();
+        test1 = Shuffleboard.getTab("SyrupTag").add("dP", dP).withPosition(4, 1).getEntry();
+        test2 = Shuffleboard.getTab("SyrupTag").add("theta", theta).withPosition(6, 0).getEntry();
         try {
             atfl = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) {}
 
         photonCamera =
                 new PhotonCamera(
@@ -103,9 +103,12 @@ public class PhotonCameraWrapper extends SubsystemBase{
         rY = photonCamera.getLatestResult().getBestTarget().getBestCameraToTarget().getY();
         rX = photonCamera.getLatestResult().getBestTarget().getBestCameraToTarget().getX();
         rR = Math.sqrt(Math.pow(rX, 2) + Math.pow(rY, 2));
+        test.setDouble(rR);
         dP = Math.sqrt(Math.pow((Constants.VisionConstants.HIGH_LEFT_POST_X - rX), 2) + Math.pow((Constants.VisionConstants.HIGH_LEFT_POST_Y - rY), 2));
+        test1.setDouble(dP);
         pR = Constants.VisionConstants.HIGH_DISTANCE;
-        theta = Math.acos((pR * pR)/((dP * dP) + (rR * rR) + 2 * rR * dP));
+        theta = Math.abs(Math.acos((Math.pow(pR, 2) - Math.pow(rR, 2) - Math.pow(dP, 2)) / (2 * (rR * dP))));
+        test2.setDouble(theta);
         return new Pair<Double, Double>(dP, theta);
     }
 
