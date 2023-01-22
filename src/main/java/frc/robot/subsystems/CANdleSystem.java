@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -17,10 +15,7 @@ import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 
 public class CANdleSystem extends SubsystemBase {
     private final CANdle candle = new CANdle(Constants.CANDLE_ID, "CANivore");
-    private final Timer timer = new Timer();
-    private boolean flag = false;
     //private final int ledCount = 300;
-    //private XboxController xboxController;
 
     //private Animation toAnimate = null;
 
@@ -38,9 +33,7 @@ public class CANdleSystem extends SubsystemBase {
     }
     //private AnimationTypes currentAnimation;
 
-    public CANdleSystem(XboxController xboxController) {
-        timer.start();
-        //this.xboxController = xboxController;
+    public CANdleSystem() {
         //changeAnimation(AnimationTypes.SetAll);
         CANdleConfiguration configAll = new CANdleConfiguration();
         configAll.statusLedOffWhenActive = true;
@@ -49,7 +42,7 @@ public class CANdleSystem extends SubsystemBase {
         configAll.brightnessScalar = 0.1;
         configAll.vBatOutputMode = VBatOutputMode.Modulated;
         candle.configAllSettings(configAll, 100);
-        //candle.setLEDs(0, 0, 0, 0, 0, 400);
+        candle.setLEDs(0, 0, 0, 0, 0, 400);
     }
 
     /*public void incrementAnimation() {
@@ -136,50 +129,11 @@ public class CANdleSystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        /*if(Robot.m_robotContainer.s_DriveTrain.mod0Cancoder.getDouble(0.0) > 50 && Robot.m_robotContainer.s_DriveTrain.mod0Cancoder.getDouble(0.0) < 145){
-            candle.setLEDs(255, 0, 0, 0, 54, 18);
+        if(Robot.m_robotContainer.s_PCW.closeEnough()){
+            candle.setLEDs(0, 255, 0);
         }
         else{
-            candle.setLEDs(0, 0, 0, 0, 54, 18);
+            candle.setLEDs(255, 0, 0);
         }
-        if(Robot.m_robotContainer.s_DriveTrain.mod0Cancoder.getDouble(0.0) < 50 || (Robot.m_robotContainer.s_DriveTrain.mod0Cancoder.getDouble(0.0) < 360 && Robot.m_robotContainer.s_DriveTrain.mod0Cancoder.getDouble(0.0) > 325)){
-            candle.setLEDs(255, 0, 0, 0, 96, 20);
-        }
-        else{
-            candle.setLEDs(0, 0, 0, 0, 96, 20);
-        }
-        if(Robot.m_robotContainer.s_DriveTrain.mod0Cancoder.getDouble(0.0) > 230 && Robot.m_robotContainer.s_DriveTrain.mod0Cancoder.getDouble(0.0) < 320){
-            candle.setLEDs(255, 0, 0, 0, 144, 20);
-        }
-        else{
-            candle.setLEDs(0, 0, 0, 0, 144, 20);
-        }
-        if(Robot.m_robotContainer.s_DriveTrain.mod0Cancoder.getDouble(0.0) > 145 && Robot.m_robotContainer.s_DriveTrain.mod0Cancoder.getDouble(0.0) < 230){
-            candle.setLEDs(255, 0, 0, 0, 8, 18);
-        }
-        else{
-            candle.setLEDs(0, 0, 0, 0, 8, 18);
-        }*/
-        //white = 234,221,202
-
-        if(((Robot.m_robotContainer.s_PCW.getArmStuff().getFirst() - .05) <= 1.35) && ((Robot.m_robotContainer.s_PCW.getArmStuff().getFirst() - .05) >=1.25  )){ candle.setLEDs(0, 255, 0, 0, 0, 8);}
-        else{candle.setLEDs(255, 0, 0, 0, 0, 18);}
-        /*for(int i = 0; i < 300; i++){
-            if(timer.get() > 0.25 && i % 2 != 0 && !flag){
-                candle.setLEDs(255, 0, 0);
-                timer.reset();
-                flag = true;
-            }
-            else if(timer.get() > 0.25 && i % 2 == 0 && flag){
-                candle.setLEDs(0, 0, 255);
-                timer.reset();
-                flag = false;
-            }
-        }*/
-    }
-
-    @Override
-    public void simulationPeriodic() {
-        // This method will be called once per scheduler run during simulation
     }
 }

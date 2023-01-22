@@ -38,38 +38,33 @@ import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
 
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonUtils;
-import org.photonvision.PhotonVersion;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.targeting.PhotonPipelineResult;
 
 public class PhotonCameraWrapper extends SubsystemBase{
     private PhotonCamera photonCamera;
     private PhotonPoseEstimator photonPoseEstimator;
     private AprilTagFieldLayout atfl;
-    private GenericEntry poseX, poseY, distanceBoard, angleBoard, test, test1, test2, testRx, testRy;
+    private GenericEntry poseX, poseY, distanceBoard, angleBoard;
     private double x, y, d, a;
     private Pair<Pose2d, Double> pair;
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));;
-    private double rY, rX, rR, /*test doubles ->*/dP, pR, theta, testRx1, testRy1, pX, pY;
+    private double rY, rX, rR, dP, pR, theta, pX, pY, cos;
 
     public PhotonCameraWrapper() {
         poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
         poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", y).withPosition(1, 0).getEntry();
         distanceBoard = Shuffleboard.getTab("SyrupTag").add("Distance", d).withPosition(2, 0).getEntry();
         angleBoard = Shuffleboard.getTab("SyrupTag").add("Angle", a).withPosition(3, 0).getEntry();
-        test = Shuffleboard.getTab("SyrupTag").add("rR", a).withPosition(4, 0).getEntry();
-        test1 = Shuffleboard.getTab("SyrupTag").add("dP", dP).withPosition(4, 1).getEntry();
-        test2 = Shuffleboard.getTab("SyrupTag").add("theta", theta).withPosition(6, 0).getEntry();
-        testRx = Shuffleboard.getTab("SyrupTag").add("testRx", testRx1).withPosition(6, 1).getEntry();
-        testRy = Shuffleboard.getTab("SyrupTag").add("testRy", testRy1).withPosition(6, 2).getEntry();
+        pX = Constants.VisionConstants.HIGH_LEFT_POST_X;
+        pY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
+        pR = Constants.VisionConstants.HIGH_DISTANCE;
+        
         try {
             atfl = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
         } catch (IOException e) {}
@@ -111,19 +106,11 @@ public class PhotonCameraWrapper extends SubsystemBase{
         var result = photonCamera.getLatestResult();
         if(result.hasTargets()){
         rY = result.getBestTarget().getBestCameraToTarget().getY();
-        testRy.setDouble(rY);
         rX = result.getBestTarget().getBestCameraToTarget().getX();;
-        testRx.setDouble(rX);
         rR = Math.sqrt(Math.pow(rX, 2) + Math.pow(rY, 2));
-        test.setDouble(rR);
-        //pX = Constants.VisionConstants.HIGH_LEFT_POST_X; //
-        //pY = Constants.VisionConstants.HIGH_LEFT_POST_Y; //
         dP = Math.sqrt(Math.pow((pX - rX), 2) + Math.pow((pY - rY), 2));
-        test1.setDouble(dP);
-        //pR = Constants.VisionConstants.HIGH_DISTANCE; //
-        double noCos = Math.abs((Math.pow(pR, 2) - Math.pow(rR, 2) - Math.pow(dP, 2)) / (2 * (rR * dP)));
-        theta = Math.toDegrees(Math.acos(noCos));
-        test2.setDouble(theta);
+        cos = Math.abs((Math.pow(pR, 2) - Math.pow(rR, 2) - Math.pow(dP, 2)) / (2 * (rR * dP)));
+        theta = Math.toDegrees(Math.acos(cos));
         return new Pair<Double, Double>(dP, theta);
         }
         else{
@@ -131,35 +118,64 @@ public class PhotonCameraWrapper extends SubsystemBase{
         }
     }
 
-    public void changepX(double buttonpX)
-    {
-        pX = buttonpX;
+    public void setHighLeft(){
+        pX = Constants.VisionConstants.HIGH_LEFT_POST_X;
+        pY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
+        pR = Constants.VisionConstants.HIGH_DISTANCE;
+    }
+    
+    public void setHighRight(){
+        pX = Constants.VisionConstants.HIGH_RIGHT_POST_X;
+        pY = Constants.VisionConstants.HIGH_RIGHT_POST_Y;
+        pR = Constants.VisionConstants.HIGH_DISTANCE;
     }
 
-    public void changepY(double buttonpY)
-    {
-        pY = buttonpY;
+    public void setLowLeft(){
+        pX = Constants.VisionConstants.LOW_LEFT_POST_X;
+        pY = Constants.VisionConstants.LOW_LEFT_POST_Y;
+        pR = Constants.VisionConstants.LOW_DISTANCE;
     }
 
-    public void changeHeight(double height)
-    {
-        pR = height;
+    public void setLowRight(){
+        pX = Constants.VisionConstants.LOW_RIGHT_POST_X;
+        pY = Constants.VisionConstants.LOW_RIGHT_POST_Y;
+        pR = Constants.VisionConstants.LOW_DISTANCE;
+    }
+
+    public void setHighCube(){
+        pX = Constants.VisionConstants.HIGH_CUBE_BOX_X;
+        pY = Constants.VisionConstants.HIGH_CUBE_BOX_Y;
+        pR = Constants.VisionConstants.HIGH_CUBE_BOX_DISTANCE;
+    }
+
+    public void setLowCube(){
+        pX = Constants.VisionConstants.LOW_CUBE_BOX_X;
+        pY = Constants.VisionConstants.LOW_CUBE_BOX_Y;
+        pR = Constants.VisionConstants.LOW_CUBE_BOX_DISTANCE;
+    }
+
+    public boolean closeEnough(){
+        if(photonCamera.getLatestResult().getBestTarget() != null && dP < Constants.VisionConstants.MAX_EXTEND_LENGTH + 0.54){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
 
 
     @Override
     public void periodic(){
-            pair = getEstimatedGlobalPose(pose2d);
-            pose2d = pair.getFirst();
-            x = pose2d.getX();
-            y = pose2d.getY();
-            d = getArmStuff().getFirst();
-            a = getArmStuff().getSecond();
-            poseX.setDouble(x);
-            poseY.setDouble(y);
-            distanceBoard.setDouble(d);
-            angleBoard.setDouble(a);
-        
+        pair = getEstimatedGlobalPose(pose2d);
+        pose2d = pair.getFirst();
+        x = pose2d.getX();
+        y = pose2d.getY();
+        d = getArmStuff().getFirst();
+        a = getArmStuff().getSecond();
+        poseX.setDouble(x);
+        poseY.setDouble(y);
+        distanceBoard.setDouble(d);
+        angleBoard.setDouble(a);
     }
 }
