@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 
 import com.ctre.phoenix.led.*;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
@@ -16,7 +17,7 @@ import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 public class LED extends SubsystemBase {
     private final CANdle candle = new CANdle(Constants.CANDLE_ID, "CANivore");
     private final Timer timer = new Timer();
-    private boolean green, red, blinkYellow, purple, solidYellow, blue, flag = false; 
+    private boolean green, red, white, purple, yellow, blue, flag, cube, cone = false; 
 
     public LED() {
         timer.start();
@@ -61,8 +62,8 @@ public class LED extends SubsystemBase {
         red = false;
         blue = false;
         purple = false;
-        blinkYellow = false;
-        solidYellow = false;
+        yellow = false;
+        white = false;
         green = true;
     }
 
@@ -70,26 +71,26 @@ public class LED extends SubsystemBase {
         red = true;
         blue = false;
         purple = false;
-        blinkYellow = false;
-        solidYellow = false;
+        yellow = false;
+        white = false;
         green = false;
     }
 
-    public void blinkYellow(){
+    public void white(){
         red = false;
         blue = false;
         purple = false;
-        blinkYellow = true;
-        solidYellow = false;
+        white = true;
+        yellow = false;
         green = false;
     }
 
-    public void solidYellow(){
+    public void yellow(){
         red = false;
         blue = false;
         purple = false;
-        blinkYellow = false;
-        solidYellow = true;
+        yellow = true;
+        white = false;
         green = false;
         candle.setLEDs(255, 255, 0);
     }
@@ -98,8 +99,8 @@ public class LED extends SubsystemBase {
         red = false;
         blue = false;
         purple = true;
-        blinkYellow = false;
-        solidYellow = false;
+        yellow = false;
+        white = false;
         green = false;
         candle.setLEDs(136, 0, 209);
     }
@@ -108,14 +109,36 @@ public class LED extends SubsystemBase {
         red = false;
         blue = true;
         purple = false;
-        blinkYellow = false;
-        solidYellow = false;
+        white = false;
+        yellow = false;
         green = false;
+        candle.setLEDs(0, 20, 255);
+    }
+
+    public void cone(){
+        cube = false;
+        cone = true;
+    }
+
+    public void cube(){
+        cone = false;
+        cube = true;
     }
     
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+        if(!Robot.m_robotContainer.s_Intake.intakeFull()){
+            if(cube){
+                purple();
+            }
+            else if(cone){
+                yellow();
+            }
+            else{
+                blue();
+            }
+        }
         if(green){
             for(int i = 0; i < 350; i++){
                 if(timer.get() > 0.25 && i % 2 != 0 && !flag){
@@ -144,24 +167,10 @@ public class LED extends SubsystemBase {
                 }
             }
         }
-        else if(blinkYellow){
+        else if(white){
             for(int i = 0; i < 350; i++){
                 if(timer.get() > 0.25 && i % 2 != 0 && !flag){
-                    candle.setLEDs(255, 255, 0);
-                    timer.reset();
-                    flag = true;
-                }
-                else if(timer.get() > 0.25 && i % 2 == 0 && flag){
-                    candle.setLEDs(0, 0, 0);
-                    timer.reset();
-                    flag = false;
-                }
-            }
-        }
-        else if(blue){
-            for(int i = 0; i < 350; i++){
-                if(timer.get() > 0.25 && i % 2 != 0 && !flag){
-                    candle.setLEDs(0, 20, 255);
+                    candle.setLEDs(200, 180, 180);
                     timer.reset();
                     flag = true;
                 }

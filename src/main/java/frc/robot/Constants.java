@@ -10,7 +10,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.XboxController;
 import frc.lib.util.SwerveModuleConstants;
 
 /* Name All Variables in ALL_CAPS Format */
@@ -18,12 +17,9 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final boolean FIELD_RELATIVE = true;
     public static final boolean OPEN_LOOP = true;
-    public static final boolean COMP_BOT = true;
-
+    public static final boolean COMP_BOT = false;
     public static final int CANDLE_ID = 13;
-    public static final int INCREMENT_ANIM_BUTTON = XboxController.Button.kRightBumper.value;
-    public static final int DECREMENT_ANIM_BUTTON = XboxController.Button.kLeftBumper.value;
-    public static final int BLOCK_BUTTON = XboxController.Button.kStart.value;
+    public static final int PCM_ID = 16;
 
     public static class VisionConstants {
         public static final Transform3d ROBOT_TO_CAM =
@@ -199,13 +195,16 @@ public final class Constants {
     }
 
     public static final class Intake{
-        public static final int INTKAE_MOTOR_TOP = 7;    //FIXME CAN ID
-        public static final int INTKAE_MOTOR_BOTTOM = 6; //FIXME CAN ID
-        public static final int WRIST_MOTOR_ID = 5;      //FIXME CAN ID
-        public static final int RANGE_FINDER_ID = 0;     //FIXME ID
-        public static final int DOUBLE_SOLENOID_ID = 0;  //FIXME ID/NAME
+        public static final int INTKAE_MOTOR_TOP = 7;
+        public static final int INTKAE_MOTOR_BOTTOM = 6;
+        public static final int WRIST_MOTOR_ID = 5; 
+        public static final int RANGE_FINDER_ID = 0; //FIXME
     }
 
+    public static final class Climber{
+        public static final int ID_1 = 12;
+        public static final int ID_2 = 13;
+    }
     
 
 }

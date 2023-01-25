@@ -180,6 +180,9 @@ public class PhotonVision extends SubsystemBase{
             Robot.m_robotContainer.s_LED.green();
         }
         else if(photonCamera.getLatestResult().getBestTarget() != null){
+            Robot.m_robotContainer.s_LED.white();
+        }
+        else if(photonCamera.getLatestResult().getBestTarget() == null){
             Robot.m_robotContainer.s_LED.red();
         }
     }

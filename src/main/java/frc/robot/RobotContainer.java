@@ -41,12 +41,15 @@ public class RobotContainer {
   private final JoystickButton yButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_Y_BUTTON);
   private final JoystickButton backButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_BACK_BUTTON);
   private final JoystickButton startButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_START_BUTTON);
+  private final JoystickButton lbButton =  new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_LB_BUTTON);
+  private final JoystickButton rbButton =  new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_RB_BUTTON);
 
 
   /* Subsystems */
   //public final DriveTrain s_DriveTrain = new DriveTrain();
   public final LED s_LED = new LED();
   public final PhotonVision s_Photon = new PhotonVision();
+  public final Intake s_Intake = new Intake();
   
   /* Commands */
 
@@ -73,7 +76,8 @@ public class RobotContainer {
     yButton.onTrue(new InstantCommand(() -> s_Photon.setLowRight()));
     backButton.onTrue(new InstantCommand(() -> s_Photon.setHighCube()));
     startButton.onTrue(new InstantCommand(() -> s_Photon.setLowCube()));
-
+    rbButton.onTrue(new InstantCommand(() -> s_LED.cone()));
+    lbButton.onTrue(new InstantCommand(() -> s_LED.cube()));
   } 
 
   /**

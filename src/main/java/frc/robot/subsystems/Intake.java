@@ -4,93 +4,98 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-/**
-* @author Jeffords
-*/
 public class Intake extends SubsystemBase {
-  private WPI_TalonSRX intkateMotorTop;
-  private WPI_TalonSRX intkateMotorBottom;
+  private WPI_TalonSRX intakeTop;
+  private WPI_TalonSRX intakeBottom;
   private CANSparkMax wristMotor;
-  private AnalogInput rangeFinder;
-  private DoubleSolenoid doubleSolenoid; //FIXME Rename
-  private SparkMaxPIDController wristPIDConsController;
+  private AnalogInput sensor;
+  private DoubleSolenoid clamp;
+  private SparkMaxPIDController wristPIDController;
   private RelativeEncoder wristEncoder;
-  private double wristkP, wristkI, wristkD, wristFF;
+  private double wristkP, wristkI, wristkD, wristkFF;
   
-  /** Creates a new Intake.
-   * @author Jeffords
-   */
   public Intake() {
-    intkateMotorTop = new WPI_TalonSRX(Constants.Intake.INTKAE_MOTOR_TOP);
-    intkateMotorBottom = new WPI_TalonSRX(Constants.Intake.INTKAE_MOTOR_BOTTOM);
+    intakeTop = new WPI_TalonSRX(Constants.Intake.INTKAE_MOTOR_TOP);
+    intakeBottom = new WPI_TalonSRX(Constants.Intake.INTKAE_MOTOR_BOTTOM);
     wristMotor = new CANSparkMax(Constants.Intake.WRIST_MOTOR_ID, MotorType.kBrushless);
-    rangeFinder = new AnalogInput(Constants.Intake.RANGE_FINDER_ID);
-    doubleSolenoid = new DoubleSolenoid(Constants.Intake.DOUBLE_SOLENOID_ID, PneumaticsModuleType.CTREPCM, 0, 0); //FIXME
+    sensor = new AnalogInput(Constants.Intake.RANGE_FINDER_ID);
+    clamp = new DoubleSolenoid(Constants.PCM_ID, PneumaticsModuleType.CTREPCM, 0, 1);
     configWristMotor();
   }
-  /**
-   * Run intake
-   * @author Jeffords
-   */
+  
   public void runIntake(double speed){
-    intkateMotorBottom.set(TalonSRXControlMode.Velocity, speed);
-    intkateMotorTop.set(TalonSRXControlMode.Velocity, speed);
+    intakeBottom.set(TalonSRXControlMode.Velocity, speed);
+    intakeTop.set(TalonSRXControlMode.Velocity, speed);
+  }
+  
+  public void stopIntake(){
+    intakeBottom.stopMotor();
+    intakeTop.stopMotor();
   }
 
-  /**
-   * Stop intake
-   * @author Jeffords
-   */
-  public void stopIntake(){
-    intkateMotorBottom.stopMotor();
-    intkateMotorTop.stopMotor();
+  public void clampOn(){
+    clamp.set(Value.kOff);
+    clamp.set(Value.kForward);
   }
-  /**
-   * Config wrist motor PID
-   * @author Jeffords
-   */
+
+  public void clampOff(){
+    clamp.set(Value.kOff);
+    clamp.set(Value.kReverse);
+  }
+
+  public void setWrist(double position){
+    wristPIDController.setReference(position, ControlType.kPosition);
+    wristMotor.set(0.5);
+  }
+  
   private void configWristMotor(){
     wristMotor.restoreFactoryDefaults();
     wristEncoder = wristMotor.getEncoder();
-    wristPIDConsController = wristMotor.getPIDController();
-    wristPIDConsController.setFeedbackDevice(wristEncoder);
+    wristPIDController = wristMotor.getPIDController();
+    wristPIDController.setFeedbackDevice(wristEncoder);
     wristEncoder.setPosition(0);
 
-    wristPIDConsController.setP(wristkP);
-    wristPIDConsController.setI(wristkI);
-    wristPIDConsController.setD(wristkD);
-    wristPIDConsController.setFF(wristFF);
+    wristPIDController.setP(wristkP);
+    wristPIDController.setI(wristkI);
+    wristPIDController.setD(wristkD);
+    wristPIDController.setFF(wristkFF);
   }
 
-  /**
-   * Set Values of Wrist PID
-   * @author Jeffords
-   */
   public void setValues(){
-    wristkP = 0;
-    wristkI = 0;
-    wristkD = 0;
-    wristFF = 0;
+      wristkP = 0;
+      wristkI = 0;
+      wristkD = 0;
+      wristkFF = 0;
     if(Constants.COMP_BOT){
-    wristkP = 0;
-    wristkI = 0;
-    wristkD = 0;
-    wristFF = 0;
+      wristkP = 0;
+      wristkI = 0;
+      wristkD = 0;
+      wristkFF = 0;
     }
   
+  }
+
+  public boolean intakeFull(){
+    if(sensor.getValue() > 2000){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
 
 
