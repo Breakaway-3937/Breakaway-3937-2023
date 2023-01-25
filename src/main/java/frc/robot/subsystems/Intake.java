@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  private WPI_TalonSRX intakeTop;
-  private WPI_TalonSRX intakeBottom;
+  private WPI_TalonSRX intkateMotorTop;
+  private WPI_TalonSRX intkateMotorBottom;
   private CANSparkMax wristMotor;
   private AnalogInput sensor;
   private DoubleSolenoid clamp;
