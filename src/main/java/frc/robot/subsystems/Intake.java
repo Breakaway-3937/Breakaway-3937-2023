@@ -19,8 +19,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  private WPI_TalonSRX intkateMotorTop;
-  private WPI_TalonSRX intkateMotorBottom;
+  private WPI_TalonSRX intakeTop;
+  private WPI_TalonSRX intakeBottom;
   private CANSparkMax wristMotor;
   private AnalogInput sensor;
   private DoubleSolenoid clamp;
@@ -61,6 +61,15 @@ public class Intake extends SubsystemBase {
     wristPIDController.setReference(position, ControlType.kPosition);
     wristMotor.set(0.5);
   }
+
+  public boolean intakeFull(){
+    if(sensor.getValue() > 2000){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
   
   private void configWristMotor(){
     wristMotor.restoreFactoryDefaults();
@@ -88,17 +97,6 @@ public class Intake extends SubsystemBase {
     }
   
   }
-
-  public boolean intakeFull(){
-    if(sensor.getValue() > 2000){
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
-
-
 
   @Override
   public void periodic() {
