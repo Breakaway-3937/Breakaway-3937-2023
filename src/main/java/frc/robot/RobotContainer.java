@@ -45,8 +45,8 @@ public class RobotContainer {
 
   /* Subsystems */
   //public final DriveTrain s_DriveTrain = new DriveTrain();
-  private final CANdleSystem s_Candle = new CANdleSystem();
-  public final PhotonCameraWrapper s_PCW = new PhotonCameraWrapper();
+  public final LED s_LED = new LED();
+  public final PhotonVision s_Photon = new PhotonVision();
   
   /* Commands */
 
@@ -67,12 +67,12 @@ public class RobotContainer {
     /* Driver Buttons */
     //translationButton.whenPressed(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
     //translationButton.onTrue(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
-    aButton.onTrue(new InstantCommand(() -> s_PCW.setHighLeft()));
-    bButton.onTrue(new InstantCommand(() -> s_PCW.setHighRight()));
-    xButton.onTrue(new InstantCommand(() -> s_PCW.setLowLeft()));
-    yButton.onTrue(new InstantCommand(() -> s_PCW.setLowRight()));
-    backButton.onTrue(new InstantCommand(() -> s_PCW.setHighCube()));
-    startButton.onTrue(new InstantCommand(() -> s_PCW.setLowCube()));
+    aButton.onTrue(new InstantCommand(() -> s_Photon.setHighLeft()));
+    bButton.onTrue(new InstantCommand(() -> s_Photon.setHighRight()));
+    xButton.onTrue(new InstantCommand(() -> s_Photon.setLowLeft()));
+    yButton.onTrue(new InstantCommand(() -> s_Photon.setLowRight()));
+    backButton.onTrue(new InstantCommand(() -> s_Photon.setHighCube()));
+    startButton.onTrue(new InstantCommand(() -> s_Photon.setLowCube()));
 
   } 
 
