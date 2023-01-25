@@ -21,14 +21,39 @@ import frc.robot.Constants;
 * @author Jeffords
 */
 public class Intake extends SubsystemBase {
+  /**
+* @author Jeffords
+*/
   private WPI_TalonSRX intkateMotorTop;
+    /**
+* @author Jeffords
+*/                
   private WPI_TalonSRX intkateMotorBottom;
+    /**
+* @author Jeffords
+*/                
   private CANSparkMax wristMotor;
+    /**
+* @author Jeffords
+*/                
   private AnalogInput rangeFinder;
+    /**
+* @author Jeffords
+*/                
   private DoubleSolenoid doubleSolenoid; //FIXME Rename
+    /**
+* @author Jeffords
+*/                
   private SparkMaxPIDController wristPIDConsController;
+    /**
+* @author Jeffords
+*/                
   private RelativeEncoder wristEncoder;
+    /**
+* @author Jeffords
+*/                
   private double wristkP, wristkI, wristkD, wristFF;
+                  
   
   /** Creates a new Intake.
    * @author Jeffords
