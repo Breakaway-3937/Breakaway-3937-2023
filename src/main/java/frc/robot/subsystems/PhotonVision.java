@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Constants.VisionConstants;
 
 import java.io.IOException;
@@ -46,7 +47,7 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
-public class PhotonCameraWrapper extends SubsystemBase{
+public class PhotonVision extends SubsystemBase{
     private PhotonCamera photonCamera;
     private PhotonPoseEstimator photonPoseEstimator;
     private AprilTagFieldLayout atfl;
@@ -56,11 +57,12 @@ public class PhotonCameraWrapper extends SubsystemBase{
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));;
     private double rY, rX, rR, dP, pR, theta, pX, pY, cos;
 
-    public PhotonCameraWrapper() {
+    public PhotonVision() {
         poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
         poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", y).withPosition(1, 0).getEntry();
         distanceBoard = Shuffleboard.getTab("SyrupTag").add("Distance", d).withPosition(2, 0).getEntry();
         angleBoard = Shuffleboard.getTab("SyrupTag").add("Angle", a).withPosition(3, 0).getEntry();
+        
         pX = Constants.VisionConstants.HIGH_LEFT_POST_X;
         pY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
         pR = Constants.VisionConstants.HIGH_DISTANCE;
@@ -79,8 +81,6 @@ public class PhotonCameraWrapper extends SubsystemBase{
         
         photonPoseEstimator =
                 new PhotonPoseEstimator(atfl, PoseStrategy.AVERAGE_BEST_TARGETS, photonCamera, camList.get(0).getSecond());
-        
-        
     }
 
     /**
@@ -164,7 +164,6 @@ public class PhotonCameraWrapper extends SubsystemBase{
     }
 
 
-
     @Override
     public void periodic(){
         pair = getEstimatedGlobalPose(pose2d);
@@ -177,5 +176,11 @@ public class PhotonCameraWrapper extends SubsystemBase{
         poseY.setDouble(y);
         distanceBoard.setDouble(d);
         angleBoard.setDouble(a);
+        if(closeEnough()){
+            Robot.m_robotContainer.s_LED.green();
+        }
+        else if(photonCamera.getLatestResult().getBestTarget() != null){
+            Robot.m_robotContainer.s_LED.red();
+        }
     }
 }
