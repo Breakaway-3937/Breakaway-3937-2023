@@ -18,6 +18,7 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final boolean FIELD_RELATIVE = true;
     public static final boolean OPEN_LOOP = true;
+    public static final boolean COMP_BOT = true;
 
     public static final int CANDLE_ID = 13;
     public static final int INCREMENT_ANIM_BUTTON = XboxController.Button.kRightBumper.value;
@@ -195,6 +196,14 @@ public final class Constants {
         public static final TrapezoidProfile.Constraints KTHETA_CONTROLLER_CONSTRAINTS =
             new TrapezoidProfile.Constraints(
                 KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND, KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
+    }
+
+    public static final class Intake{
+        public static final int INTKAE_MOTOR_TOP = 7;    //FIXME CAN ID
+        public static final int INTKAE_MOTOR_BOTTOM = 6; //FIXME CAN ID
+        public static final int WRIST_MOTOR_ID = 5;      //FIXME CAN ID
+        public static final int RANGE_FINDER_ID = 0;     //FIXME ID
+        public static final int DOUBLE_SOLENOID_ID = 0;  //FIXME ID/NAME
     }
 
     
