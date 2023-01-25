@@ -195,15 +195,23 @@ public final class Constants {
     }
 
     public static final class Intake{
-        public static final int INTKAE_MOTOR_TOP = 7;
-        public static final int INTKAE_MOTOR_BOTTOM = 6;
+        public static final int INTAKE_MOTOR_TOP = 7;
+        public static final int INTAKE_MOTOR_BOTTOM = 6;
         public static final int WRIST_MOTOR_ID = 5; 
-        public static final int RANGE_FINDER_ID = 0; //FIXME
+        public static final int SENSOR_ID = 0; //FIXME
     }
 
     public static final class Climber{
         public static final int ID_1 = 12;
         public static final int ID_2 = 13;
+    }
+
+    public static final class Arm{
+        public static final int SHOULDER_ID = 2;
+        public static final int SHOULDER_2_ID = 3;
+        public static final int EXTENSION_ID = 4;
+        public static final int ROTATION_ID = 14;
+        //public static final int CANCODER_ID = 0; //FIXME
     }
     
 

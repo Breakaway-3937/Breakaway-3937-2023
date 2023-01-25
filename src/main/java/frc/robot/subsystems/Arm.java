@@ -6,134 +6,138 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
-import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import frc.robot.Constants;
+
 
 public class Arm extends SubsystemBase {
   private CANSparkMax shoulder;
   private CANSparkMax secondShoulder;
   private WPI_TalonFX extension;
-  private CANCoder armEncoder;
   private CANSparkMax rotation;
-  private double armkP, armkI, armkD, armFF;
-  private double arm2kP, arm2kI, arm2kD, arm2FF;
-  private double extensionkP, extensionkI, extensionkD, extensionFF;
-  private double rotatekP, rotatekI, rotatekD, rotateFF;
-  private RelativeEncoder shoulderEncoder;
-  private SparkMaxPIDController shoulderPIDController;
-  private RelativeEncoder shoulder2Encoder;
-  private SparkMaxPIDController shoulder2PIDController;
-  private TalonFXSensorCollection extensionEncoder;
-  private SparkMaxPIDController extensionPIDController;
-  private RelativeEncoder rotateEncoder;
-  private SparkMaxPIDController rotatePIDController;
+  private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, shoulder2kP, shoulder2kI, shoulder2kD, shoulder2kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF;
+  private RelativeEncoder shoulder1Encoder, shoulder2Encoder, rotateEncoder;
+  private SparkMaxPIDController shoulder1PIDController, shoulder2PIDController, rotatePIDController;
+
   /** Creates a new Arm. */
   public Arm() {
-    shoulder = new CANSparkMax(0,MotorType.kBrushless);
-    secondShoulder = new CANSparkMax(0,MotorType.kBrushless);
-    extension = new WPI_TalonFX(0);
-    armEncoder = new CANCoder(0);
-    rotation = new CANSparkMax(0,MotorType.kBrushless);
+    shoulder = new CANSparkMax(Constants.Arm.SHOULDER_ID, MotorType.kBrushless);
+    secondShoulder = new CANSparkMax(Constants.Arm.SHOULDER_2_ID, MotorType.kBrushless);
+    extension = new WPI_TalonFX(Constants.Arm.EXTENSION_ID);
+    rotation = new CANSparkMax(Constants.Arm.ROTATION_ID, MotorType.kBrushless);
+    setValues();
+    configExtention();
+    configRotation();
+    configShoulder1();
+    configShoulder2();
   }
-  public void positionArm(double position){
-    shoulder.set(position);
-  }
-  public void position2Arm(double position){
-    secondShoulder.set(position);
-  }
-  public void positionExtension(double position){
-    extension.set(position);
-  }
-  public void positionRotation(double position){
-    rotation.set(position);
-  }
-  public double getPositionArm(){
-    return shoulder.get();
-  }
-  public double getPositionArm2(){
-    return secondShoulder.get();
-  }
-  public double getExtinsionArm(){
-    return extension.get();
-  }
-  public double getRotationArm(){
-    return rotation.get();
-  }
-  public double getArmEncoder(){
-    return armEncoder.getPosition();
-  }
-  private void configShoulder(){
-    shoulder.restoreFactoryDefaults();
-    shoulderEncoder = shoulder.getEncoder();
-    shoulderPIDController = shoulder.getPIDController();
-    shoulderPIDController.setFeedbackDevice(shoulderEncoder);
-    shoulderEncoder.setPosition(0);
-    shoulder.setIdleMode(IdleMode.kCoast);
 
-    shoulderPIDController.setP(armkP);
-    shoulderPIDController.setI(armkI);
-    shoulderPIDController.setD(armkD);
-    shoulderPIDController.setFF(armFF);
+  public void positionShoulder(double position){
+    shoulder1PIDController.setReference(position, ControlType.kSmartMotion);
+    shoulder2PIDController.setReference(position, ControlType.kSmartMotion);
+    shoulder.set(0.5);
+    secondShoulder.set(0.5);
   }
+
+  public void setExtension(double position){
+    extension.set(ControlMode.Position, position);
+  }
+
+  public void setRotation(double position){
+    rotatePIDController.setReference(position, ControlType.kSmartMotion);
+    rotation.set(0.5);
+  }
+  
+  public double getShoulderPosition(){
+    return shoulder1Encoder.getPosition();
+  }
+
+  public double getShoulder2Position(){
+    return shoulder2Encoder.getPosition();
+  }
+
+  /*public double getExtensionPosition(){
+    return extensionEncoder.getIntegratedSensorPosition();    //FIXME
+  }*/
+
+  public double getRotationPosition(){
+    return rotateEncoder.getPosition();
+  }
+
+  private void configShoulder1(){
+    shoulder.restoreFactoryDefaults();
+    shoulder1Encoder = shoulder.getEncoder();
+    shoulder1PIDController = shoulder.getPIDController();
+    shoulder1PIDController.setFeedbackDevice(shoulder1Encoder);
+    shoulder1Encoder.setPosition(0);
+
+    shoulder1PIDController.setP(shoulder1kP);
+    shoulder1PIDController.setI(shoulder1kI);
+    shoulder1PIDController.setD(shoulder1kD);
+    shoulder1PIDController.setFF(shoulder1kFF);
+  }
+
   private void configShoulder2(){
     secondShoulder.restoreFactoryDefaults();
     shoulder2Encoder = secondShoulder.getEncoder();
     shoulder2PIDController = secondShoulder.getPIDController();
     shoulder2PIDController.setFeedbackDevice(shoulder2Encoder);
     shoulder2Encoder.setPosition(0);
-    secondShoulder.setIdleMode(IdleMode.kCoast);
 
-    shoulder2PIDController.setP(arm2kP);
-    shoulder2PIDController.setI(arm2kI);
-    shoulder2PIDController.setD(arm2kD);
-    shoulder2PIDController.setFF(arm2FF);
+    shoulder2PIDController.setP(shoulder2kP);
+    shoulder2PIDController.setI(shoulder2kI);
+    shoulder2PIDController.setD(shoulder2kD);
+    shoulder2PIDController.setFF(shoulder2kFF);
   }
-  private void configRotate(){
+
+  private void configRotation(){
     rotation.restoreFactoryDefaults();
     rotateEncoder = rotation.getEncoder();
     rotatePIDController = rotation.getPIDController();
     rotatePIDController.setFeedbackDevice(rotateEncoder);
     rotateEncoder.setPosition(0);
-    rotation.setIdleMode(IdleMode.kCoast);
 
-    rotatePIDController.setP(arm2kP);
-    rotatePIDController.setI(arm2kI);
-    rotatePIDController.setD(arm2kD);
-    rotatePIDController.setFF(arm2FF);
+    rotatePIDController.setP(rotatekP);
+    rotatePIDController.setI(rotatekI);
+    rotatePIDController.setD(rotatekD);
+    rotatePIDController.setFF(rotatekFF);
   }
+
   private void configExtention(){
-    extensionEncoder = extension.getSensorCollection();
-    extensionEncoder.setIntegratedSensorPosition(0, 0);
+    //extensionEncoder = extension.getSensorCollection();  //FIXME
+    //extensionEncoder.setIntegratedSensorPosition(0, 0);
     extension.config_kP(0, extensionkP);
     extension.config_kI(0, extensionkI);
     extension.config_kD(0, extensionkD);
-    extension.config_kF(0, extensionFF);
+    extension.config_kF(0, extensionkFF);
   }
+
   public void setValues(){
     extensionkP = 0;
     extensionkI = 0;
     extensionkD = 0;
-    extensionFF = 0;
-    armkP = 0;
-    armkI = 0;
-    armkD = 0;
-    armFF = 0;
-    arm2kP = 0;
-    arm2kI = 0;
-    arm2kD = 0;
-    arm2FF = 0;
+    extensionkFF = 0;
+    shoulder1kP = 0;
+    shoulder1kI = 0;
+    shoulder1kD = 0;
+    shoulder1kFF = 0;
+    shoulder2kP = 0;
+    shoulder2kI = 0;
+    shoulder2kD = 0;
+    shoulder2kFF = 0;
     rotatekP = 0;
     rotatekI = 0;
     rotatekD = 0;
-    rotateFF = 0;
+    rotatekFF = 0;
   }
   
 

@@ -19,21 +19,22 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  private WPI_TalonSRX intakeTop;
-  private WPI_TalonSRX intakeBottom;
-  private CANSparkMax wristMotor;
-  private AnalogInput sensor;
-  private DoubleSolenoid clamp;
+  private final WPI_TalonSRX intakeTop;
+  private final WPI_TalonSRX intakeBottom;
+  private final CANSparkMax wristMotor;
+  private final AnalogInput sensor;
+  private final DoubleSolenoid clamp;
   private SparkMaxPIDController wristPIDController;
   private RelativeEncoder wristEncoder;
   private double wristkP, wristkI, wristkD, wristkFF;
   
   public Intake() {
-    intakeTop = new WPI_TalonSRX(Constants.Intake.INTKAE_MOTOR_TOP);
-    intakeBottom = new WPI_TalonSRX(Constants.Intake.INTKAE_MOTOR_BOTTOM);
+    intakeTop = new WPI_TalonSRX(Constants.Intake.INTAKE_MOTOR_TOP);
+    intakeBottom = new WPI_TalonSRX(Constants.Intake.INTAKE_MOTOR_BOTTOM);
     wristMotor = new CANSparkMax(Constants.Intake.WRIST_MOTOR_ID, MotorType.kBrushless);
-    sensor = new AnalogInput(Constants.Intake.RANGE_FINDER_ID);
+    sensor = new AnalogInput(Constants.Intake.SENSOR_ID);
     clamp = new DoubleSolenoid(Constants.PCM_ID, PneumaticsModuleType.CTREPCM, 0, 1);
+    setValues();
     configWristMotor();
   }
   
