@@ -5,10 +5,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.*;
 
 /**
@@ -22,19 +24,19 @@ import frc.robot.subsystems.*;
 
 public class RobotContainer {
   /* Controllers */
-  //private final Joystick translationController = new Joystick(0);
-  //private final Joystick rotationController = new Joystick(1);
+  private final Joystick translationController = new Joystick(0);
+  private final Joystick rotationController = new Joystick(1);
   public final XboxController xboxController = new XboxController(2);
 
   /* Drive Controls */
-  /*private final int translationAxis = Constants.Controllers.TRANSLATION_AXIS;
+  private final int translationAxis = Constants.Controllers.TRANSLATION_AXIS;
   private final int strafeAxis = Constants.Controllers.STRAFE_AXIS;
   private final int rotationAxis = Constants.Controllers.ROTATION_AXIS;
   private final boolean openLoop = Constants.OPEN_LOOP;
-  private final boolean fieldRelative = Constants.FIELD_RELATIVE;*/
+  private final boolean fieldRelative = Constants.FIELD_RELATIVE;
 
   /* Driver Buttons */
-  //private final JoystickButton translationButton = new JoystickButton(translationController, Constants.Controllers.TRANSLATION_BUTTON);
+  private final JoystickButton translationButton = new JoystickButton(translationController, Constants.Controllers.TRANSLATION_BUTTON);
   private final JoystickButton aButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_A_BUTTON);
   private final JoystickButton bButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_B_BUTTON);
   private final JoystickButton xButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_X_BUTTON);
@@ -46,16 +48,18 @@ public class RobotContainer {
 
 
   /* Subsystems */
-  //public final DriveTrain s_DriveTrain = new DriveTrain();
+  public final DriveTrain s_DriveTrain = new DriveTrain();
   public final LED s_LED = new LED();
   public final PhotonVision s_Photon = new PhotonVision();
   public final Intake s_Intake = new Intake();
+  public final Climber s_Climber = new Climber();
+  public final Arm s_Arm = new Arm();
   
   /* Commands */
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    //s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -68,8 +72,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     /* Driver Buttons */
-    //translationButton.whenPressed(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
-    //translationButton.onTrue(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
+    translationButton.onTrue(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
     aButton.onTrue(new InstantCommand(() -> s_Photon.setHighLeft()));
     bButton.onTrue(new InstantCommand(() -> s_Photon.setHighRight()));
     xButton.onTrue(new InstantCommand(() -> s_Photon.setLowLeft()));
