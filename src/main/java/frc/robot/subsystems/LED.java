@@ -94,7 +94,7 @@ public class LED extends SubsystemBase {
         red = false;
         white = false;
         green = false;
-        candle.setLEDs(0, 20, 255);
+        candle.setLEDs(0, 0, 254);
     }
 
     public void cone(){
@@ -124,7 +124,7 @@ public class LED extends SubsystemBase {
         if(green){
             for(int i = 0; i < 350; i++){
                 if(timer.get() > 0.25 && i % 2 != 0 && !flag){
-                    candle.setLEDs(20, 255, 5);
+                    candle.setLEDs(0, 255, 0);
                     timer.reset();
                     flag = true;
                 }
