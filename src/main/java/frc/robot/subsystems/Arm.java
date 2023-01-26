@@ -7,6 +7,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -20,18 +21,19 @@ import frc.robot.Constants;
 
 
 public class Arm extends SubsystemBase {
-  private CANSparkMax shoulder;
-  private CANSparkMax secondShoulder;
-  private WPI_TalonFX extension;
-  private CANSparkMax rotation;
+  private final CANSparkMax shoulder1;
+  private final CANSparkMax shoulder2;
+  private final WPI_TalonFX extension;
+  private final CANSparkMax rotation;
+  private TalonFXSensorCollection extensionEncoder;
   private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, shoulder2kP, shoulder2kI, shoulder2kD, shoulder2kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF;
   private RelativeEncoder shoulder1Encoder, shoulder2Encoder, rotateEncoder;
   private SparkMaxPIDController shoulder1PIDController, shoulder2PIDController, rotatePIDController;
 
   /** Creates a new Arm. */
   public Arm() {
-    shoulder = new CANSparkMax(Constants.Arm.SHOULDER_ID, MotorType.kBrushless);
-    secondShoulder = new CANSparkMax(Constants.Arm.SHOULDER_2_ID, MotorType.kBrushless);
+    shoulder1 = new CANSparkMax(Constants.Arm.SHOULDER_ID, MotorType.kBrushless);
+    shoulder2 = new CANSparkMax(Constants.Arm.SHOULDER_2_ID, MotorType.kBrushless);
     extension = new WPI_TalonFX(Constants.Arm.EXTENSION_ID);
     rotation = new CANSparkMax(Constants.Arm.ROTATION_ID, MotorType.kBrushless);
     setValues();
@@ -44,8 +46,8 @@ public class Arm extends SubsystemBase {
   public void positionShoulder(double position){
     shoulder1PIDController.setReference(position, ControlType.kSmartMotion);
     shoulder2PIDController.setReference(position, ControlType.kSmartMotion);
-    shoulder.set(0.5);
-    secondShoulder.set(0.5);
+    shoulder1.set(0.5);
+    shoulder2.set(0.5);
   }
 
   public void setExtension(double position){
@@ -57,7 +59,7 @@ public class Arm extends SubsystemBase {
     rotation.set(0.5);
   }
   
-  public double getShoulderPosition(){
+  public double getShoulder1Position(){
     return shoulder1Encoder.getPosition();
   }
 
@@ -65,18 +67,18 @@ public class Arm extends SubsystemBase {
     return shoulder2Encoder.getPosition();
   }
 
-  /*public double getExtensionPosition(){
-    return extensionEncoder.getIntegratedSensorPosition();    //FIXME
-  }*/
+  public double getExtensionPosition(){
+    return extensionEncoder.getIntegratedSensorPosition();
+  }
 
   public double getRotationPosition(){
     return rotateEncoder.getPosition();
   }
 
   private void configShoulder1(){
-    shoulder.restoreFactoryDefaults();
-    shoulder1Encoder = shoulder.getEncoder();
-    shoulder1PIDController = shoulder.getPIDController();
+    shoulder1.restoreFactoryDefaults();
+    shoulder1Encoder = shoulder1.getAlternateEncoder(Constants.Arm.ALT_ENC_TYPE, Constants.Arm.CPR);
+    shoulder1PIDController = shoulder1.getPIDController();
     shoulder1PIDController.setFeedbackDevice(shoulder1Encoder);
     shoulder1Encoder.setPosition(0);
 
@@ -87,9 +89,9 @@ public class Arm extends SubsystemBase {
   }
 
   private void configShoulder2(){
-    secondShoulder.restoreFactoryDefaults();
-    shoulder2Encoder = secondShoulder.getEncoder();
-    shoulder2PIDController = secondShoulder.getPIDController();
+    shoulder2.restoreFactoryDefaults();
+    shoulder2Encoder = shoulder2.getEncoder();
+    shoulder2PIDController = shoulder2.getPIDController();
     shoulder2PIDController.setFeedbackDevice(shoulder2Encoder);
     shoulder2Encoder.setPosition(0);
 
@@ -113,8 +115,8 @@ public class Arm extends SubsystemBase {
   }
 
   private void configExtention(){
-    //extensionEncoder = extension.getSensorCollection();  //FIXME
-    //extensionEncoder.setIntegratedSensorPosition(0, 0);
+    extensionEncoder = extension.getSensorCollection();
+    extensionEncoder.setIntegratedSensorPosition(0, 0);
     extension.config_kP(0, extensionkP);
     extension.config_kI(0, extensionkI);
     extension.config_kD(0, extensionkD);

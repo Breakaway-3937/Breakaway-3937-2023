@@ -15,9 +15,9 @@ import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 
 
 public class LED extends SubsystemBase {
-    private final CANdle candle = new CANdle(Constants.CANDLE_ID, "CANivore");
+    private final CANdle candle = new CANdle(Constants.CANDLE_ID);
     private final Timer timer = new Timer();
-    private boolean green, red, white, purple, yellow, blue, flag, cube, cone = false; 
+    private boolean green, red, white, flag, cube, cone = false; 
 
     public LED() {
         timer.start();
@@ -60,36 +60,24 @@ public class LED extends SubsystemBase {
 
     public void green(){
         red = false;
-        blue = false;
-        purple = false;
-        yellow = false;
         white = false;
         green = true;
     }
 
     public void red(){
         red = true;
-        blue = false;
-        purple = false;
-        yellow = false;
         white = false;
         green = false;
     }
 
     public void white(){
         red = false;
-        blue = false;
-        purple = false;
         white = true;
-        yellow = false;
         green = false;
     }
 
     public void yellow(){
         red = false;
-        blue = false;
-        purple = false;
-        yellow = true;
         white = false;
         green = false;
         candle.setLEDs(255, 255, 0);
@@ -97,9 +85,6 @@ public class LED extends SubsystemBase {
 
     public void purple(){
         red = false;
-        blue = false;
-        purple = true;
-        yellow = false;
         white = false;
         green = false;
         candle.setLEDs(136, 0, 209);
@@ -107,10 +92,7 @@ public class LED extends SubsystemBase {
 
     public void blue(){
         red = false;
-        blue = true;
-        purple = false;
         white = false;
-        yellow = false;
         green = false;
         candle.setLEDs(0, 20, 255);
     }

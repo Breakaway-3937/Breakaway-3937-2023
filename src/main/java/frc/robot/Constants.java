@@ -1,6 +1,7 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.SparkMaxAlternateEncoder;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -159,8 +160,6 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 7;
             public static final int ANGLE_MOTOR_ID = 8;
             public static final int CANCODER_ID = 9;
-            //public static final double ANGLE_OFFSET_COMP = -148.2715 + 180.0;
-            //public static final double ANGLE_OFFSET_COMP = -112.2364 + 180.0;
             public static final double ANGLE_OFFSET = 7.4 + 180.0;
             public static final SwerveModuleConstants CONSTANTS = 
                 new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET);
@@ -198,7 +197,7 @@ public final class Constants {
         public static final int INTAKE_MOTOR_TOP = 7;
         public static final int INTAKE_MOTOR_BOTTOM = 6;
         public static final int WRIST_MOTOR_ID = 5; 
-        public static final int SENSOR_ID = 0; //FIXME
+        public static final int SENSOR_ID = 0;
     }
 
     public static final class Climber{
@@ -211,7 +210,8 @@ public final class Constants {
         public static final int SHOULDER_2_ID = 3;
         public static final int EXTENSION_ID = 4;
         public static final int ROTATION_ID = 14;
-        //public static final int CANCODER_ID = 0; //FIXME
+        public static final SparkMaxAlternateEncoder.Type ALT_ENC_TYPE = SparkMaxAlternateEncoder.Type.kQuadrature;
+        public static final int CPR = 8192;
     }
     
 
