@@ -1,4 +1,4 @@
-package org.frcteam2910.common.control;
+package frc.lib.util.control;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;

@@ -1,4 +1,4 @@
-package org.frcteam2910.common.math.spline;
+package frc.lib.util.math.spline;
 
 import org.ejml.simple.SimpleMatrix;
 

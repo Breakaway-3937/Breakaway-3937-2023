@@ -1,9 +1,9 @@
-package org.frcteam2910.common.math.spline;
+package frc.lib.util.math.spline;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import org.ejml.simple.SimpleMatrix;
-import org.frcteam2910.common.math.MathUtils;
+import frc.lib.util.math.MathUtils;
 
 public class Spline {
     private final SimpleMatrix basisMatrix;

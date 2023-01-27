@@ -1,9 +1,9 @@
-package org.frcteam2910.common.control;
+package frc.lib.util.control;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import org.frcteam2910.common.util.HolonomicDriveSignal;
-import org.frcteam2910.common.util.HolonomicFeedforward;
+import frc.lib.util.util.HolonomicDriveSignal;
+import frc.lib.util.util.HolonomicFeedforward;
 
 public class HolonomicMotionProfiledTrajectoryFollower extends TrajectoryFollower<HolonomicDriveSignal> {
     private PidController forwardController;

@@ -1,6 +1,6 @@
-package org.frcteam2910.common.control;
+package frc.lib.util.control;
 
-import org.frcteam2910.common.math.spline.Spline;
+import frc.lib.util.math.spline.Spline;
 
 public final class SplinePathSegment extends PathSegment {
     private static final double LENGTH_SAMPLE_STEP = 1.0e-4;

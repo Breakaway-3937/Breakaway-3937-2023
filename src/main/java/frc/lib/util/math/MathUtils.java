@@ -1,4 +1,4 @@
-package org.frcteam2910.common.math;
+package frc.lib.util.math;
 
 import edu.wpi.first.math.geometry.Translation2d;
 

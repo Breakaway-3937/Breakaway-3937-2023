@@ -1,4 +1,4 @@
-package org.frcteam2910.common.util;
+package frc.lib.util.util;
 import edu.wpi.first.math.interpolation.Interpolatable;
 import java.io.Serializable;
 import java.util.TreeMap;

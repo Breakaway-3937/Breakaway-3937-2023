@@ -1,4 +1,4 @@
-package org.frcteam2910.common.control;
+package frc.lib.util.control;
 
 /**
  * A constraint that limits the acceleration.

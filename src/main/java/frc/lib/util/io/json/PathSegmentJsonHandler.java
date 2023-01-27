@@ -1,10 +1,10 @@
-package org.frcteam2910.common.io.json;
+package frc.lib.util.io.json;
 
 import com.google.gson.*;
 import org.ejml.simple.SimpleMatrix;
-import org.frcteam2910.common.control.PathSegment;
-import org.frcteam2910.common.control.SplinePathSegment;
-import org.frcteam2910.common.math.spline.Spline;
+import frc.lib.util.control.PathSegment;
+import frc.lib.util.control.SplinePathSegment;
+import frc.lib.util.math.spline.Spline;
 
 import java.lang.reflect.Type;
 

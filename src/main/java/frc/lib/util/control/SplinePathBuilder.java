@@ -1,10 +1,10 @@
-package org.frcteam2910.common.control;
+package frc.lib.util.control;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import org.frcteam2910.common.math.spline.CubicBezierSpline;
-import org.frcteam2910.common.math.spline.CubicHermiteSpline;
-import org.frcteam2910.common.math.spline.Spline;
+import frc.lib.util.math.spline.CubicBezierSpline;
+import frc.lib.util.math.spline.CubicHermiteSpline;
+import frc.lib.util.math.spline.Spline;
 
 import java.util.*;
 

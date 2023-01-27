@@ -1,8 +1,8 @@
-package org.frcteam2910.common.control;
+package frc.lib.util.control;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import org.frcteam2910.common.util.Angles;
+import frc.lib.util.util.Angles;
 
 import java.util.ArrayList;
 import java.util.List;

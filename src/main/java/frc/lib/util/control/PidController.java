@@ -1,6 +1,6 @@
-package org.frcteam2910.common.control;
+package frc.lib.util.control;
 
-import org.frcteam2910.common.math.MathUtils;
+import frc.lib.util.math.MathUtils;
 
 public class PidController {
     private PidConstants constants;

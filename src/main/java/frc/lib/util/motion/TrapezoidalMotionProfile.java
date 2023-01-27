@@ -1,4 +1,4 @@
-package org.frcteam2910.common.motion;
+package frc.lib.util.motion;
 
 import java.io.Serializable;
 

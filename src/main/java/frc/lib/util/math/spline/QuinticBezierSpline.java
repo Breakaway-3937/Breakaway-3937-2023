@@ -1,4 +1,4 @@
-package org.frcteam2910.common.math.spline;
+package frc.lib.util.math.spline;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import org.ejml.simple.SimpleMatrix;

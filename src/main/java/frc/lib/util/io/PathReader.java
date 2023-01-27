@@ -1,16 +1,16 @@
-package org.frcteam2910.common.io;
+package frc.lib.util.io;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import edu.wpi.first.math.geometry.Rotation2d;
 import org.ejml.simple.SimpleMatrix;
-import org.frcteam2910.common.control.Path;
-import org.frcteam2910.common.control.PathSegment;
-import org.frcteam2910.common.io.json.InterpolatingDoubleJsonHandler;
-import org.frcteam2910.common.io.json.PathSegmentJsonHandler;
-import org.frcteam2910.common.io.json.Rotation2JsonHandler;
-import org.frcteam2910.common.io.json.SimpleMatrixJsonHandler;
-import org.frcteam2910.common.util.InterpolatingDouble;
+import frc.lib.util.control.Path;
+import frc.lib.util.control.PathSegment;
+import frc.lib.util.io.json.InterpolatingDoubleJsonHandler;
+import frc.lib.util.io.json.PathSegmentJsonHandler;
+import frc.lib.util.io.json.Rotation2JsonHandler;
+import frc.lib.util.io.json.SimpleMatrixJsonHandler;
+import frc.lib.util.util.InterpolatingDouble;
 
 import java.io.IOException;
 import java.io.Reader;

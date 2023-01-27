@@ -1,9 +1,9 @@
-package org.frcteam2910.common.control;
+package frc.lib.util.control;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import org.frcteam2910.common.util.InterpolatingDouble;
-import org.frcteam2910.common.util.InterpolatingTreeMap;
+import frc.lib.util.util.InterpolatingDouble;
+import frc.lib.util.util.InterpolatingTreeMap;
 
 import java.text.DecimalFormat;
 import java.util.Map;

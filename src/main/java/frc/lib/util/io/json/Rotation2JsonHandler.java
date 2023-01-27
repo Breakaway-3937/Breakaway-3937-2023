@@ -1,4 +1,4 @@
-package org.frcteam2910.common.io.json;
+package frc.lib.util.io.json;
 
 import com.google.gson.*;
 import edu.wpi.first.math.geometry.Rotation2d;
