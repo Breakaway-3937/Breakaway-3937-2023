@@ -1,10 +1,9 @@
 package frc.lib.util.util;
 import edu.wpi.first.math.interpolation.Interpolatable;
-import java.io.Serializable;
 import java.util.TreeMap;
 
 public class InterpolatingTreeMap<K extends InverseInterpolatable<K> & Comparable<K>, V extends Interpolatable<V>>
-        extends TreeMap<K, V> implements Serializable {
+        extends TreeMap<K, V> {
     private static final long serialVersionUID = -2284755214507163440L;
 
     private final int maxSize;
