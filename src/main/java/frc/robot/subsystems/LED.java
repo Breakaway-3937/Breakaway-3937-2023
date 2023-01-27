@@ -15,7 +15,7 @@ import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 
 
 public class LED extends SubsystemBase {
-    private final CANdle candle = new CANdle(Constants.CANDLE_ID, "CANivore");
+    private final CANdle candle = new CANdle(Constants.CANDLE_ID);
     private final Timer timer = new Timer();
     private boolean green, red, white, flag, cube, cone = false; 
 
@@ -110,7 +110,7 @@ public class LED extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        /*if(!Robot.m_robotContainer.s_Intake.intakeFull()){
+        if(!Robot.m_robotContainer.s_Intake.intakeFull()){
             if(cube){
                 purple();
             }
@@ -120,7 +120,7 @@ public class LED extends SubsystemBase {
             else{
                 blue();
             }
-        }*/
+        }
         if(green){
             for(int i = 0; i < 350; i++){
                 if(timer.get() > 0.25 && i % 2 != 0 && !flag){
