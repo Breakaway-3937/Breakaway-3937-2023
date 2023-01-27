@@ -21,6 +21,7 @@ public final class Constants {
     public static final boolean COMP_BOT = false;
     public static final int CANDLE_ID = 13;
     public static final int PCM_ID = 16;
+    public static final double SAMPLE_DISTANCE = Units.inchesToMeters(0.1);
 
     public static class VisionConstants {
         public static final Transform3d ROBOT_TO_CAM =
