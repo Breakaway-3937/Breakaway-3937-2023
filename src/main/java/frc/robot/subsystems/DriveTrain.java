@@ -4,6 +4,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 
+import frc.lib.util.control.HolonomicMotionProfiledTrajectoryFollower;
+import frc.lib.util.control.PidConstants;
+import frc.lib.util.util.DrivetrainFeedforwardConstants;
+import frc.lib.util.util.HolonomicFeedforward;
 import frc.robot.Constants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -23,6 +27,13 @@ public class DriveTrain extends SubsystemBase {
     public Pigeon2 gyro;
     public GenericEntry mod0Cancoder, mod1Cancoder, mod2Cancoder, mod3Cancoder;
     private GenericEntry gyroHeading;
+
+    public static final DrivetrainFeedforwardConstants FEEDFORWARD_CONSTANTS = new DrivetrainFeedforwardConstants(Constants.DriveTrain.DRIVE_KV,
+    Constants.DriveTrain.DRIVE_KA, Constants.DriveTrain.DRIVE_KS);
+
+    private final HolonomicMotionProfiledTrajectoryFollower follower = new HolonomicMotionProfiledTrajectoryFollower(
+            new PidConstants(Constants.DriveTrain.DRIVE_KP, Constants.DriveTrain.DRIVE_KI, Constants.DriveTrain.DRIVE_KD), new PidConstants(Constants.DriveTrain.ANGLE_KP, Constants.DriveTrain.ANGLE_KI, Constants.DriveTrain.ANGLE_KD),
+            new HolonomicFeedforward(FEEDFORWARD_CONSTANTS));
 
     public DriveTrain() {
         gyro = new Pigeon2(Constants.DriveTrain.PIGEON_ID, "CANivore");
@@ -95,6 +106,14 @@ public class DriveTrain extends SubsystemBase {
         double[] ypr = new double[3];
         gyro.getYawPitchRoll(ypr);
         return (Constants.DriveTrain.INVERT_GYRO) ? Rotation2d.fromDegrees(360 - ypr[0]) : Rotation2d.fromDegrees(ypr[0]);
+    }
+
+    public void setPose(Pose2d pose) {
+        swerveOdometry.resetPosition(getYaw(), getStates(), pose);
+    }
+
+    public HolonomicMotionProfiledTrajectoryFollower getFollower() {
+        return follower;
     }
 
     @Override
