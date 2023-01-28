@@ -7,6 +7,9 @@
   "NetworkTables": {
     "transitory": {
       "Shuffleboard": {
+        "Drive": {
+          "open": true
+        },
         "SyrupTag": {
           "open": true
         },

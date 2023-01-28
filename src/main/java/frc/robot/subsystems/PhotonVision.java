@@ -51,17 +51,18 @@ public class PhotonVision extends SubsystemBase{
     private PhotonCamera photonCamera;
     private PhotonPoseEstimator photonPoseEstimator;
     private AprilTagFieldLayout atfl;
-    private GenericEntry poseX, poseY, distanceBoard, angleBoard;
+    private GenericEntry poseX, poseY, distanceBoard, angleBoard, id;
     private double x, y, d, a;
     private Pair<Pose2d, Double> pair;
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));;
-    private double rY, rX, rR, dP, pR, theta, pX, pY, cos;
+    private double rY, rX, rR, dP, pR, theta, pX, pY, cos, idNum;
 
     public PhotonVision() {
         poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
         poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", y).withPosition(1, 0).getEntry();
         distanceBoard = Shuffleboard.getTab("SyrupTag").add("Distance", d).withPosition(2, 0).getEntry();
         angleBoard = Shuffleboard.getTab("SyrupTag").add("Angle", a).withPosition(3, 0).getEntry();
+        id = Shuffleboard.getTab("SyrupTag").add("ID", idNum).withPosition(4, 0).getEntry();
         
         pX = Constants.VisionConstants.HIGH_LEFT_POST_X;
         pY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
@@ -156,6 +157,7 @@ public class PhotonVision extends SubsystemBase{
 
     public boolean closeEnough(){
         if(photonCamera.getLatestResult().getBestTarget() != null && dP < Constants.VisionConstants.MAX_EXTEND_LENGTH + 0.54){
+            idNum = photonCamera.getLatestResult().getBestTarget().getFiducialId();
             return true;
         }
         else{
@@ -181,6 +183,7 @@ public class PhotonVision extends SubsystemBase{
         }
         else if(photonCamera.getLatestResult().getBestTarget() != null){
             Robot.m_robotContainer.s_LED.white();
+            idNum = photonCamera.getLatestResult().getBestTarget().getFiducialId();
         }
         else if(photonCamera.getLatestResult().getBestTarget() == null){
             Robot.m_robotContainer.s_LED.red();
@@ -188,5 +191,6 @@ public class PhotonVision extends SubsystemBase{
         if(photonCamera.getLatestResult().getBestTarget() != null){
             Shuffleboard.selectTab("SyrupTag");
         }
+        id.setDouble(idNum);
     }
 }
