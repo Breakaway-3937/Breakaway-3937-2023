@@ -10,13 +10,13 @@ import frc.robot.Constants;
 public class AutoTrajectories {
 
     private final Trajectory leaveCommunity0, leaveCommunity1, leaveCommunity2,
-        scoreLeave0, scoreLeaveBridge, scoreLeave1,
-        scoreTwice0, scoreTwice1, scoreTwice2,
-        scoreThree0, scoreThree1, scoreThree2,
-        leaveCharge0, leaveCharge1, leaveCharge2,
-        scoreCharge0, scoreCharge1, scoreCharge2,
-        scoreTwiceCharge0, scoreTwiceCharge1, scoreTwiceCharge2,
-        scoreThreeCharge0, scoreThreeCharge1, scoreThreeCharge2;
+                             scoreLeave0, scoreLeave1, scoreLeave2,
+                             scoreTwice0, scoreTwice1, scoreTwice2,
+                             scoreThree0, scoreThree1, scoreThree2,
+                             leaveCharge0, leaveCharge1, leaveCharge2,
+                             scoreCharge0, scoreCharge1, scoreCharge2,
+                             scoreTwiceCharge0, scoreTwiceCharge1, scoreTwiceCharge2,
+                             scoreThreeCharge0, scoreThreeCharge1, scoreThreeCharge2;
 
     public AutoTrajectories(TrajectoryConstraint[] trajectoryConstraints) {
         leaveCommunity0 = new Trajectory(
@@ -39,12 +39,12 @@ public class AutoTrajectories {
                         .lineTo(new Translation2d(6.11, 0.72)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE);
 
-        scoreLeaveBridge = new Trajectory(
+        scoreLeave1 = new Trajectory(
                 new SimplePathBuilder(new Translation2d(2.10, 2.76), Rotation2d.fromDegrees(0.0))
                         .lineTo(new Translation2d(3.89, 2.68)).lineTo(new Translation2d(5.70, 2.64)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE);
 
-        scoreLeave1 = new Trajectory(
+        scoreLeave2 = new Trajectory(
                 new SimplePathBuilder(new Translation2d(2.16, 4.43), Rotation2d.fromDegrees(0.0))
                         .lineTo(new Translation2d(4.52, 4.64)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE); 
@@ -170,16 +170,16 @@ public class AutoTrajectories {
         return leaveCommunity2;
     }
 
-    public Trajectory getscoreLeave() {
+    public Trajectory getScoreLeave0() {
         return scoreLeave0;
-    }
-
-    public Trajectory getScoreLeaveBridge(){
-        return scoreLeaveBridge;
     }
 
     public Trajectory getScoreLeave1(){
         return scoreLeave1;
+    }
+
+    public Trajectory getScoreLeave2(){
+        return scoreLeave2;
     }
 
     public Trajectory getScoreTwice0(){
@@ -210,7 +210,7 @@ public class AutoTrajectories {
         return leaveCharge0;
     }
 
-    public Trajectory getLeaveChrage1(){
+    public Trajectory getLeaveCharge1(){
         return leaveCharge1;
     }
 
