@@ -117,17 +117,6 @@ public class LED extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
-        if(!Robot.m_robotContainer.s_Intake.intakeFull()){
-            if(cube){
-                purple();
-            }
-            else if(cone){
-                yellow();
-            }
-            else{
-                blue();
-            }
-        }
         if(bad){
             for(int i = 0; i < 350; i++){
                 if(timer.get() > 0.10 && i % 2 != 0 && !flag){
@@ -140,6 +129,17 @@ public class LED extends SubsystemBase {
                     timer.reset();
                     flag = false;
                 }
+            }
+        }
+        if(!Robot.m_robotContainer.s_Intake.intakeFull()){
+            if(cube){
+                purple();
+            }
+            else if(cone){
+                yellow();
+            }
+            else{
+                blue();
             }
         }
         if(green){
