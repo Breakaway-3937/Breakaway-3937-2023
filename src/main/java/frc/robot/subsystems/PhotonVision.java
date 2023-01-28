@@ -194,6 +194,9 @@ public class PhotonVision extends SubsystemBase{
         if(!photonCamera.isConnected()){
             Robot.m_robotContainer.s_LED.bad();
         }
+        else if(photonCamera.isConnected()){
+            Robot.m_robotContainer.s_LED.notBad();
+        }
         id.setDouble(idNum);
     }
 }

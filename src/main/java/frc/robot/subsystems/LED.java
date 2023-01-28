@@ -104,6 +104,10 @@ public class LED extends SubsystemBase {
         bad = true;
     }
 
+    public void notBad(){
+        bad = false;
+    }
+
     public void cone(){
         cube = false;
         cone = true;
@@ -120,18 +124,18 @@ public class LED extends SubsystemBase {
         if(bad){
             for(int i = 0; i < 350; i++){
                 if(timer.get() > 0.10 && i % 2 != 0 && !flag){
-                    candle.setLEDs(12, 83, 97);
+                    candle.setLEDs(12, 237, 54);
                     timer.reset();
                     flag = true;
                 }
                 else if(timer.get() > 0.10 && i % 2 == 0 && flag){
-                    candle.setLEDs(12, 83, 97);
+                    candle.setLEDs(179, 83, 97);
                     timer.reset();
                     flag = false;
                 }
             }
         }
-        if(!Robot.m_robotContainer.s_Intake.intakeFull()){
+        else if(!Robot.m_robotContainer.s_Intake.intakeFull()){
             if(cube){
                 purple();
             }
@@ -142,7 +146,7 @@ public class LED extends SubsystemBase {
                 blue();
             }
         }
-        if(green){
+        else if(green){
             for(int i = 0; i < 350; i++){
                 if(timer.get() > 0.25 && i % 2 != 0 && !flag){
                     candle.setLEDs(0, 255, 0);
