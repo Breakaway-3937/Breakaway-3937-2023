@@ -178,6 +178,16 @@ public class PhotonVision extends SubsystemBase{
         poseY.setDouble(y);
         distanceBoard.setDouble(d);
         angleBoard.setDouble(a);
+        id.setDouble(idNum);
+        if(!photonCamera.isConnected()){
+            Robot.m_robotContainer.s_LED.bad();
+        }
+        else if(photonCamera.isConnected()){
+            Robot.m_robotContainer.s_LED.notBad();
+        }
+        if(photonCamera.getLatestResult().getBestTarget() != null){
+            Shuffleboard.selectTab("SyrupTag");
+        }
         if(closeEnough()){
             Robot.m_robotContainer.s_LED.green();
         }
@@ -188,15 +198,5 @@ public class PhotonVision extends SubsystemBase{
         else if(photonCamera.getLatestResult().getBestTarget() == null){
             Robot.m_robotContainer.s_LED.red();
         }
-        if(photonCamera.getLatestResult().getBestTarget() != null){
-            Shuffleboard.selectTab("SyrupTag");
-        }
-        if(!photonCamera.isConnected()){
-            Robot.m_robotContainer.s_LED.bad();
-        }
-        else if(photonCamera.isConnected()){
-            Robot.m_robotContainer.s_LED.notBad();
-        }
-        id.setDouble(idNum);
     }
 }
