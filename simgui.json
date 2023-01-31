@@ -5,12 +5,19 @@
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/Talon FX [4]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon SRX [6]": "Motor Controller",
-      "/LiveWindow/Ungrouped/Talon SRX [7]": "Motor Controller"
+      "/LiveWindow/Ungrouped/Talon SRX [7]": "Motor Controller",
+      "/Shuffleboard/Auto/SendableChooser[0]": "String Chooser"
     }
   },
   "NetworkTables": {
     "transitory": {
       "Shuffleboard": {
+        "Auto": {
+          "SendableChooser[0]": {
+            "open": true
+          },
+          "open": true
+        },
         "Drive": {
           "open": true
         },
