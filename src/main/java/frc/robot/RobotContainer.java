@@ -7,9 +7,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.autos.AutoChooser;
+import frc.robot.autos.AutoTrajectories;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.*;
 
@@ -57,9 +60,14 @@ public class RobotContainer {
   
   /* Commands */
 
+
+  /* Autos */
+  private final AutoChooser autoChooser = new AutoChooser(new AutoTrajectories(Constants.DriveTrain.TRAJECTORY_CONSTRAINTS));
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    Shuffleboard.getTab("Auto").add(autoChooser.getModeChooser());
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -94,6 +102,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // A command that is selected will run in autonomous
-    return null;
+    return autoChooser.getCommand(this);
   }
 }

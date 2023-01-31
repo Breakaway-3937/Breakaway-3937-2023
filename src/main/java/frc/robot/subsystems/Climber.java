@@ -28,7 +28,7 @@ public class Climber extends SubsystemBase {
   public Climber() {
     climber1 = new CANSparkMax(Constants.Climber.ID_1, MotorType.kBrushless);
     climber2 = new CANSparkMax(Constants.Climber.ID_2, MotorType.kBrushless);
-    brake = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 0, 1);
+    brake = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
     setValues();
     configMotors();
   }

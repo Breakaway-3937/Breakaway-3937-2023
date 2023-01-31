@@ -16,7 +16,7 @@ public class AutoChooser {
 
     public AutoChooser(AutoTrajectories trajectories) {
         this.trajectories = trajectories;
-        autonomousModeChooser.addOption("Do Nothing", AutonomousMode.DO_NOTHING);
+        autonomousModeChooser.setDefaultOption("Do Nothing", AutonomousMode.DO_NOTHING);
         autonomousModeChooser.addOption("Leave Community 0", AutonomousMode.LEAVE_COMMUNITY_0);
         autonomousModeChooser.addOption("Leave Community 1", AutonomousMode.LEAVE_COMMUNITY_1);
         autonomousModeChooser.addOption("Leave Community 2", AutonomousMode.LEAVE_COMMUNITY_2);

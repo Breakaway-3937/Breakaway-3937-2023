@@ -48,8 +48,8 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 public class PhotonVision extends SubsystemBase{
-    private PhotonCamera photonCamera;
-    private PhotonPoseEstimator photonPoseEstimator;
+    private final PhotonCamera photonCamera;
+    private final PhotonPoseEstimator photonPoseEstimator;
     private AprilTagFieldLayout atfl;
     private GenericEntry poseX, poseY, distanceBoard, angleBoard, id;
     private double x, y, d, a;

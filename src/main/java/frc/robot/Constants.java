@@ -8,10 +8,11 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import frc.lib.util.SwerveModuleConstants;
+import frc.lib.util.control.*;
+import frc.lib.util.util.DrivetrainFeedforwardConstants;
 
 /* Name All Variables in ALL_CAPS Format */
 
@@ -27,9 +28,7 @@ public final class Constants {
         public static final Transform3d ROBOT_TO_CAM =
                 new Transform3d(
                         new Translation3d(-0.15, -.10, 0.36),
-                        new Rotation3d(
-                                0, 0,
-                                0));
+                        new Rotation3d(0, 0, 0));
         public static final String CAMERA_NAME = "Global_Shutter_Camera";
         public static final double HIGH_LEFT_POST_X = -0.65;
         public static final double HIGH_LEFT_POST_Y = 0.560;
@@ -72,7 +71,7 @@ public final class Constants {
 
     public static final class DriveTrain {
         public static final int PIGEON_ID = 20;
-        public static final boolean INVERT_GYRO = false; // Always ensure Gyro is CCW+ CW-
+        public static final boolean INVERT_GYRO = false;
 
         /* Drivetrain Constants */
         public static final double TRACK_WIDTH = 0.5461; 
@@ -116,7 +115,7 @@ public final class Constants {
         public static final double DRIVE_KF = 0.0;
 
         /* Drive Motor Characterization Values */
-        public static final double DRIVE_KS = (0.53906 / 12); //divide by 12 to convert from volts to percent output for CTRE
+        public static final double DRIVE_KS = (0.53906 / 12);
         public static final double DRIVE_KV = (2.2756 / 12);
         public static final double DRIVE_KA = (0.065383 / 12);
 
@@ -176,22 +175,12 @@ public final class Constants {
                 new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET);
         }
 
-    }
+        public static final DrivetrainFeedforwardConstants FEEDFORWARD_CONSTANTS = new DrivetrainFeedforwardConstants(DRIVE_KV, DRIVE_KA, DRIVE_KS);
 
-    public static final class AutoConstants {
-        public static final double KMAX_SPEED_METERS_PER_SECOND = 3;
-        public static final double KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 3;
-        public static final double KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
-        public static final double KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Math.PI;
-    
-        public static final double KP_X_CONTROLLER = 1;
-        public static final double KP_Y_CONTROLLER = 1;
-        public static final double KP_THETA_CONTROLLER = 5;
-    
-        // Constraint for the motion profilied robot angle controller
-        public static final TrapezoidProfile.Constraints KTHETA_CONTROLLER_CONSTRAINTS =
-            new TrapezoidProfile.Constraints(
-                KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND, KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
+        public static final TrajectoryConstraint[] TRAJECTORY_CONSTRAINTS = {
+            new FeedforwardConstraint(4.0, FEEDFORWARD_CONSTANTS.getVelocityConstant(),FEEDFORWARD_CONSTANTS.getAccelerationConstant(), false),
+            new MaxAccelerationConstraint(5.0), new CentripetalAccelerationConstraint(5.0)};  //FIXME
+
     }
 
     public static final class Intake{
@@ -214,6 +203,5 @@ public final class Constants {
         public static final SparkMaxAlternateEncoder.Type ALT_ENC_TYPE = SparkMaxAlternateEncoder.Type.kQuadrature;
         public static final int CPR = 8192;
     }
-    
 
 }
