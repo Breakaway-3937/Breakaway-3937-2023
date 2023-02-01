@@ -74,8 +74,8 @@ public final class Constants {
         public static final boolean INVERT_GYRO = false;
 
         /* Drivetrain Constants */
-        public static final double TRACK_WIDTH = 0.5461; 
-        public static final double WHEEL_BASE = 0.5969; 
+        public static final double TRACK_WIDTH = 0.5461; //FIXME
+        public static final double WHEEL_BASE = 0.5969; //FIXME
         public static final double WHEEL_DIAMETER = Units.inchesToMeters(3.9);
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
@@ -120,7 +120,7 @@ public final class Constants {
         public static final double DRIVE_KA = (0.065383 / 12);
 
         /* Swerve Profiling Values */
-        public static final double MAX_SPEED = 4.5; //meters per second
+        public static final double MAX_SPEED = 4.5;
         public static final double MAX_ANGULAR_VELOCITY = 11.5;
 
         /* Neutral Modes */
@@ -178,7 +178,7 @@ public final class Constants {
         public static final DrivetrainFeedforwardConstants FEEDFORWARD_CONSTANTS = new DrivetrainFeedforwardConstants(DRIVE_KV, DRIVE_KA, DRIVE_KS);
 
         public static final TrajectoryConstraint[] TRAJECTORY_CONSTRAINTS = {
-            new FeedforwardConstraint(4.0, FEEDFORWARD_CONSTANTS.getVelocityConstant(),FEEDFORWARD_CONSTANTS.getAccelerationConstant(), false),
+            new FeedforwardConstraint(4.0, FEEDFORWARD_CONSTANTS.getVelocityConstant(), FEEDFORWARD_CONSTANTS.getAccelerationConstant(), false),
             new MaxAccelerationConstraint(5.0), new CentripetalAccelerationConstraint(5.0)};  //FIXME
 
     }
