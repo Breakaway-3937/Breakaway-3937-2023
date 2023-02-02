@@ -305,9 +305,8 @@ public class AutoChooser {
     }
 
     public void resetRobotPose(SequentialCommandGroup command, RobotContainer robotContainer, Trajectory trajectory) {
-        Path.State start = trajectory.getPath().calculate(0.0);
-        command.addCommands(new InstantCommand(() -> robotContainer.getDrivetrain().setPose(new Pose2d(start.getPosition().getX(),
-                start.getPosition().getY(), new Rotation2d(start.getRotation().getRadians())))));
+        command.addCommands(new InstantCommand(() -> robotContainer.getDrivetrain().setPose(new Pose2d(robotContainer.s_Photon.getX(),
+            robotContainer.s_Photon.getY(), new Rotation2d(robotContainer.s_Photon.getAngle())))));
     }
 
     public Command getCommand(RobotContainer robotContainer) {

@@ -55,7 +55,7 @@ public class PhotonVision extends SubsystemBase{
     private double x, y, d, a;
     private Pair<Pose2d, Double> pair;
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));;
-    private double rY, rX, rR, dP, pR, theta, pX, pY, cos, idNum;
+    private double rY, rX, rR, dP, pR, theta, pX, pY, cos, idNum, angle;
 
     public PhotonVision() {
         poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
@@ -107,7 +107,8 @@ public class PhotonVision extends SubsystemBase{
         var result = photonCamera.getLatestResult();
         if(result.hasTargets()){
         rY = result.getBestTarget().getBestCameraToTarget().getY();
-        rX = result.getBestTarget().getBestCameraToTarget().getX();;
+        rX = result.getBestTarget().getBestCameraToTarget().getX();
+        angle = result.getBestTarget().getBestCameraToTarget().getRotation().getAngle();
         rR = Math.sqrt(Math.pow(rX, 2) + Math.pow(rY, 2));
         dP = Math.sqrt(Math.pow((pX - rX), 2) + Math.pow((pY - rY), 2));
         cos = Math.abs((Math.pow(pR, 2) - Math.pow(rR, 2) - Math.pow(dP, 2)) / (2 * (rR * dP)));
@@ -165,6 +166,17 @@ public class PhotonVision extends SubsystemBase{
         }
     }
 
+    public double getX(){
+        return x;
+    }
+
+    public double getY(){
+        return y;
+    }
+
+    public double getAngle(){
+        return angle;
+    }
 
     @Override
     public void periodic(){
