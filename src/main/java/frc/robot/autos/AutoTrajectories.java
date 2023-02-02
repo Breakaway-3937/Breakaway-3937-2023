@@ -51,44 +51,46 @@ public class AutoTrajectories {
     
         scoreTwice0Blue = new Trajectory(
                 new SimplePathBuilder(new Translation2d(2.03, 1.08), Rotation2d.fromDegrees(180.0))
-                        .lineTo(new Translation2d(6.25, 0.91), new Rotation2d(0.0)).lineTo(new Translation2d(2.03, 1.08), new Rotation2d(180.0)).build(),
+                        .lineTo(new Translation2d(6.25, 0.91), Rotation2d.fromDegrees(0.0)).lineTo(new Translation2d(2.03, 1.08), Rotation2d.fromDegrees(180.0)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE); 
         
         scoreTwice1Blue = new Trajectory(
                 new SimplePathBuilder(new Translation2d(2.13, 2.76), Rotation2d.fromDegrees(180.0))
-                        .lineTo(new Translation2d(6.33, 3.32), new Rotation2d(0.0)).lineTo(new Translation2d(2.13, 2.76), new Rotation2d(180.0)).build(),
+                        .lineTo(new Translation2d(6.33, 3.32), Rotation2d.fromDegrees(0.0)).lineTo(new Translation2d(2.13, 2.76), Rotation2d.fromDegrees(180.0)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE); 
         
         scoreTwice2Blue = new Trajectory(
                 new SimplePathBuilder(new Translation2d(2.13, 4.42), Rotation2d.fromDegrees(180.0))
-                        .lineTo(new Translation2d(6.23, 4.55), new Rotation2d(0.0)).lineTo(new Translation2d(2.13, 4.42), new Rotation2d(180.0)).build(),
+                        .lineTo(new Translation2d(6.23, 4.55), Rotation2d.fromDegrees(0.0)).lineTo(new Translation2d(2.13, 4.42), Rotation2d.fromDegrees(180.0)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE); 
         
         scoreThree0Blue = new Trajectory(
                 new SimplePathBuilder(new Translation2d(2.0, 1.02), Rotation2d.fromDegrees(180.0))
-                        .lineTo(new Translation2d(4.68, 0.91), new Rotation2d(0.0)).lineTo(new Translation2d(6.37, 0.91))
-                        .lineTo(new Translation2d(4.68, 0.91), new Rotation2d(180.0)).lineTo(new Translation2d(2.0, 1.02))
-                        .lineTo(new Translation2d(4.68, 0.91), new Rotation2d(0.0)).lineTo(new Translation2d(6.38, 2.11))
-                        .lineTo(new Translation2d(4.68, 0.91), new Rotation2d(180.0)).lineTo(new Translation2d(2.0, 1.02)).build(),
+                        .lineTo(new Translation2d(4.68, 0.91), Rotation2d.fromDegrees(0.0)).lineTo(new Translation2d(6.37, 0.91))
+                        .lineTo(new Translation2d(4.68, 0.91), Rotation2d.fromDegrees(180.0)).lineTo(new Translation2d(2.0, 1.02))
+                        .lineTo(new Translation2d(4.68, 0.91), Rotation2d.fromDegrees(0.0)).lineTo(new Translation2d(6.38, 2.11))
+                        .lineTo(new Translation2d(4.68, 0.91), Rotation2d.fromDegrees(180.0)).lineTo(new Translation2d(2.0, 1.02)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE); 
         
         scoreThree1Blue = new Trajectory(
-                new SimplePathBuilder(new Translation2d(2.05, 2.76), Rotation2d.fromDegrees(0.0))
-                        .lineTo(new Translation2d(3.93,2.73)).lineTo(new Translation2d(6.25, 2.12))
-                        .lineTo(new Translation2d(3.93, 2.73)).lineTo(new Translation2d(2.05, 2.76))
-                        .lineTo(new Translation2d(3.93, 2.73)).lineTo(new Translation2d(6.29, 3.34))
-                        .lineTo(new Translation2d(3.93, 2.73)).lineTo(new Translation2d(2.05, 2.76)).build(),
+                new SimplePathBuilder(new Translation2d(2.05, 2.76), Rotation2d.fromDegrees(180.0))
+                        .lineTo(new Translation2d(3.93,2.73), Rotation2d.fromDegrees(0.0)).lineTo(new Translation2d(6.25, 2.12))
+                        .lineTo(new Translation2d(3.93, 2.73), Rotation2d.fromDegrees(180.0)).lineTo(new Translation2d(2.05, 2.76))
+                        .lineTo(new Translation2d(3.93, 2.73), Rotation2d.fromDegrees(0.0)).lineTo(new Translation2d(6.29, 3.34))
+                        .lineTo(new Translation2d(3.93, 2.73), Rotation2d.fromDegrees(180.0)).lineTo(new Translation2d(2.05, 2.76)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE); 
         
         scoreThree2Blue = new Trajectory(
-                new SimplePathBuilder(new Translation2d(2.11, 4.43), Rotation2d.fromDegrees(0.0))
-                        .lineTo(new Translation2d(6.29,3.42)).lineTo(new Translation2d(2.11, 4.43))
-                        .lineTo(new Translation2d(6.25, 4.56)).lineTo(new Translation2d(2.11, 4.43)).build(),
+                new SimplePathBuilder(new Translation2d(2.11, 4.43), Rotation2d.fromDegrees(180.0))
+                        .lineTo(new Translation2d(4.15, 4.65), Rotation2d.fromDegrees(0.0))
+                        .lineTo(new Translation2d(6.35,4.63)).lineTo(new Translation2d(4.15, 4.65), Rotation2d.fromDegrees(180.0))
+                        .lineTo(new Translation2d(2.11, 4.43)).lineTo(new Translation2d(4.15, 4.65), Rotation2d.fromDegrees(0))
+                        .lineTo(new Translation2d(6.38, 3.44)).lineTo(new Translation2d(4.15, 4.65), Rotation2d.fromDegrees(180)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE); 
         
         leaveCharge0Blue = new Trajectory(
                 new SimplePathBuilder(new Translation2d(2.18, 0.75), Rotation2d.fromDegrees(0.0))
-                        .lineTo(new Translation2d(6.16, 0.97)).lineTo(new Translation2d(3.89, 2.41)).build(),
+                        .lineTo(new Translation2d(7.1, 0.93)).lineTo(new Translation2d(3.89, 2.41)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE);
         
         leaveCharge1Blue = new Trajectory(
@@ -99,64 +101,64 @@ public class AutoTrajectories {
         
         leaveCharge2Blue = new Trajectory(
                 new SimplePathBuilder(new Translation2d(2.08, 4.38), Rotation2d.fromDegrees(0.0))
-                        .lineTo(new Translation2d(6.19, 4.70)).lineTo(new Translation2d(3.93, 2.81)).build(),
+                        .lineTo(new Translation2d(6.35, 4.61)).lineTo(new Translation2d(3.93, 2.81)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE);
 
         scoreCharge0Blue = new Trajectory(
-                new SimplePathBuilder(new Translation2d(1.93, 1.04), Rotation2d.fromDegrees(0.0))
-                        .lineTo(new Translation2d(5.89, 1.48)).lineTo(new Translation2d(3.93, 2.33)).build(),
+                new SimplePathBuilder(new Translation2d(1.93, 1.04), Rotation2d.fromDegrees(180))
+                        .lineTo(new Translation2d(6.36, 1.29)).lineTo(new Translation2d(3.93, 2.33)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE);
         
         scoreCharge1Blue = new Trajectory(
-                new SimplePathBuilder(new Translation2d(1.93, 2.74), Rotation2d.fromDegrees(0.0))
+                new SimplePathBuilder(new Translation2d(1.93, 2.74), Rotation2d.fromDegrees(180))
                         .lineTo(new Translation2d(3.92, 2.75)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE);
 
         scoreCharge2Blue = new Trajectory(
-                new SimplePathBuilder(new Translation2d(1.98, 4.37), Rotation2d.fromDegrees(0.0))
-                        .lineTo(new Translation2d(6.04, 4.31)).lineTo(new Translation2d(3.90, 3.45)).build(),
+                new SimplePathBuilder(new Translation2d(1.98, 4.37), Rotation2d.fromDegrees(180))
+                        .lineTo(new Translation2d(6.49, 4.06)).lineTo(new Translation2d(3.90, 3.45)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE);
 
         scoreTwiceCharge0Blue = new Trajectory(
-                new SimplePathBuilder(new Translation2d(1.96, 1.06), Rotation2d.fromDegrees(0.0))
-                        .lineTo(new Translation2d(7.06, 0.92)).lineTo(new Translation2d(1.96, 1.06))
-                        .lineTo(new Translation2d(6.18, 1.92)).lineTo(new Translation2d(3.87, 2.19)).build(),
+                new SimplePathBuilder(new Translation2d(1.96, 1.06), Rotation2d.fromDegrees(180.0))
+                        .lineTo(new Translation2d(7.06, 0.92), Rotation2d.fromDegrees(0.0)).lineTo(new Translation2d(1.96, 1.06) , Rotation2d.fromDegrees(180.0))
+                        .lineTo(new Translation2d(7.06, 0.92)).lineTo(new Translation2d(3.87, 2.19)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE);
         
         scoreTwiceCharge1Blue = new Trajectory(
-                new SimplePathBuilder(new Translation2d(1.91, 2.75), Rotation2d.fromDegrees(0.0))
-                        .lineTo(new Translation2d(3.89, 2.79)).lineTo(new Translation2d(6.64, 2.23))
-                        .lineTo(new Translation2d(3.89, 2.79)).lineTo(new Translation2d(1.91, 2.72))
+                new SimplePathBuilder(new Translation2d(1.91, 2.75), Rotation2d.fromDegrees(180.0))
+                        .lineTo(new Translation2d(3.89, 2.79), Rotation2d.fromDegrees(0.0)).lineTo(new Translation2d(6.64, 2.23))
+                        .lineTo(new Translation2d(3.89, 2.79), Rotation2d.fromDegrees(180.0)).lineTo(new Translation2d(1.91, 2.72))
                         .lineTo(new Translation2d(3.89, 2.79)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE);
         
         scoreTwiceCharge2Blue = new Trajectory(
-                new SimplePathBuilder(new Translation2d(1.93, 4.40), Rotation2d.fromDegrees(0.0))
-                        .lineTo(new Translation2d(6.50, 4.62)).lineTo(new Translation2d(1.93, 4.40))
-                        .lineTo(new Translation2d(5.92, 4.04)).lineTo(new Translation2d(3.90, 3.31)).build(),
+                new SimplePathBuilder(new Translation2d(1.93, 4.40), Rotation2d.fromDegrees(180.0))
+                        .lineTo(new Translation2d(6.50, 4.62), Rotation2d.fromDegrees(0.0)).lineTo(new Translation2d(1.93, 4.40),  Rotation2d.fromDegrees(180.0))
+                        .lineTo(new Translation2d(6.50, 4.62)).lineTo(new Translation2d(3.90, 3.31)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE);
         
         scoreThreeCharge0Blue = new Trajectory(
-                new SimplePathBuilder(new Translation2d(2.05, 1.03), Rotation2d.fromDegrees(0.0))
-                        .lineTo(new Translation2d(6.58, 0.92)).lineTo(new Translation2d(2.05, 1.03))
-                        .lineTo(new Translation2d(6.64, 1.64)).lineTo(new Translation2d(2.05, 1.03))
+                new SimplePathBuilder(new Translation2d(2.05, 1.03), Rotation2d.fromDegrees(180.0))
+                        .lineTo(new Translation2d(6.58, 0.92), Rotation2d.fromDegrees(0)).lineTo(new Translation2d(2.05, 1.03), Rotation2d.fromDegrees(180))
+                        .lineTo(new Translation2d(6.64, 1.64), Rotation2d.fromDegrees(51.84)).lineTo(new Translation2d(2.05, 1.03), Rotation2d.fromDegrees(180))
                         .lineTo(new Translation2d(3.88, 2.33)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE);
         
         scoreThreeCharge1Blue = new Trajectory(
-                new SimplePathBuilder(new Translation2d(1.95, 3.03), Rotation2d.fromDegrees(0.0))
-                        .lineTo(new Translation2d(3.93, 2.86)).lineTo(new Translation2d(6.62, 2.08))
-                        .lineTo(new Translation2d(3.93, 2.86)).lineTo(new Translation2d(1.95, 3.03))
-                        .lineTo(new Translation2d(3.93, 2.86)).lineTo(new Translation2d(6.45, 3.34))
-                        .lineTo(new Translation2d(3.93, 2.86)).lineTo(new Translation2d(1.95, 3.03))
+                new SimplePathBuilder(new Translation2d(1.95, 3.03), Rotation2d.fromDegrees(180.0))
+                        .lineTo(new Translation2d(3.93, 2.86), Rotation2d.fromDegrees(0.0)).lineTo(new Translation2d(6.62, 2.08), Rotation2d.fromDegrees(180.0))
+                        .lineTo(new Translation2d(3.93, 2.86), Rotation2d.fromDegrees(180.0)).lineTo(new Translation2d(1.95, 3.03))
+                        .lineTo(new Translation2d(3.93, 2.86), Rotation2d.fromDegrees(0.0)).lineTo(new Translation2d(6.45, 3.34))
+                        .lineTo(new Translation2d(3.93, 2.86), Rotation2d.fromDegrees(180.0)).lineTo(new Translation2d(1.95, 3.03))
                         .lineTo(new Translation2d(3.93, 2.86)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE);
         
         scoreThreeCharge2Blue = new Trajectory(
-                new SimplePathBuilder(new Translation2d(1.95, 4.39), Rotation2d.fromDegrees(0.0))
-                        .lineTo(new Translation2d(6.42, 3.82)).lineTo(new Translation2d(1.95, 4.39))
-                        .lineTo(new Translation2d(6.40, 4.63)).lineTo(new Translation2d(1.95, 4.39))
-                        .lineTo(new Translation2d(5.41, 4.39)).lineTo(new Translation2d(3.91, 3.44)).build(),
+                new SimplePathBuilder(new Translation2d(1.95, 4.39), Rotation2d.fromDegrees(180.0))
+                        .lineTo(new Translation2d(6.40, 4.63), Rotation2d.fromDegrees(0.0)).lineTo(new Translation2d(1.95, 4.39), Rotation2d.fromDegrees(180.0))
+                        .lineTo(new Translation2d(6.42, 3.82), Rotation2d.fromDegrees(-35.07)).lineTo(new Translation2d(1.95, 4.39), Rotation2d.fromDegrees(180.0))
+                        .lineTo(new Translation2d(6.40, 4.63)).lineTo(new Translation2d(3.91, 3.44)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE);
         }
 
