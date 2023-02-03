@@ -6,6 +6,7 @@
       "/LiveWindow/Ungrouped/Talon FX [4]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon SRX [6]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon SRX [7]": "Motor Controller",
+      "/Shuffleboard/Auto/Chooser": "String Chooser",
       "/Shuffleboard/Auto/SendableChooser[0]": "String Chooser"
     }
   },

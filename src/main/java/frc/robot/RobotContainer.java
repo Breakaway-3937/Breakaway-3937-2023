@@ -67,7 +67,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
-    Shuffleboard.getTab("Auto").add(autoChooser.getModeChooser());
+    Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
     // Configure the button bindings
     configureButtonBindings();
   }

@@ -2,9 +2,9 @@ package frc.robot.autos;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.*;
-import frc.lib.util.control.Path;
 import frc.lib.util.control.Trajectory;
 import frc.robot.RobotContainer;
 import frc.robot.commands.FollowTrajectoryCommand;
@@ -61,241 +61,482 @@ public class AutoChooser {
     }
 
     public Command getLeaveCommunity0(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getLeaveCommunity0Blue());
+    
+            command.addCommands(follow(robotContainer, trajectories.getLeaveCommunity0Blue()));
+    
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getLeaveCommunity0());
+        resetRobotPose(command, robotContainer, trajectories.getLeaveCommunity0Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getLeaveCommunity0()));
+        command.addCommands(follow(robotContainer, trajectories.getLeaveCommunity0Red()));
 
         return command;
+        
     }
 
     public Command getLeaveCommunity1(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getLeaveCommunity1Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getLeaveCommunity1Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getLeaveCommunity1());
+            resetRobotPose(command, robotContainer, trajectories.getLeaveCommunity1Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getLeaveCommunity1()));
+            command.addCommands(follow(robotContainer, trajectories.getLeaveCommunity1Red()));
 
-        return command;
+            return command;
     }
 
     public Command getLeaveCommunity2(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getLeaveCommunity1Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getLeaveCommunity1Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getLeaveCommunity2());
+        resetRobotPose(command, robotContainer, trajectories.getLeaveCommunity2Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getLeaveCommunity2()));
+        command.addCommands(follow(robotContainer, trajectories.getLeaveCommunity2Red()));
 
         return command;
     }
 
     public Command getScoreLeave0(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreLeave0Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreLeave0Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreLeave0());
+        resetRobotPose(command, robotContainer, trajectories.getScoreLeave0Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreLeave0()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreLeave0Red()));
 
         return command;
     }
 
     public Command getScoreLeave1(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreLeave1Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreLeave1Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreLeave1());
+        resetRobotPose(command, robotContainer, trajectories.getScoreLeave1Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreLeave1()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreLeave1Red()));
 
         return command;
     }
 
     public Command getScoreLeave2(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreLeave2Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreLeave2Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreLeave2());
+        resetRobotPose(command, robotContainer, trajectories.getScoreLeave2Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreLeave2()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreLeave2Red()));
 
         return command;
     }
 
     public Command getScoreTwice0(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreTwice0Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreTwice0Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreTwice0());
+            resetRobotPose(command, robotContainer, trajectories.getScoreTwice0Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreTwice0()));
+            command.addCommands(follow(robotContainer, trajectories.getScoreTwice0Red()));
 
-        return command;
+            return command;
     }
 
     public Command getScoreTwice1(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreTwice1Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreTwice1Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreTwice1());
+        resetRobotPose(command, robotContainer, trajectories.getScoreTwice1Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreTwice1()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreTwice1Red()));
 
         return command;
     }
 
     public Command getScoreTwice2(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreTwice2Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreTwice2Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreTwice2());
+        resetRobotPose(command, robotContainer, trajectories.getScoreTwice2Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreTwice2()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreTwice2Red()));
 
         return command;
     }
     
     public Command getScoreThree0(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreThree0Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreThree0Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreThree0());
+        resetRobotPose(command, robotContainer, trajectories.getScoreThree0Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreThree0()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreThree0Red()));
 
         return command;
     }
 
     public Command getScoreThree1(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreThree1Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreThree1Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreThree1());
+        resetRobotPose(command, robotContainer, trajectories.getScoreThree1Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreThree1()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreThree1Red()));
 
         return command;
     }
 
     public Command getScoreThree2(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreThree2Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreThree2Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreThree2());
+        resetRobotPose(command, robotContainer, trajectories.getScoreThree2Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreThree2()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreThree2Red()));
 
         return command;
     }
 
     public Command getLeaveCharge0(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getLeaveCharge0Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getLeaveCharge0Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getLeaveCharge0());
+        resetRobotPose(command, robotContainer, trajectories.getLeaveCharge0Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getLeaveCharge0()));
+        command.addCommands(follow(robotContainer, trajectories.getLeaveCharge0Red()));
 
         return command;
     }
 
     public Command getLeaveCharge1(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getLeaveCharge1Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getLeaveCharge1Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getLeaveCharge1());
+        resetRobotPose(command, robotContainer, trajectories.getLeaveCharge1Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getLeaveCharge1()));
+        command.addCommands(follow(robotContainer, trajectories.getLeaveCharge1Red()));
 
         return command;
     }
 
     public Command getLeaveCharge2(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getLeaveCharge2Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getLeaveCharge2Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getLeaveCharge2());
+        resetRobotPose(command, robotContainer, trajectories.getLeaveCharge2Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getLeaveCharge2()));
+        command.addCommands(follow(robotContainer, trajectories.getLeaveCharge2Red()));
 
         return command;
     }
 
     public Command getScoreCharge0(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreCharge0Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreCharge0Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreCharge0());
+        resetRobotPose(command, robotContainer, trajectories.getScoreCharge0Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreCharge0()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreCharge0Red()));
 
         return command;
     }
 
     public Command getScoreCharge1(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreCharge1Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreCharge1Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreCharge1());
+        resetRobotPose(command, robotContainer, trajectories.getScoreCharge1Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreCharge1()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreCharge1Red()));
 
         return command;
     }
 
     public Command getScoreCharge2(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreCharge2Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreCharge2Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreCharge2());
+        resetRobotPose(command, robotContainer, trajectories.getScoreCharge2Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreCharge2()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreCharge2Red()));
 
         return command;
     }
 
     public Command getScoreTwiceCharge0(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreTwiceCharge0Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreTwiceCharge0Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreTwiceCharge0());
+        resetRobotPose(command, robotContainer, trajectories.getScoreTwiceCharge0Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreTwiceCharge0()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreTwiceCharge0Red()));
 
         return command;
     }
 
     public Command getScoreTwiceCharge1(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreTwiceCharge1Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreTwiceCharge1Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreTwiceCharge1());
+        resetRobotPose(command, robotContainer, trajectories.getScoreTwiceCharge1Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreTwiceCharge1()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreTwiceCharge1Red()));
 
         return command;
     }
 
     public Command getScoreTwiceCharge2(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreTwiceCharge2Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreTwiceCharge2Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreTwiceCharge2());
+        resetRobotPose(command, robotContainer, trajectories.getScoreTwiceCharge2Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreTwiceCharge2()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreTwiceCharge2Red()));
 
         return command;
     }
 
     public Command getScoreThreeCharge0(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreThreeCharge0Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreThreeCharge0Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreThreeCharge0());
+        resetRobotPose(command, robotContainer, trajectories.getScoreThreeCharge0Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreThreeCharge0()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreThreeCharge0Red()));
 
         return command;
     }
 
     public Command getScoreThreeCharge1(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreThreeCharge1Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreThreeCharge1Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreThreeCharge1());
+        resetRobotPose(command, robotContainer, trajectories.getScoreThreeCharge1Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreThreeCharge1()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreThreeCharge1Red()));
 
         return command;
     }
     
     public Command getScoreThreeCharge2(RobotContainer robotContainer) {
+        if(DriverStation.getAlliance().name().equals("Blue")){
+            SequentialCommandGroup command = new SequentialCommandGroup();
+
+            resetRobotPose(command, robotContainer, trajectories.getScoreThreeCharge2Blue());
+
+            command.addCommands(follow(robotContainer, trajectories.getScoreThreeCharge2Blue()));
+
+            return command;
+        }
+
         SequentialCommandGroup command = new SequentialCommandGroup();
 
-        resetRobotPose(command, robotContainer, trajectories.getScoreThreeCharge2());
+        resetRobotPose(command, robotContainer, trajectories.getScoreThreeCharge2Red());
 
-        command.addCommands(follow(robotContainer, trajectories.getScoreThreeCharge2()));
+        command.addCommands(follow(robotContainer, trajectories.getScoreThreeCharge2Red()));
 
         return command;
     }
