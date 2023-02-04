@@ -55,23 +55,23 @@ public class RobotContainer {
 
 
   /* Subsystems */
-  public final DriveTrain s_DriveTrain = new DriveTrain();
+  //public final DriveTrain s_DriveTrain = new DriveTrain();
   public final LED s_LED = new LED();
   public final PhotonVision s_Photon = new PhotonVision();
   public final Intake s_Intake = new Intake();
-  public final Climber s_Climber = new Climber();
-  public final Arm s_Arm = new Arm();
+  //public final Climber s_Climber = new Climber();
+  //public final Arm s_Arm = new Arm();
   
   /* Commands */
 
 
   /* Autos */
-  private final AutoChooser autoChooser = new AutoChooser(new AutoTrajectories(Constants.DriveTrain.TRAJECTORY_CONSTRAINTS));
+  //private final AutoChooser autoChooser = new AutoChooser(new AutoTrajectories(Constants.DriveTrain.TRAJECTORY_CONSTRAINTS));
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
-    Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
+    //s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
+    //Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -84,7 +84,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     /* Driver Buttons */
-    translationButton.onTrue(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
+    //translationButton.onTrue(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
     highLeft.onTrue(new InstantCommand(() -> s_Photon.setHighLeft()));
     highRight.onTrue(new InstantCommand(() -> s_Photon.setHighRight()));
     highMid.onTrue(new InstantCommand(() -> s_Photon.setHighMid()));
@@ -99,7 +99,8 @@ public class RobotContainer {
   } 
 
   public DriveTrain getDrivetrain(){
-    return s_DriveTrain;
+    //return s_DriveTrain;
+    return null;
   }
 
   /**
@@ -109,6 +110,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // A command that is selected will run in autonomous
-    return autoChooser.getCommand(this);
+    //return autoChooser.getCommand(this);
+    return null;
   }
 }

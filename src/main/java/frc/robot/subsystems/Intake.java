@@ -27,21 +27,21 @@ public class Intake extends SubsystemBase {
   private final WPI_TalonSRX intakeBottom;
   private final CANSparkMax wristMotor;
   private final AnalogInput sensor;
-  private final AnalogPotentiometer distance;
+  private final AnalogPotentiometer distanceNum;
   private final DoubleSolenoid clamp;
   private SparkMaxPIDController wristPIDController;
   private RelativeEncoder wristEncoder;
   private double wristkP, wristkI, wristkD, wristkFF;
-  private final GenericEntry distanceNum;
+  private final GenericEntry distance;
   
   public Intake() {
     intakeTop = new WPI_TalonSRX(Constants.Intake.INTAKE_MOTOR_TOP);
     intakeBottom = new WPI_TalonSRX(Constants.Intake.INTAKE_MOTOR_BOTTOM);
     wristMotor = new CANSparkMax(Constants.Intake.WRIST_MOTOR_ID, MotorType.kBrushless);
     sensor = new AnalogInput(Constants.Intake.SENSOR_ID);
-    distance = new AnalogPotentiometer(sensor, 50, 0);
+    distanceNum = new AnalogPotentiometer(sensor, 0.8, 0.1);
     clamp = new DoubleSolenoid(Constants.PCM_ID, PneumaticsModuleType.CTREPCM, 0, 1);
-    distanceNum = Shuffleboard.getTab("Intake").add("Sensor", 0).withPosition(0, 0).getEntry();
+    distance = Shuffleboard.getTab("Intake").add("Sensor", 0).withPosition(0, 0).getEntry();
     setValues();
     configWristMotor();
   }
@@ -106,6 +106,6 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    distanceNum.setDouble(distance.get());
+    distance.setDouble(distanceNum.get());
   }
 }
