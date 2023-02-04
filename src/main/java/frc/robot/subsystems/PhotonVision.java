@@ -64,7 +64,7 @@ public class PhotonVision extends SubsystemBase{
         angleBoard = Shuffleboard.getTab("SyrupTag").add("Angle", a).withPosition(3, 0).getEntry();
         id = Shuffleboard.getTab("SyrupTag").add("ID", idNum).withPosition(4, 0).getEntry();
         
-        setHybridLeft();
+        setHighLeft();
         
         try {
             atfl = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
@@ -130,28 +130,28 @@ public class PhotonVision extends SubsystemBase{
         pR = Constants.VisionConstants.HIGH_DISTANCE;
     }
 
-    public void setLowLeft(){
-        pX = Constants.VisionConstants.LOW_LEFT_POST_X;
-        pY = Constants.VisionConstants.LOW_LEFT_POST_Y;
-        pR = Constants.VisionConstants.LOW_DISTANCE;
+    public void setHighMid(){
+        pX = Constants.VisionConstants.HIGH_MID_X;
+        pY = Constants.VisionConstants.HIGH_MID_Y;
+        pR = Constants.VisionConstants.HIGH_MID_DISTANCE;
     }
 
-    public void setLowRight(){
-        pX = Constants.VisionConstants.LOW_RIGHT_POST_X;
-        pY = Constants.VisionConstants.LOW_RIGHT_POST_Y;
-        pR = Constants.VisionConstants.LOW_DISTANCE;
+    public void setMidLeft(){
+        pX = Constants.VisionConstants.MID_LEFT_POST_X;
+        pY = Constants.VisionConstants.MID_LEFT_POST_Y;
+        pR = Constants.VisionConstants.MID_DISTANCE;
     }
 
-    public void setHighCube(){
-        pX = Constants.VisionConstants.HIGH_CUBE_BOX_X;
-        pY = Constants.VisionConstants.HIGH_CUBE_BOX_Y;
-        pR = Constants.VisionConstants.HIGH_CUBE_BOX_DISTANCE;
+    public void setMidRight(){
+        pX = Constants.VisionConstants.MID_RIGHT_POST_X;
+        pY = Constants.VisionConstants.MID_RIGHT_POST_Y;
+        pR = Constants.VisionConstants.MID_DISTANCE;
     }
 
-    public void setLowCube(){
-        pX = Constants.VisionConstants.LOW_CUBE_BOX_X;
-        pY = Constants.VisionConstants.LOW_CUBE_BOX_Y;
-        pR = Constants.VisionConstants.LOW_CUBE_BOX_DISTANCE;
+    public void setMidMid(){
+        pX = Constants.VisionConstants.MID_MID_X;
+        pY = Constants.VisionConstants.MID_MID_Y;
+        pR = Constants.VisionConstants.MID_MID_DISTANCE;
     }
 
     public void setHybridMid(){

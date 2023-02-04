@@ -41,12 +41,6 @@ public class RobotContainer {
 
   /* Driver Buttons */
   private final JoystickButton translationButton = new JoystickButton(translationController, Constants.Controllers.TRANSLATION_BUTTON);
-  private final JoystickButton aButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_A_BUTTON);
-  private final JoystickButton bButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_B_BUTTON);
-  private final JoystickButton xButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_X_BUTTON);
-  private final JoystickButton yButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_Y_BUTTON);
-  private final JoystickButton backButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_BACK_BUTTON);
-  private final JoystickButton startButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_START_BUTTON);
   private final JoystickButton lbButton =  new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_LB_BUTTON);
   private final JoystickButton rbButton =  new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_RB_BUTTON);
   private final JoystickButton highLeft = new JoystickButton(buttonGrid, 0);
@@ -93,10 +87,10 @@ public class RobotContainer {
     translationButton.onTrue(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
     highLeft.onTrue(new InstantCommand(() -> s_Photon.setHighLeft()));
     highRight.onTrue(new InstantCommand(() -> s_Photon.setHighRight()));
-    highMid.onTrue(new InstantCommand(() -> s_Photon.setHighCube()));
-    midLeft.onTrue(new InstantCommand(() -> s_Photon.setLowLeft()));
-    midRight.onTrue(new InstantCommand(() -> s_Photon.setLowRight()));
-    midMid.onTrue(new InstantCommand(() -> s_Photon.setLowCube()));
+    highMid.onTrue(new InstantCommand(() -> s_Photon.setHighMid()));
+    midLeft.onTrue(new InstantCommand(() -> s_Photon.setMidLeft()));
+    midRight.onTrue(new InstantCommand(() -> s_Photon.setMidRight()));
+    midMid.onTrue(new InstantCommand(() -> s_Photon.setMidMid()));
     lowMid.onTrue(new InstantCommand(() -> s_Photon.setHybridMid()));
     lowRight.onTrue(new InstantCommand(() -> s_Photon.setHybridRight()));
     lowLeft.onTrue(new InstantCommand(() -> s_Photon.setHybridLeft()));
