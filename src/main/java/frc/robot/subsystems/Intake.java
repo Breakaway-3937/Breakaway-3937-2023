@@ -14,7 +14,6 @@ import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -27,7 +26,6 @@ public class Intake extends SubsystemBase {
   private final WPI_TalonSRX intakeBottom;
   private final CANSparkMax wristMotor;
   private final AnalogInput sensor;
-  private final AnalogPotentiometer distanceNum;
   private final DoubleSolenoid clamp;
   private SparkMaxPIDController wristPIDController;
   private RelativeEncoder wristEncoder;
@@ -39,7 +37,7 @@ public class Intake extends SubsystemBase {
     intakeBottom = new WPI_TalonSRX(Constants.Intake.INTAKE_MOTOR_BOTTOM);
     wristMotor = new CANSparkMax(Constants.Intake.WRIST_MOTOR_ID, MotorType.kBrushless);
     sensor = new AnalogInput(Constants.Intake.SENSOR_ID);
-    distanceNum = new AnalogPotentiometer(sensor, 0.8, 0.1);
+    sensor.resetAccumulator();
     clamp = new DoubleSolenoid(Constants.PCM_ID, PneumaticsModuleType.CTREPCM, 0, 1);
     distance = Shuffleboard.getTab("Intake").add("Sensor", 0).withPosition(0, 0).getEntry();
     setValues();
@@ -72,8 +70,12 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean intakeFull(){
-    distance.get(); 
-    return false;
+    if(getDistance() < 35){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
   
   private void configWristMotor(){
@@ -103,9 +105,13 @@ public class Intake extends SubsystemBase {
   
   }
 
+  public double getDistance(){
+    return 0.342 - 0.291 * Math.log(sensor.getVoltage());
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    distance.setDouble(distanceNum.get());
+    distance.setDouble(getDistance());
   }
 }

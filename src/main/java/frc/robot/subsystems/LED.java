@@ -15,7 +15,7 @@ import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 
 
 public class LED extends SubsystemBase {
-    private final CANdle candle = new CANdle(Constants.CANDLE_ID);
+    private final CANdle candle = new CANdle(Constants.CANDLE_ID, "CANivore");
     private final Timer timer = new Timer();
     private boolean green, red, white, flag, cube, cone, bad = false; 
 
