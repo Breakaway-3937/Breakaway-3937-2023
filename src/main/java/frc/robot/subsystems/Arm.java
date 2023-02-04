@@ -45,9 +45,7 @@ public class Arm extends SubsystemBase {
 
   public void positionShoulder(double position){
     shoulder1PIDController.setReference(position, ControlType.kSmartMotion);
-    shoulder2PIDController.setReference(position, ControlType.kSmartMotion);
     shoulder1.set(0.5);
-    shoulder2.set(0.5);
   }
 
   public void setExtension(double position){
@@ -99,6 +97,8 @@ public class Arm extends SubsystemBase {
     shoulder2PIDController.setI(shoulder2kI);
     shoulder2PIDController.setD(shoulder2kD);
     shoulder2PIDController.setFF(shoulder2kFF);
+
+    shoulder2.follow(shoulder1);
   }
 
   private void configRotation(){
