@@ -47,6 +47,14 @@ public final class Constants {
         public static final double HIGH_CUBE_BOX_DISTANCE = 0.65;
         public static final double LOW_CUBE_BOX_DISTANCE = 0.22;
         public static final double MAX_EXTEND_LENGTH = 1.22;
+        public static final double LEFT_HYBRID_X = 0.177673;
+        public static final double LEFT_HYBRID_Y = 0.560;
+        public static final double RIGHT_HYBRID_X = 0.177673;
+        public static final double RIGHT_HYBRID_Y = -0.560;
+        public static final double HYBRID_DISTANCE = 0.58750974027;
+        public static final double MID_HYBRID_X = 0.177673;
+        public static final double MID_HYBRID_Y = 0.0;
+        public static final double MID_HYBRID_DISTANCE = 0.177673;
     }
 
     public static final class Controllers{
@@ -74,9 +82,9 @@ public final class Constants {
         public static final boolean INVERT_GYRO = false;
 
         /* Drivetrain Constants */
-        public static final double TRACK_WIDTH = 0.5461; //FIXME
-        public static final double WHEEL_BASE = 0.5969; //FIXME
-        public static final double WHEEL_DIAMETER = Units.inchesToMeters(3.9);
+        public static final double TRACK_WIDTH = 0.45;
+        public static final double WHEEL_BASE = 0.645;
+        public static final double WHEEL_DIAMETER = Units.inchesToMeters(3.925);
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
         public static final double OPEN_LOOP_RAMP = 0.25;

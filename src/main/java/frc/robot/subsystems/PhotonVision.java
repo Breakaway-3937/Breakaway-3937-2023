@@ -64,9 +64,7 @@ public class PhotonVision extends SubsystemBase{
         angleBoard = Shuffleboard.getTab("SyrupTag").add("Angle", a).withPosition(3, 0).getEntry();
         id = Shuffleboard.getTab("SyrupTag").add("ID", idNum).withPosition(4, 0).getEntry();
         
-        pX = Constants.VisionConstants.HIGH_LEFT_POST_X;
-        pY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
-        pR = Constants.VisionConstants.HIGH_DISTANCE;
+        setHybridLeft();
         
         try {
             atfl = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
@@ -154,6 +152,24 @@ public class PhotonVision extends SubsystemBase{
         pX = Constants.VisionConstants.LOW_CUBE_BOX_X;
         pY = Constants.VisionConstants.LOW_CUBE_BOX_Y;
         pR = Constants.VisionConstants.LOW_CUBE_BOX_DISTANCE;
+    }
+
+    public void setHybridMid(){
+        pX = Constants.VisionConstants.MID_HYBRID_X;
+        pY = Constants.VisionConstants.MID_HYBRID_Y;
+        pR = Constants.VisionConstants.MID_HYBRID_DISTANCE;
+    }
+
+    public void setHybridLeft(){
+        pX = Constants.VisionConstants.LEFT_HYBRID_X;
+        pY = Constants.VisionConstants.LEFT_HYBRID_Y;
+        pR = Constants.VisionConstants.HYBRID_DISTANCE;
+    }
+
+    public void setHybridRight(){
+        pX = Constants.VisionConstants.RIGHT_HYBRID_X;
+        pY = Constants.VisionConstants.RIGHT_HYBRID_Y;
+        pR = Constants.VisionConstants.HYBRID_DISTANCE;
     }
 
     public boolean closeEnough(){

@@ -30,6 +30,7 @@ public class RobotContainer {
   private final Joystick translationController = new Joystick(0);
   private final Joystick rotationController = new Joystick(1);
   public final XboxController xboxController = new XboxController(2);
+  public final Joystick buttonGrid = new Joystick(3);
 
   /* Drive Controls */
   private final int translationAxis = Constants.Controllers.TRANSLATION_AXIS;
@@ -48,6 +49,15 @@ public class RobotContainer {
   private final JoystickButton startButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_START_BUTTON);
   private final JoystickButton lbButton =  new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_LB_BUTTON);
   private final JoystickButton rbButton =  new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_RB_BUTTON);
+  private final JoystickButton highLeft = new JoystickButton(buttonGrid, 0);
+  private final JoystickButton highMid = new JoystickButton(buttonGrid, 0);
+  private final JoystickButton highRight = new JoystickButton(buttonGrid, 0);
+  private final JoystickButton midLeft = new JoystickButton(buttonGrid, 0); //FIXME
+  private final JoystickButton midMid = new JoystickButton(buttonGrid, 0);
+  private final JoystickButton midRight = new JoystickButton(buttonGrid, 0);
+  private final JoystickButton lowLeft = new JoystickButton(buttonGrid, 0);
+  private final JoystickButton lowMid = new JoystickButton(buttonGrid, 0);
+  private final JoystickButton lowRight = new JoystickButton(buttonGrid, 0);
 
 
   /* Subsystems */
@@ -81,12 +91,15 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* Driver Buttons */
     translationButton.onTrue(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
-    aButton.onTrue(new InstantCommand(() -> s_Photon.setHighLeft()));
-    bButton.onTrue(new InstantCommand(() -> s_Photon.setHighRight()));
-    xButton.onTrue(new InstantCommand(() -> s_Photon.setLowLeft()));
-    yButton.onTrue(new InstantCommand(() -> s_Photon.setLowRight()));
-    backButton.onTrue(new InstantCommand(() -> s_Photon.setHighCube()));
-    startButton.onTrue(new InstantCommand(() -> s_Photon.setLowCube()));
+    highLeft.onTrue(new InstantCommand(() -> s_Photon.setHighLeft()));
+    highRight.onTrue(new InstantCommand(() -> s_Photon.setHighRight()));
+    highMid.onTrue(new InstantCommand(() -> s_Photon.setHighCube()));
+    midLeft.onTrue(new InstantCommand(() -> s_Photon.setLowLeft()));
+    midRight.onTrue(new InstantCommand(() -> s_Photon.setLowRight()));
+    midMid.onTrue(new InstantCommand(() -> s_Photon.setLowCube()));
+    lowMid.onTrue(new InstantCommand(() -> s_Photon.setHybridMid()));
+    lowRight.onTrue(new InstantCommand(() -> s_Photon.setHybridRight()));
+    lowLeft.onTrue(new InstantCommand(() -> s_Photon.setHybridLeft()));
     rbButton.onTrue(new InstantCommand(() -> s_LED.cone()));
     lbButton.onTrue(new InstantCommand(() -> s_LED.cube()));
   } 
