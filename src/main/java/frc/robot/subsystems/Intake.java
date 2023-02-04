@@ -7,14 +7,18 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,17 +27,21 @@ public class Intake extends SubsystemBase {
   private final WPI_TalonSRX intakeBottom;
   private final CANSparkMax wristMotor;
   private final AnalogInput sensor;
+  private final AnalogPotentiometer distance;
   private final DoubleSolenoid clamp;
   private SparkMaxPIDController wristPIDController;
   private RelativeEncoder wristEncoder;
   private double wristkP, wristkI, wristkD, wristkFF;
+  private final GenericEntry distanceNum;
   
   public Intake() {
     intakeTop = new WPI_TalonSRX(Constants.Intake.INTAKE_MOTOR_TOP);
     intakeBottom = new WPI_TalonSRX(Constants.Intake.INTAKE_MOTOR_BOTTOM);
     wristMotor = new CANSparkMax(Constants.Intake.WRIST_MOTOR_ID, MotorType.kBrushless);
     sensor = new AnalogInput(Constants.Intake.SENSOR_ID);
+    distance = new AnalogPotentiometer(sensor, 50, 0);
     clamp = new DoubleSolenoid(Constants.PCM_ID, PneumaticsModuleType.CTREPCM, 0, 1);
+    distanceNum = Shuffleboard.getTab("Intake").add("Sensor", 0).withPosition(0, 0).getEntry();
     setValues();
     configWristMotor();
   }
@@ -64,12 +72,8 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean intakeFull(){
-    if(sensor.getValue() > 2000){
-      return true;
-    }
-    else{
-      return false;
-    }
+    distance.get(); 
+    return false;
   }
   
   private void configWristMotor(){
@@ -102,5 +106,6 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    distanceNum.setDouble(distance.get());
   }
 }
