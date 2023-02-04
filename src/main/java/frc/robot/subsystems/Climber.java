@@ -10,10 +10,11 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.math.Pair;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -24,6 +25,8 @@ public class Climber extends SubsystemBase {
   private RelativeEncoder climber1Encoder, climber2Encoder;
   private SparkMaxPIDController pid1, pid2;
   private double climber1kP, climber1kI, climber1kD, climber1kFF, climber2kP, climber2kI, climber2kD, climber2kFF;
+  private final GenericEntry climber;
+
   /** Creates a new Climber. */
   public Climber() {
     climber1 = new CANSparkMax(Constants.Climber.ID_1, MotorType.kBrushless);
@@ -31,6 +34,7 @@ public class Climber extends SubsystemBase {
     brake = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
     setValues();
     configMotors();
+    climber = Shuffleboard.getTab("Climber").add("Climber", getClimber()).withPosition(0, 0).getEntry();
   }
 
   public void setClimber(double position){
@@ -40,8 +44,8 @@ public class Climber extends SubsystemBase {
     climber2.set(0.5);
   }
 
-  public Pair<Double, Double> getClimber(){
-    return new Pair<Double, Double>(climber1Encoder.getPosition(), climber2Encoder.getPosition());
+  public double getClimber(){
+    return climber1Encoder.getPosition();
   }
 
   public void brakeOn(){
@@ -75,6 +79,8 @@ public class Climber extends SubsystemBase {
     pid2.setI(climber2kI);
     pid2.setD(climber2kD);
     pid2.setFF(climber2kFF);
+
+    climber2.follow(climber1, true);
   }
 
   public void setValues(){
@@ -82,16 +88,16 @@ public class Climber extends SubsystemBase {
     climber1kI = 0;
     climber1kD = 0;
     climber1kFF = 0;
-    if(Constants.COMP_BOT){
-      climber2kP = 0;
-      climber2kI = 0;
-      climber2kD = 0;
-      climber2kFF = 0;
-    }
+
+    climber2kP = 0;
+    climber2kI = 0;
+    climber2kD = 0;
+    climber2kFF = 0;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    climber.setDouble(getClimber());
   }
 }

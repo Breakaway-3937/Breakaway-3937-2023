@@ -15,6 +15,8 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -29,6 +31,7 @@ public class Arm extends SubsystemBase {
   private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, shoulder2kP, shoulder2kI, shoulder2kD, shoulder2kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF;
   private RelativeEncoder shoulder1Encoder, shoulder2Encoder, rotateEncoder;
   private SparkMaxPIDController shoulder1PIDController, shoulder2PIDController, rotatePIDController;
+  private final GenericEntry shoulderEncoder, extensionEncoderEntry, rotationEncoder;
 
   /** Creates a new Arm. */
   public Arm() {
@@ -41,6 +44,9 @@ public class Arm extends SubsystemBase {
     configRotation();
     configShoulder1();
     configShoulder2();
+    shoulderEncoder = Shuffleboard.getTab("Arm").add("Shoulder", getShoulder1Position()).withPosition(0, 0).getEntry();
+    extensionEncoderEntry = Shuffleboard.getTab("Arm").add("Extension", getExtensionPosition()).withPosition(1, 0).getEntry();
+    rotationEncoder = Shuffleboard.getTab("Arm").add("Rotation", getRotationPosition()).withPosition(2, 0).getEntry();
   }
 
   public void positionShoulder(double position){
@@ -146,6 +152,9 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    shoulderEncoder.setDouble(getShoulder1Position());
+    extensionEncoderEntry.setDouble(getExtensionPosition());
+    rotationEncoder.setDouble(getRotationPosition());
   }
 }
 

@@ -30,7 +30,7 @@ public class Intake extends SubsystemBase {
   private SparkMaxPIDController wristPIDController;
   private RelativeEncoder wristEncoder;
   private double wristkP, wristkI, wristkD, wristkFF;
-  private final GenericEntry distance;
+  private final GenericEntry distance, wrist;
   
   public Intake() {
     intakeTop = new WPI_TalonSRX(Constants.Intake.INTAKE_MOTOR_TOP);
@@ -39,13 +39,14 @@ public class Intake extends SubsystemBase {
     sensor = new AnalogInput(Constants.Intake.SENSOR_ID);
     sensor.resetAccumulator();
     clamp = new DoubleSolenoid(Constants.PCM_ID, PneumaticsModuleType.CTREPCM, 0, 1);
-    distance = Shuffleboard.getTab("Intake").add("Sensor", 0).withPosition(0, 0).getEntry();
     setValues();
     configWristMotor();
+    distance = Shuffleboard.getTab("Intake").add("Sensor", 0).withPosition(0, 0).getEntry();
+    wrist = Shuffleboard.getTab("Intake").add("Wrist", getWrist()).withPosition(1, 0).getEntry();
   }
   
   public void runIntake(double speed){
-    intakeBottom.set(TalonSRXControlMode.Velocity, speed);
+    intakeBottom.set(TalonSRXControlMode.Velocity, -speed);
     intakeTop.set(TalonSRXControlMode.Velocity, speed);
   }
   
@@ -67,6 +68,10 @@ public class Intake extends SubsystemBase {
   public void setWrist(double position){
     wristPIDController.setReference(position, ControlType.kPosition);
     wristMotor.set(0.5);
+  }
+
+  public double getWrist(){
+    return wristEncoder.getPosition();
   }
 
   public boolean intakeFull(){
@@ -113,5 +118,6 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     distance.setDouble(getDistance());
+    wrist.setDouble(getWrist());
   }
 }
