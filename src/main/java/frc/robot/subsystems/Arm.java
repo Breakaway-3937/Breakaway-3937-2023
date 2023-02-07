@@ -55,7 +55,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void setExtension(double position){
-    extension.set(ControlMode.PercentOutput, position);
+    extension.set(ControlMode.MotionMagic, position);
   }
 
   public void setRotation(double position){
@@ -130,7 +130,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void setValues(){
-    extensionkP = 0;
+    extensionkP = 0.00005;
     extensionkI = 0;
     extensionkD = 0;
     extensionkFF = 0;

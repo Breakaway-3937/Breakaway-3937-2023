@@ -22,7 +22,7 @@ public class RunExtension extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    s_Arm.setExtension(0.4);
+    s_Arm.setExtension(18000);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
