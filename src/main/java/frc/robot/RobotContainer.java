@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.AutoChooser;
 import frc.robot.autos.AutoTrajectories;
+import frc.robot.commands.RunExtension;
+import frc.robot.commands.RunIntake;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.*;
 
@@ -63,15 +65,18 @@ public class RobotContainer {
   public final Arm s_Arm = new Arm();
   
   /* Commands */
-
+  public final RunIntake c_RunIntake = new RunIntake(s_Intake, xboxController);
+  public final RunExtension c_RunExtension = new RunExtension(s_Arm, xboxController);
 
   /* Autos */
-  private final AutoChooser autoChooser = new AutoChooser(new AutoTrajectories(Constants.DriveTrain.TRAJECTORY_CONSTRAINTS));
+  //private final AutoChooser autoChooser = new AutoChooser(new AutoTrajectories(Constants.DriveTrain.TRAJECTORY_CONSTRAINTS));
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
-    Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
+    s_Intake.setDefaultCommand(c_RunIntake);
+    s_Arm.setDefaultCommand(c_RunExtension);
+    //Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -109,6 +114,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // A command that is selected will run in autonomous
-    return autoChooser.getCommand(this);
+    //return autoChooser.getCommand(this);
+    return null;
   }
 }

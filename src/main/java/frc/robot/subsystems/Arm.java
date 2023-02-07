@@ -55,7 +55,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void setExtension(double position){
-    extension.set(ControlMode.Position, position);
+    extension.set(ControlMode.PercentOutput, position);
   }
 
   public void setRotation(double position){
