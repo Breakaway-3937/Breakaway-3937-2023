@@ -147,7 +147,6 @@ public class Arm extends SubsystemBase {
     rotatekD = 0;
     rotatekFF = 0;
   }
-  
 
   @Override
   public void periodic() {
