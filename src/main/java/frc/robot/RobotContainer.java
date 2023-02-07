@@ -69,14 +69,14 @@ public class RobotContainer {
   public final RunExtension c_RunExtension = new RunExtension(s_Arm, xboxController);
 
   /* Autos */
-  //private final AutoChooser autoChooser = new AutoChooser(new AutoTrajectories(Constants.DriveTrain.TRAJECTORY_CONSTRAINTS));
+  private final AutoChooser autoChooser = new AutoChooser(new AutoTrajectories(Constants.DriveTrain.TRAJECTORY_CONSTRAINTS));
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     s_Intake.setDefaultCommand(c_RunIntake);
     s_Arm.setDefaultCommand(c_RunExtension);
-    //Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
+    Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -114,7 +114,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // A command that is selected will run in autonomous
-    //return autoChooser.getCommand(this);
-    return null;
+    return autoChooser.getCommand(this);
   }
 }
