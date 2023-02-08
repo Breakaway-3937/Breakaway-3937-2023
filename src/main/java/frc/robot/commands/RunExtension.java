@@ -22,14 +22,20 @@ public class RunExtension extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    s_Arm.setExtension(18000);
+    s_Arm.positionShoulder(1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if(xboxController.getRawButton(3)){
-      s_Arm.setExtension(0);
+      s_Arm.positionShoulder(3);
+    }
+    else if(xboxController.getRawButton(2)){
+      s_Arm.positionShoulder(1);
+    }
+    else if(xboxController.getRawButton(1)){
+      s_Arm.positionShoulder(5);
     }
   }
 

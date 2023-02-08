@@ -213,9 +213,6 @@ public class PhotonVision extends SubsystemBase{
         else if(photonCamera.isConnected()){
             Robot.m_robotContainer.s_LED.notBad();
         }
-        if(photonCamera.getLatestResult().getBestTarget() != null){
-            Shuffleboard.selectTab("SyrupTag");
-        }
         if(closeEnough()){
             Robot.m_robotContainer.s_LED.green();
         }

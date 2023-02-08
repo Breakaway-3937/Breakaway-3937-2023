@@ -51,7 +51,6 @@ public class Arm extends SubsystemBase {
 
   public void positionShoulder(double position){
     shoulder1PIDController.setReference(position, ControlType.kSmartMotion);
-    shoulder1.set(0.5);
   }
 
   public void setExtension(double position){
@@ -81,7 +80,8 @@ public class Arm extends SubsystemBase {
 
   private void configShoulder1(){
     shoulder1.restoreFactoryDefaults();
-    shoulder1Encoder = shoulder1.getAlternateEncoder(Constants.Arm.ALT_ENC_TYPE, Constants.Arm.CPR);
+    //shoulder1Encoder = shoulder1.getAlternateEncoder(Constants.Arm.ALT_ENC_TYPE, Constants.Arm.CPR);
+    shoulder1Encoder = shoulder1.getEncoder();
     shoulder1PIDController = shoulder1.getPIDController();
     shoulder1PIDController.setFeedbackDevice(shoulder1Encoder);
     shoulder1Encoder.setPosition(0);
@@ -90,6 +90,9 @@ public class Arm extends SubsystemBase {
     shoulder1PIDController.setI(shoulder1kI);
     shoulder1PIDController.setD(shoulder1kD);
     shoulder1PIDController.setFF(shoulder1kFF);
+    shoulder1PIDController.setSmartMotionMaxVelocity(Constants.Arm.MAX_VELOCITY_RAISE_ARM, 0);
+    shoulder1PIDController.setSmartMotionMaxAccel(Constants.Arm.MAX_ACCEL_RAISE_ARM, 0);
+    shoulder1PIDController.setOutputRange(-0.1, 0.1);
   }
 
   private void configShoulder2(){
@@ -103,6 +106,9 @@ public class Arm extends SubsystemBase {
     shoulder2PIDController.setI(shoulder2kI);
     shoulder2PIDController.setD(shoulder2kD);
     shoulder2PIDController.setFF(shoulder2kFF);
+    shoulder2PIDController.setSmartMotionMaxVelocity(Constants.Arm.MAX_VELOCITY_RAISE_ARM, 0);
+    shoulder2PIDController.setSmartMotionMaxAccel(Constants.Arm.MAX_ACCEL_RAISE_ARM, 0);
+    shoulder2PIDController.setOutputRange(-0.1, 0.1);
 
     shoulder2.follow(shoulder1);
   }
@@ -134,14 +140,14 @@ public class Arm extends SubsystemBase {
     extensionkI = 0;
     extensionkD = 0;
     extensionkFF = 0;
-    shoulder1kP = 0;
-    shoulder1kI = 0;
+    shoulder1kP = 5e-5;
+    shoulder1kI = 1e-6;
     shoulder1kD = 0;
-    shoulder1kFF = 0;
-    shoulder2kP = 0;
-    shoulder2kI = 0;
+    shoulder1kFF = 0.00156;
+    shoulder2kP = 5e-5;
+    shoulder2kI = 1e-6;
     shoulder2kD = 0;
-    shoulder2kFF = 0;
+    shoulder2kFF = 0.00156;
     rotatekP = 0;
     rotatekI = 0;
     rotatekD = 0;
