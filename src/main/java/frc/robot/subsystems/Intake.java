@@ -16,9 +16,6 @@ import com.revrobotics.SparkMaxPIDController;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -28,7 +25,6 @@ public class Intake extends SubsystemBase {
   private final WPI_TalonSRX intakeBottom;
   private final CANSparkMax wristMotor;
   private final AnalogInput sensor;
-  private final DoubleSolenoid clamp;
   private SparkMaxPIDController wristPIDController;
   private RelativeEncoder wristEncoder;
   private double wristkP, wristkI, wristkD, wristkFF;
@@ -42,7 +38,6 @@ public class Intake extends SubsystemBase {
     wristMotor = new CANSparkMax(Constants.Intake.WRIST_MOTOR_ID, MotorType.kBrushless);
     sensor = new AnalogInput(Constants.Intake.SENSOR_ID);
     sensor.resetAccumulator();
-    clamp = new DoubleSolenoid(Constants.PCM_ID, PneumaticsModuleType.CTREPCM, 0, 1);
     setValues();
     configWristMotor();
     distance = Shuffleboard.getTab("Intake").add("Sensor", 0).withPosition(0, 0).getEntry();
@@ -67,16 +62,6 @@ public class Intake extends SubsystemBase {
   public void stopIntake(){
     intakeBottom.stopMotor();
     intakeTop.stopMotor();
-  }
-
-  public void clampOn(){
-    clamp.set(Value.kOff);
-    clamp.set(Value.kForward);
-  }
-
-  public void clampOff(){
-    clamp.set(Value.kOff);
-    clamp.set(Value.kReverse);
   }
 
   public void setWrist(double position){

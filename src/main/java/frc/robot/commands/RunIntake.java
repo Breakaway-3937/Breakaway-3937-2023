@@ -35,12 +35,6 @@ public class RunIntake extends CommandBase {
     else{
       s_Intake.stopIntake();
     }
-    if(xboxController.getRawButton(1)){
-      s_Intake.clampOn();
-    }
-    else if(xboxController.getRawButton(2)){
-      s_Intake.clampOff();
-    }
   }
 
   // Called once the command ends or is interrupted.

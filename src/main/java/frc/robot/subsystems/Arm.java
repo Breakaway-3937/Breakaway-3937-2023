@@ -34,7 +34,7 @@ public class Arm extends SubsystemBase {
   private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, shoulder2kP, shoulder2kI, shoulder2kD, shoulder2kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF;
   private RelativeEncoder shoulder1Encoder, shoulder2Encoder, rotateEncoder;
   private SparkMaxPIDController shoulder1PIDController, shoulder2PIDController, rotatePIDController;
-  private final GenericEntry shoulderEncoder, extensionEncoderEntry, rotationEncoder;
+  private final GenericEntry shoulderEncoder, extensionEncoderEntry, rotationEncoder, shoulder2EncoderEntry;
 
   /** Creates a new Arm. */
   public Arm() {
@@ -50,6 +50,7 @@ public class Arm extends SubsystemBase {
     shoulderEncoder = Shuffleboard.getTab("Arm").add("Shoulder", getShoulder1Position()).withPosition(0, 0).getEntry();
     extensionEncoderEntry = Shuffleboard.getTab("Arm").add("Extension", getExtensionPosition()).withPosition(1, 0).getEntry();
     rotationEncoder = Shuffleboard.getTab("Arm").add("Rotation", getRotationPosition()).withPosition(2, 0).getEntry();
+    shoulder2EncoderEntry = Shuffleboard.getTab("Arm").add("Shoulder 2", getShoulder1Position()).withPosition(3, 0).getEntry();
   }
 
   public void positionShoulder(double position){
@@ -114,7 +115,7 @@ public class Arm extends SubsystemBase {
     shoulder2PIDController.setOutputRange(-1, 1);
     shoulder2.setIdleMode(IdleMode.kBrake);
 
-    shoulder2.follow(shoulder1, true);
+    shoulder2.follow(shoulder1);
   }
 
   private void configRotation(){
@@ -169,6 +170,7 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     shoulderEncoder.setDouble(getShoulder1Position());
+    shoulder2EncoderEntry.setDouble(getShoulder2Position());
     extensionEncoderEntry.setDouble(getExtensionPosition());
     rotationEncoder.setDouble(getRotationPosition());
   }
