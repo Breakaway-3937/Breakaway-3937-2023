@@ -7,12 +7,15 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.GenericEntry;
@@ -59,7 +62,6 @@ public class Arm extends SubsystemBase {
 
   public void setRotation(double position){
     rotatePIDController.setReference(position, ControlType.kSmartMotion);
-    rotation.set(0.5);
   }
   
   public double getShoulder1Position(){
@@ -92,7 +94,8 @@ public class Arm extends SubsystemBase {
     shoulder1PIDController.setFF(shoulder1kFF);
     shoulder1PIDController.setSmartMotionMaxVelocity(Constants.Arm.MAX_VELOCITY_RAISE_ARM, 0);
     shoulder1PIDController.setSmartMotionMaxAccel(Constants.Arm.MAX_ACCEL_RAISE_ARM, 0);
-    shoulder1PIDController.setOutputRange(-0.1, 0.1);
+    shoulder1PIDController.setOutputRange(-1, 1);
+    shoulder1.setIdleMode(IdleMode.kBrake);
   }
 
   private void configShoulder2(){
@@ -108,9 +111,10 @@ public class Arm extends SubsystemBase {
     shoulder2PIDController.setFF(shoulder2kFF);
     shoulder2PIDController.setSmartMotionMaxVelocity(Constants.Arm.MAX_VELOCITY_RAISE_ARM, 0);
     shoulder2PIDController.setSmartMotionMaxAccel(Constants.Arm.MAX_ACCEL_RAISE_ARM, 0);
-    shoulder2PIDController.setOutputRange(-0.1, 0.1);
+    shoulder2PIDController.setOutputRange(-1, 1);
+    shoulder2.setIdleMode(IdleMode.kBrake);
 
-    shoulder2.follow(shoulder1);
+    shoulder2.follow(shoulder1, true);
   }
 
   private void configRotation(){
@@ -127,25 +131,32 @@ public class Arm extends SubsystemBase {
   }
 
   private void configExtention(){
+    extension.configFactoryDefault();
     extensionEncoder = extension.getSensorCollection();
+    extension.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
     extensionEncoder.setIntegratedSensorPosition(0, 0);
     extension.config_kP(0, extensionkP);
     extension.config_kI(0, extensionkI);
     extension.config_kD(0, extensionkD);
     extension.config_kF(0, extensionkFF);
+    extension.configPeakOutputForward(0.5);
+    extension.configPeakOutputReverse(-0.5);
+    extension.configMotionCruiseVelocity(10000);
+    extension.configMotionAcceleration(10000);
+    extension.setNeutralMode(NeutralMode.Brake);
   }
 
   public void setValues(){
-    extensionkP = 0.00005;
+    extensionkP = 0.25;
     extensionkI = 0;
     extensionkD = 0;
-    extensionkFF = 0;
-    shoulder1kP = 5e-5;
-    shoulder1kI = 1e-6;
+    extensionkFF = 0.2;
+    shoulder1kP = 6.5e-7;
+    shoulder1kI = 0.5e-6;
     shoulder1kD = 0;
     shoulder1kFF = 0.00156;
-    shoulder2kP = 5e-5;
-    shoulder2kI = 1e-6;
+    shoulder2kP = 6.5e-7;
+    shoulder2kI = 0.5e-6;
     shoulder2kD = 0;
     shoulder2kFF = 0.00156;
     rotatekP = 0;
