@@ -29,6 +29,8 @@ public final class Constants {
     public static final double SAMPLE_DISTANCE = Units.inchesToMeters(0.1);
     public static final boolean PRACTICE_BOT = getMACAddress().equals(PRACTICE_MAC);
 
+    
+
     public static class VisionConstants {
         public static final Transform3d ROBOT_TO_CAM =
                 new Transform3d(

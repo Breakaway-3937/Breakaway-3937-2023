@@ -51,37 +51,37 @@ public class Climber extends SubsystemBase {
 
   private void configMotors(){
     climber1.restoreFactoryDefaults();
-    climber2.restoreFactoryDefaults();
+    //climber2.restoreFactoryDefaults();
     climber1Encoder = climber1.getEncoder();
-    climber2Encoder = climber2.getEncoder();
+    //climber2Encoder = climber2.getEncoder();
     pid1 = climber1.getPIDController();
-    pid2 = climber2.getPIDController();
+    //pid2 = climber2.getPIDController();
     pid1.setFeedbackDevice(climber1Encoder);
-    pid2.setFeedbackDevice(climber2Encoder);
+    //pid2.setFeedbackDevice(climber2Encoder);
     climber1Encoder.setPosition(0);
-    climber2Encoder.setPosition(0);
+    //climber2Encoder.setPosition(0);
     pid1.setOutputRange(-1, 1);
-    pid2.setOutputRange(-1, 1);
+    //pid2.setOutputRange(-1, 1);
     climber1.setIdleMode(IdleMode.kBrake);   
-    climber2.setIdleMode(IdleMode.kBrake); 
-    climber1.setInverted(true);
+    //climber2.setIdleMode(IdleMode.kBrake); 
+    climber1.setInverted(false);
     pid1.setSmartMotionMaxVelocity(Constants.Arm.MAX_VELOCITY_RAISE_ARM, 0);
     pid1.setSmartMotionMaxAccel(Constants.Arm.MAX_ACCEL_RAISE_ARM, 0);
-    pid2.setSmartMotionMaxVelocity(Constants.Arm.MAX_VELOCITY_RAISE_ARM, 0);
-    pid2.setSmartMotionMaxAccel(Constants.Arm.MAX_ACCEL_RAISE_ARM, 0);
+    //pid2.setSmartMotionMaxVelocity(Constants.Arm.MAX_VELOCITY_RAISE_ARM, 0);
+    //pid2.setSmartMotionMaxAccel(Constants.Arm.MAX_ACCEL_RAISE_ARM, 0);
 
     pid1.setP(climber1kP);
     pid1.setI(climber1kI);
     pid1.setD(climber1kD);
     pid1.setFF(climber1kFF);
 
-    pid2.setP(climber2kP);
-    pid2.setI(climber2kI);
-    pid2.setD(climber2kD);
-    pid2.setFF(climber2kFF);
+    //pid2.setP(climber2kP);
+    //pid2.setI(climber2kI);
+    //pid2.setD(climber2kD);
+    //pid2.setFF(climber2kFF);
 
     //climber1.follow(ExternalFollower.kFollowerDisabled, 0);
-    //climber2.follow(climber1, true);
+    climber2.follow(climber1, true);
   }
 
   public void setValues(){

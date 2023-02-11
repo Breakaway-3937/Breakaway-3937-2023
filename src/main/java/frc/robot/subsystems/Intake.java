@@ -65,8 +65,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void setWrist(double position){
-    wristPIDController.setReference(position, ControlType.kPosition);
-    wristMotor.set(0.5);
+    wristPIDController.setReference(position, ControlType.kSmartMotion);
   }
 
   public double getWrist(){
@@ -88,6 +87,10 @@ public class Intake extends SubsystemBase {
     wristPIDController = wristMotor.getPIDController();
     wristPIDController.setFeedbackDevice(wristEncoder);
     wristEncoder.setPosition(0);
+    wristMotor.setInverted(true);
+    wristPIDController.setSmartMotionMaxVelocity(550, 0);
+    wristPIDController.setSmartMotionMaxAccel(250, 0);
+    wristPIDController.setOutputRange(-1, 1);
     wristMotor.setIdleMode(IdleMode.kBrake);
 
     wristPIDController.setP(wristkP);
@@ -97,10 +100,10 @@ public class Intake extends SubsystemBase {
   }
 
   public void setValues(){
-      wristkP = 0;
-      wristkI = 0;
+      wristkP = 9e-6;
+      wristkI = 0.1e-6;
       wristkD = 0;
-      wristkFF = 0;
+      wristkFF = 0.00156;
   }
 
   public double getDistance(){

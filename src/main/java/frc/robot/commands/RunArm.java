@@ -90,8 +90,13 @@ public class RunArm extends CommandBase {
       }
     }
     if(xboxController.getRawButton(9)){
-      s_Arm.setShoulder(3);
-      s_Arm.setExtension(100);
+      s_Arm.setShoulder(0);
+      s_Arm.setExtension(50);
+    }
+    else if(xboxController.getRawButton(8)){
+      s_Arm.setShoulder(5);
+      s_Arm.setExtension(2000);
+      System.out.println("wrist not");
     }
   }
 

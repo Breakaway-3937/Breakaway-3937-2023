@@ -71,9 +71,9 @@ public class Arm extends SubsystemBase {
     return shoulder1Encoder.getPosition();
   }
 
-  public double getShoulder2Position(){
+  /*public double getShoulder2Position(){
     return shoulder2Encoder.getPosition();
-  }
+  }*/
 
   public double getExtensionPosition(){
     return extensionEncoder.getIntegratedSensorPosition();
@@ -108,6 +108,7 @@ public class Arm extends SubsystemBase {
     shoulder1PIDController.setSmartMotionMaxVelocity(Constants.Arm.MAX_VELOCITY_RAISE_ARM, 0);
     shoulder1PIDController.setSmartMotionMaxAccel(Constants.Arm.MAX_ACCEL_RAISE_ARM, 0);
     shoulder1PIDController.setOutputRange(-1, 1);
+    shoulder1.setInverted(true);
     shoulder1.setIdleMode(IdleMode.kBrake);
   }
 
@@ -182,7 +183,7 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     shoulderEncoder.setDouble(getShoulder1Position());
-    shoulder2EncoderEntry.setDouble(getShoulder2Position());
+    //shoulder2EncoderEntry.setDouble(getShoulder2Position());
     extensionEncoderEntry.setDouble(getExtensionPosition());
     rotationEncoder.setDouble(getRotationPosition());
   }
