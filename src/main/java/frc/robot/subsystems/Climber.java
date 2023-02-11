@@ -4,16 +4,15 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -21,7 +20,6 @@ import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
   private final CANSparkMax climber1, climber2;
-  private final DoubleSolenoid brake;
   private RelativeEncoder climber1Encoder, climber2Encoder;
   private SparkMaxPIDController pid1, pid2;
   private double climber1kP, climber1kI, climber1kD, climber1kFF, climber2kP, climber2kI, climber2kD, climber2kFF;
@@ -31,7 +29,6 @@ public class Climber extends SubsystemBase {
   public Climber() {
     climber1 = new CANSparkMax(Constants.Climber.ID_1, MotorType.kBrushless);
     climber2 = new CANSparkMax(Constants.Climber.ID_2, MotorType.kBrushless);
-    brake = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 2, 3);
     setValues();
     configMotors();
     climber = Shuffleboard.getTab("Climber").add("Climber", getClimber()).withPosition(0, 0).getEntry();
@@ -39,23 +36,11 @@ public class Climber extends SubsystemBase {
 
   public void setClimber(double position){
     pid1.setReference(position, ControlType.kPosition);
-    climber1.set(0.5);
     pid2.setReference(position, ControlType.kPosition);
-    climber2.set(0.5);
   }
 
   public double getClimber(){
     return climber1Encoder.getPosition();
-  }
-
-  public void brakeOn(){
-    brake.set(Value.kOff);
-    brake.set(Value.kForward);
-  }
-
-  public void brakeOff(){
-    brake.set(Value.kOff);
-    brake.set(Value.kReverse);
   }
 
   private void configMotors(){
@@ -69,6 +54,10 @@ public class Climber extends SubsystemBase {
     pid2.setFeedbackDevice(climber2Encoder);
     climber1Encoder.setPosition(0);
     climber2Encoder.setPosition(0);
+    pid1.setOutputRange(-0.2, 0.2);
+    pid2.setOutputRange(-0.2, 0.2);
+    climber1.setIdleMode(IdleMode.kBrake);   
+    climber2.setIdleMode(IdleMode.kBrake); 
 
     pid1.setP(climber1kP);
     pid1.setI(climber1kI);
@@ -84,15 +73,15 @@ public class Climber extends SubsystemBase {
   }
 
   public void setValues(){
-    climber1kP = 0;
-    climber1kI = 0;
+    climber1kP = 6.5e-7;
+    climber1kI = 0.5e-6;
     climber1kD = 0;
-    climber1kFF = 0;
+    climber1kFF = 0.00156;
 
-    climber2kP = 0;
-    climber2kI = 0;
+    climber2kP = 6.5e-7;
+    climber2kI = 0.5e-6;
     climber2kD = 0;
-    climber2kFF = 0;
+    climber2kFF = 0.00156;
   }
 
   @Override
