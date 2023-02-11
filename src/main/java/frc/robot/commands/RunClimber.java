@@ -32,10 +32,10 @@ public class RunClimber extends CommandBase {
     if(xboxController.getRawButton(8)){
       s_Arm.setShoulder(0);
       s_Arm.setExtension(50);
-      s_Climber.setClimber(4);
+      s_Climber.setClimber(45);
     }
     else if(xboxController.getRawButton(7)){
-      s_Climber.setClimber(15);
+      s_Climber.setClimber(9); 
     }
     /*if(xboxController.getRawButton(3)){
       s_Climber.runClimber(1);

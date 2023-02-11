@@ -37,7 +37,7 @@ public class Climber extends SubsystemBase {
 
   public void setClimber(double position){
     pid1.setReference(position, ControlType.kSmartMotion);
-    pid2.setReference(position, ControlType.kSmartMotion);
+    //pid2.setReference(position, ControlType.kSmartMotion);
   }
 
   public void runClimber(double speed){
@@ -85,7 +85,7 @@ public class Climber extends SubsystemBase {
   }
 
   public void setValues(){
-    climber1kP = 6.5e-7;
+    climber1kP = 9e-7;
     climber1kI = 0.5e-6;
     climber1kD = 0;
     climber1kFF = 0.00156;
