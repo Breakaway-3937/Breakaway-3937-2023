@@ -4,16 +4,17 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
+import com.revrobotics.CANSparkMax.ExternalFollower;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -35,8 +36,13 @@ public class Climber extends SubsystemBase {
   }
 
   public void setClimber(double position){
-    pid1.setReference(position, ControlType.kPosition);
-    pid2.setReference(position, ControlType.kPosition);
+    pid1.setReference(position, ControlType.kSmartMotion);
+    pid2.setReference(position, ControlType.kSmartMotion);
+  }
+
+  public void runClimber(double speed){
+    climber1.set(-speed);
+    climber2.set(-speed);
   }
 
   public double getClimber(){
@@ -54,10 +60,15 @@ public class Climber extends SubsystemBase {
     pid2.setFeedbackDevice(climber2Encoder);
     climber1Encoder.setPosition(0);
     climber2Encoder.setPosition(0);
-    pid1.setOutputRange(-0.2, 0.2);
-    pid2.setOutputRange(-0.2, 0.2);
+    pid1.setOutputRange(-1, 1);
+    pid2.setOutputRange(-1, 1);
     climber1.setIdleMode(IdleMode.kBrake);   
     climber2.setIdleMode(IdleMode.kBrake); 
+    climber1.setInverted(true);
+    pid1.setSmartMotionMaxVelocity(Constants.Arm.MAX_VELOCITY_RAISE_ARM, 0);
+    pid1.setSmartMotionMaxAccel(Constants.Arm.MAX_ACCEL_RAISE_ARM, 0);
+    pid2.setSmartMotionMaxVelocity(Constants.Arm.MAX_VELOCITY_RAISE_ARM, 0);
+    pid2.setSmartMotionMaxAccel(Constants.Arm.MAX_ACCEL_RAISE_ARM, 0);
 
     pid1.setP(climber1kP);
     pid1.setI(climber1kI);
@@ -69,7 +80,8 @@ public class Climber extends SubsystemBase {
     pid2.setD(climber2kD);
     pid2.setFF(climber2kFF);
 
-    climber2.follow(climber1, true);
+    //climber1.follow(ExternalFollower.kFollowerDisabled, 0);
+    //climber2.follow(climber1, true);
   }
 
   public void setValues(){
@@ -88,5 +100,8 @@ public class Climber extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     climber.setDouble(getClimber());
+    SmartDashboard.putNumber("Motor 1", climber1.getOutputCurrent());
+    SmartDashboard.putNumber("Motor 2", climber2.getOutputCurrent());
+    SmartDashboard.putBoolean("Follower", climber2.isFollower());
   }
 }

@@ -152,8 +152,8 @@ public class Arm extends SubsystemBase {
     extension.config_kI(0, extensionkI);
     extension.config_kD(0, extensionkD);
     extension.config_kF(0, extensionkFF);
-    extension.configPeakOutputForward(0.5);
-    extension.configPeakOutputReverse(-0.5);
+    extension.configPeakOutputForward(0.75);
+    extension.configPeakOutputReverse(-0.75);
     extension.configMotionCruiseVelocity(10000);
     extension.configMotionAcceleration(10000);
     extension.setNeutralMode(NeutralMode.Brake);

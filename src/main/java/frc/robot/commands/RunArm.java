@@ -89,6 +89,10 @@ public class RunArm extends CommandBase {
         s_Arm.setRotation(0);
       }
     }
+    if(xboxController.getRawButton(9)){
+      s_Arm.setShoulder(3);
+      s_Arm.setExtension(100);
+    }
   }
 
   // Called once the command ends or is interrupted.

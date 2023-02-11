@@ -219,8 +219,8 @@ public final class Constants {
         public static final int ROTATION_ID = 14;
         public static final SparkMaxAlternateEncoder.Type ALT_ENC_TYPE = SparkMaxAlternateEncoder.Type.kQuadrature;
         public static final int CPR = 8192;
-        public static final double MAX_VELOCITY_RAISE_ARM = 300;
-        public static final double MAX_ACCEL_RAISE_ARM = 175;
+        public static final double MAX_VELOCITY_RAISE_ARM = 500;
+        public static final double MAX_ACCEL_RAISE_ARM = 250;
         public static final double METER_TO_FALCON = 0.0000271245287113;
     }
 
