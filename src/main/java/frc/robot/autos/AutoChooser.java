@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.lib.util.control.Trajectory;
 import frc.robot.RobotContainer;
-import frc.robot.commands.FollowTrajectoryCommand;
+import frc.robot.commands.FollowTrajectory;
 
 public class AutoChooser {
     private final AutoTrajectories trajectories;
@@ -542,7 +542,7 @@ public class AutoChooser {
     }
 
     private Command follow(RobotContainer robotContainer, Trajectory trajectory) {
-        return new FollowTrajectoryCommand(robotContainer.getDrivetrain(), trajectory);
+        return new FollowTrajectory(robotContainer.getDrivetrain(), trajectory);
     }
 
     public void resetRobotPose(SequentialCommandGroup command, RobotContainer robotContainer, Trajectory trajectory) {

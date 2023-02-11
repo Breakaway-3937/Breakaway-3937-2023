@@ -57,11 +57,11 @@ public class RobotContainer {
 
   /* Subsystems */
   public final DriveTrain s_DriveTrain = new DriveTrain();
-  public final LED s_LED = new LED();
-  public final PhotonVision s_Photon = new PhotonVision();
   public final Intake s_Intake = new Intake();
+  public final LED s_LED = new LED(s_Intake);
+  public final PhotonVision s_Photon = new PhotonVision(s_LED);
   public final Climber s_Climber = new Climber();
-  public final Arm s_Arm = new Arm();
+  public final Arm s_Arm = new Arm(s_Photon);
   
   /* Commands */
   public final RunIntake c_RunIntake = new RunIntake(s_Intake, xboxController);

@@ -1,5 +1,9 @@
 package frc.robot;
 
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.SparkMaxAlternateEncoder;
 
@@ -19,10 +23,11 @@ import frc.lib.util.util.DrivetrainFeedforwardConstants;
 public final class Constants {
     public static final boolean FIELD_RELATIVE = true;
     public static final boolean OPEN_LOOP = true;
-    public static final boolean COMP_BOT = false;
     public static final int CANDLE_ID = 15;
     public static final int PCM_ID = 16;
+    public static final String PRACTICE_MAC = "00:80:2F:25:DE:54";
     public static final double SAMPLE_DISTANCE = Units.inchesToMeters(0.1);
+    public static final boolean PRACTICE_BOT = getMACAddress().equals(PRACTICE_MAC);
 
     public static class VisionConstants {
         public static final Transform3d ROBOT_TO_CAM =
@@ -148,9 +153,10 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 0;
             public static final int ANGLE_MOTOR_ID = 1;
             public static final int CANCODER_ID = 21;
-            public static final double ANGLE_OFFSET = 238.1835 + 180.0;
+            public static final double ANGLE_OFFSET = 0;
+            public static final double ANGLE_OFFSET_PRACTICE = 238.1835 + 180.0;
             public static final SwerveModuleConstants CONSTANTS = 
-                new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET);
+                new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET, ANGLE_OFFSET_PRACTICE);
         }
 
         /* Front Right Module - Module 1 */
@@ -158,9 +164,10 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 19;
             public static final int ANGLE_MOTOR_ID = 18;
             public static final int CANCODER_ID = 22;
-            public static final double ANGLE_OFFSET = 202.9 + 180.0;
+            public static final double ANGLE_OFFSET = 0;
+            public static final double ANGLE_OFFSET_PRACTICE = 202.9 + 180.0;
             public static final SwerveModuleConstants CONSTANTS = 
-                new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET);
+                new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET, ANGLE_OFFSET_PRACTICE);
         }
         
         /* Back Left Module - Module 2 */
@@ -168,9 +175,10 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 8;
             public static final int ANGLE_MOTOR_ID = 9;
             public static final int CANCODER_ID = 23;
-            public static final double ANGLE_OFFSET = 7.4 + 180.0;
+            public static final double ANGLE_OFFSET = 0;
+            public static final double ANGLE_OFFSET_PRACTICE = 7.4 + 180.0;
             public static final SwerveModuleConstants CONSTANTS = 
-                new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET);
+                new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET, ANGLE_OFFSET_PRACTICE);
         }
 
         /* Back Right Module - Module 3 */
@@ -178,9 +186,10 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 11;
             public static final int ANGLE_MOTOR_ID = 10;
             public static final int CANCODER_ID = 24;
-            public static final double ANGLE_OFFSET = 181.2304 + 180.0;
+            public static final double ANGLE_OFFSET = 0;
+            public static final double ANGLE_OFFSET_PRACTICE = 181.2304 + 180.0;
             public static final SwerveModuleConstants CONSTANTS = 
-                new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET);
+                new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET, ANGLE_OFFSET_PRACTICE);
         }
 
         public static final DrivetrainFeedforwardConstants FEEDFORWARD_CONSTANTS = new DrivetrainFeedforwardConstants(DRIVE_KV, DRIVE_KA, DRIVE_KS);
@@ -212,6 +221,37 @@ public final class Constants {
         public static final int CPR = 8192;
         public static final double MAX_VELOCITY_RAISE_ARM = 300;
         public static final double MAX_ACCEL_RAISE_ARM = 175;
+        public static final double METER_TO_FALCON = 0.0000271245287113;
+    }
+
+    public static String getMACAddress() {
+        try {
+            Enumeration<NetworkInterface> nwInterface = NetworkInterface.getNetworkInterfaces();
+            StringBuilder ret = new StringBuilder();
+            while (nwInterface.hasMoreElements()) {
+                NetworkInterface nis = nwInterface.nextElement();
+                System.out.println("NIS: " + nis.getDisplayName());
+                if (nis != null && "eth0".equals(nis.getDisplayName())) {
+                    byte[] mac = nis.getHardwareAddress();
+                    if (mac != null) {
+                        for (int i = 0; i < mac.length; i++) {
+                            ret.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? ":" : ""));
+                        }
+                        String addr = ret.toString();
+                        System.out.println("NIS " + nis.getDisplayName() + " addr: " + addr);
+                        return addr;
+                    } else {
+                        System.out.println("Address doesn't exist or is not accessible");
+                    }
+                } else {
+                    System.out.println("Skipping adaptor: " + nis.getDisplayName());
+                }
+            }
+        } catch (SocketException | NullPointerException e) {
+            e.printStackTrace();
+        }
+
+        return "";
     }
 
 }

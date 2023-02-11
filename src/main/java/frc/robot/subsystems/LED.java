@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
 
 import com.ctre.phoenix.led.*;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
@@ -15,11 +14,13 @@ import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 
 
 public class LED extends SubsystemBase {
+    private final Intake s_Intake;
     private final CANdle candle = new CANdle(Constants.CANDLE_ID, "CANivore");
     private final Timer timer = new Timer();
     private boolean green, red, white, flag, cube, cone, bad = false; 
 
-    public LED() {
+    public LED(Intake s_Intake) {
+        this.s_Intake = s_Intake;
         timer.start();
         CANdleConfiguration configAll = new CANdleConfiguration();
         configAll.statusLedOffWhenActive = false;
@@ -135,7 +136,7 @@ public class LED extends SubsystemBase {
                 }
             }
         }
-        else if(!Robot.m_robotContainer.s_Intake.intakeFull()){
+        else if(!s_Intake.intakeFull()){
             if(cube){
                 purple();
             }

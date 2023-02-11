@@ -26,6 +26,7 @@ import frc.robot.Constants;
 
 
 public class Arm extends SubsystemBase {
+  private final PhotonVision s_Photon;
   private final CANSparkMax shoulder1;
   private final CANSparkMax shoulder2;
   private final WPI_TalonFX extension;
@@ -37,7 +38,8 @@ public class Arm extends SubsystemBase {
   private final GenericEntry shoulderEncoder, extensionEncoderEntry, rotationEncoder, shoulder2EncoderEntry;
 
   /** Creates a new Arm. */
-  public Arm() {
+  public Arm(PhotonVision s_Photon) {
+    this.s_Photon = s_Photon;
     shoulder1 = new CANSparkMax(Constants.Arm.SHOULDER_ID, MotorType.kBrushless);
     shoulder2 = new CANSparkMax(Constants.Arm.SHOULDER_2_ID, MotorType.kBrushless);
     extension = new WPI_TalonFX(Constants.Arm.EXTENSION_ID);
@@ -53,7 +55,7 @@ public class Arm extends SubsystemBase {
     shoulder2EncoderEntry = Shuffleboard.getTab("Arm").add("Shoulder 2", getShoulder1Position()).withPosition(3, 0).getEntry();
   }
 
-  public void positionShoulder(double position){
+  public void setShoulder(double position){
     shoulder1PIDController.setReference(position, ControlType.kSmartMotion);
   }
 
@@ -80,6 +82,16 @@ public class Arm extends SubsystemBase {
   public double getRotationPosition(){
     return rotateEncoder.getPosition();
   }
+
+  public double getScoreLength(){
+    if(s_Photon.closeEnough()){
+      return s_Photon.getArmStuff().getFirst() / Constants.Arm.METER_TO_FALCON;
+    }
+    else{
+      return 10;
+    }
+  }
+
 
   private void configShoulder1(){
     shoulder1.restoreFactoryDefaults();

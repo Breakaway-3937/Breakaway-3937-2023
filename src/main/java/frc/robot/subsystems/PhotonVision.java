@@ -35,7 +35,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
 import frc.robot.Constants.VisionConstants;
 
 import java.io.IOException;
@@ -48,6 +47,7 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 public class PhotonVision extends SubsystemBase{
+    private final LED s_LED;
     private final PhotonCamera photonCamera;
     private final PhotonPoseEstimator photonPoseEstimator;
     private AprilTagFieldLayout atfl;
@@ -56,8 +56,12 @@ public class PhotonVision extends SubsystemBase{
     private Pair<Pose2d, Double> pair;
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));;
     private double rY, rX, rR, dP, pR, theta, pX, pY, cos, idNum, angle;
+    private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridRight = false;
+    private boolean hybridMid = true;
+    private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
 
-    public PhotonVision() {
+    public PhotonVision(LED s_LED) {
+        this.s_LED = s_LED;
         poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
         poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", y).withPosition(1, 0).getEntry();
         distanceBoard = Shuffleboard.getTab("SyrupTag").add("Distance", d).withPosition(2, 0).getEntry();
@@ -122,54 +126,148 @@ public class PhotonVision extends SubsystemBase{
         pX = Constants.VisionConstants.HIGH_LEFT_POST_X;
         pY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
         pR = Constants.VisionConstants.HIGH_DISTANCE;
+        highLeft = true;
+        highMid = false;
+        highRight = false;
+        midLeft = false;
+        midMid = false;
+        midRight = false;
+        hybridLeft = false;
+        hybridMid = false;
+        hybridRight = false;
     }
     
     public void setHighRight(){
         pX = Constants.VisionConstants.HIGH_RIGHT_POST_X;
         pY = Constants.VisionConstants.HIGH_RIGHT_POST_Y;
         pR = Constants.VisionConstants.HIGH_DISTANCE;
+        highLeft = false;
+        highMid = false;
+        highRight = true;
+        midLeft = false;
+        midMid = false;
+        midRight = false;
+        hybridLeft = false;
+        hybridMid = false;
+        hybridRight = false;
     }
 
     public void setHighMid(){
         pX = Constants.VisionConstants.HIGH_MID_X;
         pY = Constants.VisionConstants.HIGH_MID_Y;
         pR = Constants.VisionConstants.HIGH_MID_DISTANCE;
+        highLeft = false;
+        highMid = true;
+        highRight = false;
+        midLeft = false;
+        midMid = false;
+        midRight = false;
+        hybridLeft = false;
+        hybridMid = false;
+        hybridRight = false;
     }
 
     public void setMidLeft(){
         pX = Constants.VisionConstants.MID_LEFT_POST_X;
         pY = Constants.VisionConstants.MID_LEFT_POST_Y;
         pR = Constants.VisionConstants.MID_DISTANCE;
+        highLeft = false;
+        highMid = false;
+        highRight = false;
+        midLeft = true;
+        midMid = false;
+        midRight = false;
+        hybridLeft = false;
+        hybridMid = false;
+        hybridRight = false;
     }
 
     public void setMidRight(){
         pX = Constants.VisionConstants.MID_RIGHT_POST_X;
         pY = Constants.VisionConstants.MID_RIGHT_POST_Y;
         pR = Constants.VisionConstants.MID_DISTANCE;
+        highLeft = false;
+        highMid = false;
+        highRight = false;
+        midLeft = false;
+        midMid = false;
+        midRight = true;
+        hybridLeft = false;
+        hybridMid = false;
+        hybridRight = false;
     }
 
     public void setMidMid(){
         pX = Constants.VisionConstants.MID_MID_X;
         pY = Constants.VisionConstants.MID_MID_Y;
         pR = Constants.VisionConstants.MID_MID_DISTANCE;
+        highLeft = false;
+        highMid = false;
+        highRight = false;
+        midLeft = false;
+        midMid = true;
+        midRight = false;
+        hybridLeft = false;
+        hybridMid = false;
+        hybridRight = false;
     }
 
     public void setHybridMid(){
         pX = Constants.VisionConstants.MID_HYBRID_X;
         pY = Constants.VisionConstants.MID_HYBRID_Y;
         pR = Constants.VisionConstants.MID_HYBRID_DISTANCE;
+        highLeft = false;
+        highMid = false;
+        highRight = false;
+        midLeft = false;
+        midMid = false;
+        midRight = false;
+        hybridLeft = false;
+        hybridMid = true;
+        hybridRight = false;
     }
 
     public void setHybridLeft(){
         pX = Constants.VisionConstants.LEFT_HYBRID_X;
         pY = Constants.VisionConstants.LEFT_HYBRID_Y;
         pR = Constants.VisionConstants.HYBRID_DISTANCE;
+        highLeft = false;
+        highMid = false;
+        highRight = false;
+        midLeft = false;
+        midMid = false;
+        midRight = false;
+        hybridLeft = true;
+        hybridMid = false;
+        hybridRight = false;
     }
 
     public void setHybridRight(){
         pX = Constants.VisionConstants.RIGHT_HYBRID_X;
         pY = Constants.VisionConstants.RIGHT_HYBRID_Y;
         pR = Constants.VisionConstants.HYBRID_DISTANCE;
+        highLeft = false;
+        highMid = false;
+        highRight = false;
+        midLeft = false;
+        midMid = false;
+        midRight = false;
+        hybridLeft = false;
+        hybridMid = false;
+        hybridRight = true;
+    }
+
+    public ArrayList<Boolean> getSelectedScore(){
+        array.add(0, highLeft); 
+        array.add(1, highMid);
+        array.add(2, highRight);
+        array.add(3, midLeft);
+        array.add(4, midMid);
+        array.add(5, midRight); 
+        array.add(6, hybridLeft); 
+        array.add(7, hybridMid);
+        array.add(8, hybridRight);
+        return array;
     }
 
     public boolean closeEnough(){
@@ -208,20 +306,20 @@ public class PhotonVision extends SubsystemBase{
         angleBoard.setDouble(a);
         id.setDouble(idNum);
         if(!photonCamera.isConnected()){
-            Robot.m_robotContainer.s_LED.bad();
+            s_LED.bad();
         }
         else if(photonCamera.isConnected()){
-            Robot.m_robotContainer.s_LED.notBad();
+            s_LED.notBad();
         }
         if(closeEnough()){
-            Robot.m_robotContainer.s_LED.green();
+            s_LED.green();
         }
         else if(photonCamera.getLatestResult().getBestTarget() != null){
-            Robot.m_robotContainer.s_LED.white();
+            s_LED.white();
             idNum = photonCamera.getLatestResult().getBestTarget().getFiducialId();
         }
         else if(photonCamera.getLatestResult().getBestTarget() == null){
-            Robot.m_robotContainer.s_LED.red();
+            s_LED.red();
         }
     }
 }

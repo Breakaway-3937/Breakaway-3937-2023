@@ -101,13 +101,6 @@ public class Intake extends SubsystemBase {
       wristkI = 0;
       wristkD = 0;
       wristkFF = 0;
-    if(Constants.COMP_BOT){
-      wristkP = 0;
-      wristkI = 0;
-      wristkD = 0;
-      wristkFF = 0;
-    }
-  
   }
 
   public double getDistance(){
