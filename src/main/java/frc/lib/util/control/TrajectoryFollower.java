@@ -59,6 +59,7 @@ public abstract class TrajectoryFollower<DriveSignalType> {
     }
 
     public final void follow(Trajectory trajectory) {
+        System.out.println("in follow trajectory from jack in the bot ");
         synchronized (trajectoryLock) {
             currentTrajectory = trajectory;
             startTime = Double.NaN;

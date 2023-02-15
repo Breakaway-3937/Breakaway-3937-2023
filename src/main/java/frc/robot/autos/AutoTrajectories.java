@@ -147,11 +147,13 @@ public class AutoTrajectories {
     }
 
     public Trajectory getLeaveCharge1Blue(){
+        //System.out.println("In getleavecharge1blue");
         leaveCharge1Blue = new Trajectory(
                 new SimplePathBuilder(new Translation2d(2.02, 2.77), Rotation2d.fromDegrees(0.0))
                         .lineTo(new Translation2d(3.89, 2.81)).lineTo(new Translation2d(5.81, 2.76))
                         .lineTo(new Translation2d(3.89, 2.81)).build(),
                 trajectoryConstraints, Constants.SAMPLE_DISTANCE);
+        System.out.println("In getleavecharge1blue");
         return leaveCharge1Blue;
     }
 

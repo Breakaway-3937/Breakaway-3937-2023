@@ -37,38 +37,47 @@ public class RunArm extends CommandBase {
       if(s_Photon.getSelectedScore().get(0)){
         s_Arm.setShoulder(0);
         armPosition = 0;
+        s_Arm.setExtension(s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(1)){
         s_Arm.setShoulder(0);
         armPosition = 0;
+        s_Arm.setExtension(s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(2)){
         s_Arm.setShoulder(0);
         armPosition = 0;
+        s_Arm.setExtension(s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(3)){
         s_Arm.setShoulder(0);
         armPosition = 0;
+        s_Arm.setExtension(s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(4)){
         s_Arm.setShoulder(0);
         armPosition = 0;
+        s_Arm.setExtension(s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(5)){
         s_Arm.setShoulder(0);
         armPosition = 0;
+        s_Arm.setExtension(s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(6)){
         s_Arm.setShoulder(0);
         armPosition = 0;
+        s_Arm.setExtension(s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(7)){
         s_Arm.setShoulder(0);
         armPosition = 0;
+        s_Arm.setExtension(s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(8)){
         s_Arm.setShoulder(0);
         armPosition = 0;
+        s_Arm.setExtension(s_Arm.getScoreLength());
       }
       if(s_Arm.getShoulder1Position() < armPosition + 0.2 && s_Arm.getShoulder1Position() > armPosition - 0.2){
         s_Arm.setExtension(s_Arm.getScoreLength());

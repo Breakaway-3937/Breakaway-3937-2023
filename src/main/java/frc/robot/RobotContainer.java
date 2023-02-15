@@ -120,6 +120,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // A command that is selected will run in autonomous
+    //System.out.println("in getauto command ");
     return autoChooser.getCommand(this);
   }
 }

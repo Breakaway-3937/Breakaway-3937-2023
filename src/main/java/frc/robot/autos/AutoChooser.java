@@ -4,7 +4,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.lib.util.control.Trajectory;
 import frc.robot.RobotContainer;
 import frc.robot.commands.FollowTrajectory;
@@ -323,6 +325,7 @@ public class AutoChooser {
 
     public Command getLeaveCharge1(RobotContainer robotContainer) {
         if(DriverStation.getAlliance().name().equals("Blue")){
+            //System.out.println("In commaand for blue");
             SequentialCommandGroup command = new SequentialCommandGroup();
 
             resetRobotPose(command, robotContainer, trajectories.getLeaveCharge1Blue());
@@ -331,6 +334,8 @@ public class AutoChooser {
 
             return command;
         }
+
+        //System.out.println("In commaand for red");
 
         SequentialCommandGroup command = new SequentialCommandGroup();
 
@@ -542,12 +547,16 @@ public class AutoChooser {
     }
 
     private Command follow(RobotContainer robotContainer, Trajectory trajectory) {
+        System.out.println("in follow");
         return new FollowTrajectory(robotContainer.getDrivetrain(), trajectory);
     }
 
     public void resetRobotPose(SequentialCommandGroup command, RobotContainer robotContainer, Trajectory trajectory) {
+        System.out.println(" in resetRobotPose");
+
         command.addCommands(new InstantCommand(() -> robotContainer.getDrivetrain().setPose(new Pose2d(robotContainer.s_Photon.getX(),
             robotContainer.s_Photon.getY(), new Rotation2d(robotContainer.s_Photon.getAngle())))));
+
     }
 
     public Command getCommand(RobotContainer robotContainer) {
