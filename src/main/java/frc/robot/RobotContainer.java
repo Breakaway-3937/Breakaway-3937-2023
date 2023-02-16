@@ -77,6 +77,13 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    CommandScheduler.getInstance().registerSubsystem(s_DriveTrain);
+    CommandScheduler.getInstance().registerSubsystem(s_Intake);
+    CommandScheduler.getInstance().registerSubsystem(s_LED);
+    CommandScheduler.getInstance().registerSubsystem(s_Photon);
+    CommandScheduler.getInstance().registerSubsystem(s_Climber);
+    CommandScheduler.getInstance().registerSubsystem(s_Arm);
+
     s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     //s_Intake.setDefaultCommand(c_RunIntake);
     s_Arm.setDefaultCommand(c_RunArm);
