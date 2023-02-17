@@ -33,6 +33,7 @@ public class RunArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+  if(s_Arm.getManual() == false){
     if(joystick.getRawButton(0)){
       if(s_Photon.getSelectedScore().get(0)){
         s_Arm.setShoulder(0);
@@ -98,15 +99,18 @@ public class RunArm extends CommandBase {
         s_Arm.setRotation(0);
       }
     }
-    if(xboxController.getRawButton(9)){
-      s_Arm.setShoulder(0);
-      s_Arm.setExtension(50);
+  }
+  else if(s_Arm.getManual() == true){
+    if(xboxController.getRawButton(9 /*FIXME*/)){
+      s_Arm.setShoulder(0); //FIXME Need correct numbers
+      s_Arm.setExtension(50); //FIXME Need correct numbers
     }
-    else if(xboxController.getRawButton(8)){
-      s_Arm.setShoulder(5);
-      s_Arm.setExtension(2000);
+    else if(xboxController.getRawButton(8 /*FIXME*/)){
+      s_Arm.setShoulder(5); //FIXME Need correct numbers
+      s_Arm.setExtension(2000); //FIXME Need correct numbers
       System.out.println("wrist not");
     }
+  }
   }
 
   // Called once the command ends or is interrupted.

@@ -76,6 +76,7 @@ public final class Constants {
         public static final int XBOXCONTROLLER_RB_BUTTON = 6;
         public static final int XBOXCONTROLLER_BACK_BUTTON = 7;
         public static final int XBOXCONTROLLER_START_BUTTON = 8;
+        public static final int XBOXCONTROLLER_LEFT_SITCK_BUTTON = 0; //FIXME
         public static final double STICK_DEADBAND = 0.1;
         public static final int TRANSLATION_BUTTON = 1;
         public static final int ROTATION_BUTTON = 1;

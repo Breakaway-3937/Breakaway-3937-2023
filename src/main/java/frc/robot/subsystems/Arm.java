@@ -32,6 +32,7 @@ public class Arm extends SubsystemBase {
   private final WPI_TalonFX extension;
   private final CANSparkMax rotation;
   private TalonFXSensorCollection extensionEncoder;
+  private boolean manual = false;
   private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, shoulder2kP, shoulder2kI, shoulder2kD, shoulder2kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF;
   private RelativeEncoder shoulder1Encoder, shoulder2Encoder, rotateEncoder;
   private SparkMaxPIDController shoulder1PIDController, shoulder2PIDController, rotatePIDController;
@@ -90,6 +91,19 @@ public class Arm extends SubsystemBase {
     else{
       return 10;
     }
+  }
+
+  public void setManual(){
+    if(manual == true){
+      manual = false;
+    }
+    else if(manual == false){
+      manual = true;
+    }
+  }
+
+  public boolean getManual(){
+    return manual;
   }
 
 

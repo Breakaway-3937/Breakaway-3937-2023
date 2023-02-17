@@ -5,6 +5,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -20,7 +21,12 @@ import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunTurret;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.TeleopSwerve;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LED;
+import frc.robot.subsystems.PhotonVision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -47,6 +53,7 @@ public class RobotContainer {
 
   /* Driver Buttons */
   private final JoystickButton translationButton = new JoystickButton(translationController, Constants.Controllers.TRANSLATION_BUTTON);
+  private final JoystickButton leftStickButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_LEFT_SITCK_BUTTON);
   private final JoystickButton lbButton =  new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_LB_BUTTON);
   private final JoystickButton rbButton =  new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_RB_BUTTON);
   private final JoystickButton highLeft = new JoystickButton(buttonGrid, 1);
@@ -117,6 +124,7 @@ public class RobotContainer {
     lowLeft.onTrue(new InstantCommand(() -> s_Photon.setHybridLeft()));
     rbButton.onTrue(new InstantCommand(() -> s_LED.cone()));
     lbButton.onTrue(new InstantCommand(() -> s_LED.cube()));
+    leftStickButton.onTrue(new InstantCommand(() -> s_Arm.setManual()));
   } 
 
   public DriveTrain getDrivetrain(){
