@@ -142,6 +142,10 @@ public class Arm extends SubsystemBase {
     rotatePIDController.setI(rotatekI);
     rotatePIDController.setD(rotatekD);
     rotatePIDController.setFF(rotatekFF);
+    rotatePIDController.setSmartMotionMaxVelocity(500, 0);
+    rotatePIDController.setSmartMotionMaxAccel(250, 0);
+    rotatePIDController.setOutputRange(-1, 1);
+    rotation.setIdleMode(IdleMode.kBrake);
   }
 
   private void configExtention(){
@@ -173,10 +177,10 @@ public class Arm extends SubsystemBase {
     shoulder2kI = 0.5e-6;
     shoulder2kD = 0;
     shoulder2kFF = 0.00156;
-    rotatekP = 0;
-    rotatekI = 0;
+    rotatekP = 4e-7;
+    rotatekI = 0.1e-6;
     rotatekD = 0;
-    rotatekFF = 0;
+    rotatekFF = 0.004;
   }
 
   @Override

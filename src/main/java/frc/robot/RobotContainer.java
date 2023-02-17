@@ -9,14 +9,15 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.lib.util.control.PidConstants;
 import frc.robot.autos.AutoChooser;
 import frc.robot.autos.AutoTrajectories;
 import frc.robot.commands.RunArm;
 import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunIntake;
+import frc.robot.commands.RunTurret;
 import frc.robot.commands.SetIntake;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.*;
@@ -72,6 +73,7 @@ public class RobotContainer {
   public final RunClimber c_RunClimber = new RunClimber(s_Climber, xboxController, s_Arm);
   public final RunArm c_RunArm = new RunArm(s_Arm, buttonGrid, s_Photon, xboxController);
   public final SetIntake c_SetIntake = new SetIntake(s_Intake, xboxController, s_Arm);
+  public final RunTurret c_RunTurret = new RunTurret(s_Arm, translationController, xboxController);
   /* Autos */
   private final AutoChooser autoChooser = new AutoChooser(new AutoTrajectories(Constants.DriveTrain.TRAJECTORY_CONSTRAINTS));
 
@@ -82,13 +84,14 @@ public class RobotContainer {
     CommandScheduler.getInstance().registerSubsystem(s_LED);
     CommandScheduler.getInstance().registerSubsystem(s_Photon);
     CommandScheduler.getInstance().registerSubsystem(s_Climber);
-    CommandScheduler.getInstance().registerSubsystem(s_Arm);
+    //CommandScheduler.getInstance().registerSubsystem(s_Arm);
 
     s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     //s_Intake.setDefaultCommand(c_RunIntake);
-    s_Arm.setDefaultCommand(c_RunArm);
-    s_Intake.setDefaultCommand(c_SetIntake);
-    s_Climber.setDefaultCommand(c_RunClimber);
+    //s_Arm.setDefaultCommand(c_RunArm);
+    //s_Intake.setDefaultCommand(c_SetIntake);
+    //s_Climber.setDefaultCommand(c_RunClimber);
+    s_Arm.setDefaultCommand(c_RunTurret);
     Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
     // Configure the button bindings
     configureButtonBindings();
