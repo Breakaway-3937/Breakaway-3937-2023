@@ -21,6 +21,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -34,6 +35,7 @@ public class Arm extends SubsystemBase {
   private final CANSparkMax rotation;
   private TalonFXSensorCollection extensionEncoder;
   private boolean ConeCubeMode;
+  double numbertest;
   private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, shoulder2kP, shoulder2kI, shoulder2kD, shoulder2kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF;
   private RelativeEncoder shoulder1Encoder, shoulder2Encoder, rotateEncoder;
   private SparkMaxPIDController shoulder1PIDController, shoulder2PIDController, rotatePIDController;
@@ -62,7 +64,8 @@ public class Arm extends SubsystemBase {
   }
 
   public void setExtension(double position){
-    extension.set(ControlMode.MotionMagic, position);
+    numbertest = position;
+    extension.set(ControlMode.Position, position);
   }
 
   public void setRotation(double position){
@@ -172,22 +175,22 @@ public class Arm extends SubsystemBase {
     extension.config_kI(0, extensionkI);
     extension.config_kD(0, extensionkD);
     extension.config_kF(0, extensionkFF);
-    extension.configPeakOutputForward(0.75);
-    extension.configPeakOutputReverse(-0.75);
+    extension.configPeakOutputForward(1);
+    extension.configPeakOutputReverse(-1);
     extension.configMotionCruiseVelocity(10000);
     extension.configMotionAcceleration(10000);
     extension.setNeutralMode(NeutralMode.Brake);
   }
 
   public void setValues(){
-    extensionkP = 0.25;
+    extensionkP = 0.35;
     extensionkI = 0;
     extensionkD = 0;
     extensionkFF = 0.2;
     shoulder1kP = 6.5e-7;
     shoulder1kI = 0.5e-6;
     shoulder1kD = 0;
-    shoulder1kFF = 0.00156;
+    shoulder1kFF = 0.0019;
     shoulder2kP = 6.5e-7;
     shoulder2kI = 0.5e-6;
     shoulder2kD = 0;
@@ -205,6 +208,11 @@ public class Arm extends SubsystemBase {
     //shoulder2EncoderEntry.setDouble(getShoulder2Position());
     extensionEncoderEntry.setDouble(getExtensionPosition());
     rotationEncoder.setDouble(getRotationPosition());
+    SmartDashboard.putNumber("amp supply", extension.getSupplyCurrent());
+    SmartDashboard.putNumber("amp stator", extension.getStatorCurrent());
+    SmartDashboard.putNumber("output -1 to 1", extension.getMotorOutputPercent());
+    SmartDashboard.putNumber("told to go to", numbertest);
+
     //setShoulder(0);
   }
 }
