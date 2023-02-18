@@ -4,9 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -21,8 +18,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  private final WPI_TalonSRX intakeTop;
-  private final WPI_TalonSRX intakeBottom;
+  private final CANSparkMax intakeMotor;
   private final CANSparkMax wristMotor;
   private final AnalogInput sensor;
   private SparkMaxPIDController wristPIDController;
@@ -31,10 +27,7 @@ public class Intake extends SubsystemBase {
   private final GenericEntry distance, wrist;
   
   public Intake() {
-    intakeTop = new WPI_TalonSRX(Constants.Intake.INTAKE_MOTOR_TOP);
-    intakeBottom = new WPI_TalonSRX(Constants.Intake.INTAKE_MOTOR_BOTTOM);
-    intakeTop.setNeutralMode(NeutralMode.Brake);
-    intakeBottom.setNeutralMode(NeutralMode.Brake);
+    intakeMotor = new CANSparkMax(Constants.Intake.INTAKE_MOTOR_ID, MotorType.kBrushless);
     wristMotor = new CANSparkMax(Constants.Intake.WRIST_MOTOR_ID, MotorType.kBrushless);
     sensor = new AnalogInput(Constants.Intake.SENSOR_ID);
     sensor.resetAccumulator();
@@ -45,23 +38,19 @@ public class Intake extends SubsystemBase {
   }
   
   public void runIntake(double speed){
-    intakeBottom.set(TalonSRXControlMode.PercentOutput, speed);
-    intakeTop.set(TalonSRXControlMode.PercentOutput, speed);
+    intakeMotor.set(speed);
   }
 
   public void intake(){
-    intakeBottom.set(TalonSRXControlMode.PercentOutput, 1);
-    intakeTop.set(TalonSRXControlMode.PercentOutput, 0.75);
+    intakeMotor.set(1);
   }
 
   public void spit(){
-    intakeBottom.set(TalonSRXControlMode.PercentOutput, -1);
-    intakeTop.set(TalonSRXControlMode.PercentOutput, -0.75);
+    intakeMotor.set(-1);
   }
   
   public void stopIntake(){
-    intakeBottom.stopMotor();
-    intakeTop.stopMotor();
+    intakeMotor.stopMotor();
   }
 
   public void setWrist(double position){
