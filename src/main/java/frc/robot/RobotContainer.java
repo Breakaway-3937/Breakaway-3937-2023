@@ -54,6 +54,7 @@ public class RobotContainer {
   /* Driver Buttons */
   private final JoystickButton translationButton = new JoystickButton(translationController, Constants.Controllers.TRANSLATION_BUTTON);
   private final JoystickButton leftStickButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_LEFT_SITCK_BUTTON);
+  private final JoystickButton rightStickButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_RIGHT_SITCK_BUTTON);
   private final JoystickButton lbButton =  new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_LB_BUTTON);
   private final JoystickButton rbButton =  new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_RB_BUTTON);
   private final JoystickButton highLeft = new JoystickButton(buttonGrid, 1);
@@ -78,7 +79,7 @@ public class RobotContainer {
   /* Commands */
   public final RunIntake c_RunIntake = new RunIntake(s_Intake, xboxController);
   public final RunClimber c_RunClimber = new RunClimber(s_Climber, xboxController, s_Arm);
-  public final RunArm c_RunArm = new RunArm(s_Arm, buttonGrid, s_Photon, xboxController);
+  public final RunArm c_RunArm = new RunArm(s_Arm, buttonGrid, s_Photon, xboxController, s_Intake);
   public final SetIntake c_SetIntake = new SetIntake(s_Intake, xboxController, s_Arm);
   public final RunTurret c_RunTurret = new RunTurret(s_Arm, translationController, xboxController);
   /* Autos */
@@ -95,10 +96,10 @@ public class RobotContainer {
 
     s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     //s_Intake.setDefaultCommand(c_RunIntake);
-    //s_Arm.setDefaultCommand(c_RunArm);
-    //s_Intake.setDefaultCommand(c_SetIntake);
+    s_Arm.setDefaultCommand(c_RunArm);
+    s_Intake.setDefaultCommand(c_SetIntake);
     //s_Climber.setDefaultCommand(c_RunClimber);
-    s_Arm.setDefaultCommand(c_RunTurret);
+    //s_Arm.setDefaultCommand(c_RunTurret);
     Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
     // Configure the button bindings
     configureButtonBindings();
@@ -124,7 +125,9 @@ public class RobotContainer {
     lowLeft.onTrue(new InstantCommand(() -> s_Photon.setHybridLeft()));
     rbButton.onTrue(new InstantCommand(() -> s_LED.cone()));
     lbButton.onTrue(new InstantCommand(() -> s_LED.cube()));
-    leftStickButton.onTrue(new InstantCommand(() -> s_Arm.setManual()));
+    leftStickButton.onTrue(new InstantCommand(() -> s_Arm.setCube()));
+    rightStickButton.onTrue(new InstantCommand(() -> s_Arm.setCone()));
+    
   } 
 
   public DriveTrain getDrivetrain(){

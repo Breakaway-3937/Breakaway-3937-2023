@@ -21,16 +21,17 @@ public class RunIntake extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(xboxController.getLeftTriggerAxis() > 0.3){
-      s_Intake.intake();
-    }
-    else if(xboxController.getRightTriggerAxis() > 0.3){
+    if(xboxController.getRightTriggerAxis() > 0.3){
       s_Intake.spit();
+    }
+    else if(xboxController.getRawButton(6)){
+      s_Intake.intake();
     }
     else{
       s_Intake.stopIntake();

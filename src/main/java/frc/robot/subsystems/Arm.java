@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -32,7 +33,7 @@ public class Arm extends SubsystemBase {
   private final WPI_TalonFX extension;
   private final CANSparkMax rotation;
   private TalonFXSensorCollection extensionEncoder;
-  private boolean manual = false;
+  private boolean ConeCubeMode;
   private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, shoulder2kP, shoulder2kI, shoulder2kD, shoulder2kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF;
   private RelativeEncoder shoulder1Encoder, shoulder2Encoder, rotateEncoder;
   private SparkMaxPIDController shoulder1PIDController, shoulder2PIDController, rotatePIDController;
@@ -93,17 +94,17 @@ public class Arm extends SubsystemBase {
     }
   }
 
-  public void setManual(){
-    if(manual == true){
-      manual = false;
-    }
-    else if(manual == false){
-      manual = true;
-    }
+  public void setCone(){
+    ConeCubeMode = true;
   }
 
-  public boolean getManual(){
-    return manual;
+  public void setCube(){
+    ConeCubeMode = false;
+  }
+
+  /**If true Cone mode. If False Cube Mode */
+  public boolean getConeCubeMode(){
+    return ConeCubeMode;
   }
 
 
@@ -204,6 +205,7 @@ public class Arm extends SubsystemBase {
     //shoulder2EncoderEntry.setDouble(getShoulder2Position());
     extensionEncoderEntry.setDouble(getExtensionPosition());
     rotationEncoder.setDouble(getRotationPosition());
+    //setShoulder(0);
   }
 }
 

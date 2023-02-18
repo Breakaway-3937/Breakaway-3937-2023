@@ -76,7 +76,8 @@ public final class Constants {
         public static final int XBOXCONTROLLER_RB_BUTTON = 6;
         public static final int XBOXCONTROLLER_BACK_BUTTON = 7;
         public static final int XBOXCONTROLLER_START_BUTTON = 8;
-        public static final int XBOXCONTROLLER_LEFT_SITCK_BUTTON = 0; //FIXME
+        public static final int XBOXCONTROLLER_LEFT_SITCK_BUTTON = 9;
+        public static final int XBOXCONTROLLER_RIGHT_SITCK_BUTTON = 10;
         public static final double STICK_DEADBAND = 0.1;
         public static final int TRANSLATION_BUTTON = 1;
         public static final int ROTATION_BUTTON = 1;
@@ -156,6 +157,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 0;
             public static final int ANGLE_MOTOR_ID = 1;
             public static final int CANCODER_ID = 21;
+            
             public static final double ANGLE_OFFSET = 0;
             public static final double ANGLE_OFFSET_PRACTICE = 238.1835 + 180.0;
             public static final SwerveModuleConstants CONSTANTS = 
