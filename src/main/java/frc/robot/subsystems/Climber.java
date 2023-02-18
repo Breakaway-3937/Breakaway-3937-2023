@@ -8,7 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
-import com.revrobotics.CANSparkMax.ExternalFollower;
+//import com.revrobotics.CANSparkMax.ExternalFollower;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -21,9 +21,9 @@ import frc.robot.Constants;
 
 public class Climber extends SubsystemBase {
   private final CANSparkMax climber1, climber2;
-  private RelativeEncoder climber1Encoder, climber2Encoder;
-  private SparkMaxPIDController pid1, pid2;
-  private double climber1kP, climber1kI, climber1kD, climber1kFF, climber2kP, climber2kI, climber2kD, climber2kFF;
+  private RelativeEncoder climber1Encoder; //climber2Encoder;
+  private SparkMaxPIDController pid1; //pid2;
+  private double climber1kP, climber1kI, climber1kD, climber1kFF; //climber2kP, climber2kI, climber2kD, climber2kFF;
   private final GenericEntry climber;
 
   /** Creates a new Climber. */
@@ -90,10 +90,10 @@ public class Climber extends SubsystemBase {
     climber1kD = 0;
     climber1kFF = 0.00156;
 
-    climber2kP = 6.5e-7;
-    climber2kI = 0.5e-6;
-    climber2kD = 0;
-    climber2kFF = 0.00156;
+    //climber2kP = 6.5e-7;
+    //climber2kI = 0.5e-6;
+    //climber2kD = 0;
+    //climber2kFF = 0.00156;
   }
 
   @Override

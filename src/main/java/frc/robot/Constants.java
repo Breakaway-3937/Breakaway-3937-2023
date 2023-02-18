@@ -204,8 +204,7 @@ public final class Constants {
     }
 
     public static final class Intake{
-        public static final int INTAKE_MOTOR_TOP = 7;
-        public static final int INTAKE_MOTOR_BOTTOM = 6;
+        public static final int INTAKE_MOTOR_ID = 7;
         public static final int WRIST_MOTOR_ID = 5; 
         public static final int SENSOR_ID = 0;
     }
