@@ -208,7 +208,8 @@ public final class Constants {
     public static final class Intake{
         public static final int INTAKE_MOTOR_ID = 6;
         public static final int WRIST_MOTOR_ID = 5; 
-        public static final int SENSOR_ID = 0;
+        public static final int US_SENSOR_ID = 0;
+        public static final int LIGHT_SENSOR_ID = 1;
     }
 
     public static final class Climber{

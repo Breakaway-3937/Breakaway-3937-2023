@@ -13,7 +13,6 @@ import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -21,7 +20,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -34,12 +32,10 @@ public class Arm extends SubsystemBase {
   private final WPI_TalonFX extension;
   private final CANSparkMax rotation;
   private TalonFXSensorCollection extensionEncoder;
-  private boolean ConeCubeMode;
-  double numbertest;
   private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, shoulder2kP, shoulder2kI, shoulder2kD, shoulder2kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF;
   private RelativeEncoder shoulder1Encoder, shoulder2Encoder, rotateEncoder;
   private SparkMaxPIDController shoulder1PIDController, shoulder2PIDController, rotatePIDController;
-  private final GenericEntry shoulderEncoder, extensionEncoderEntry, rotationEncoder, shoulder2EncoderEntry;
+  private final GenericEntry shoulderEncoder, extensionEncoderEntry, rotationEncoder;
 
   /** Creates a new Arm. */
   public Arm(PhotonVision s_Photon) {
@@ -56,7 +52,6 @@ public class Arm extends SubsystemBase {
     shoulderEncoder = Shuffleboard.getTab("Arm").add("Shoulder", getShoulder1Position()).withPosition(0, 0).getEntry();
     extensionEncoderEntry = Shuffleboard.getTab("Arm").add("Extension", getExtensionPosition()).withPosition(1, 0).getEntry();
     rotationEncoder = Shuffleboard.getTab("Arm").add("Rotation", getRotationPosition()).withPosition(2, 0).getEntry();
-    shoulder2EncoderEntry = Shuffleboard.getTab("Arm").add("Shoulder 2", getShoulder1Position()).withPosition(3, 0).getEntry();
   }
 
   public void setShoulder(double position){
@@ -64,7 +59,6 @@ public class Arm extends SubsystemBase {
   }
 
   public void setExtension(double position){
-    numbertest = position;
     extension.set(ControlMode.Position, position);
   }
 
@@ -76,9 +70,9 @@ public class Arm extends SubsystemBase {
     return shoulder1Encoder.getPosition();
   }
 
-  /*public double getShoulder2Position(){
+  public double getShoulder2Position(){
     return shoulder2Encoder.getPosition();
-  }*/
+  }
 
   public double getExtensionPosition(){
     return extensionEncoder.getIntegratedSensorPosition();
@@ -95,19 +89,6 @@ public class Arm extends SubsystemBase {
     else{
       return 10;
     }
-  }
-
-  public void setCone(){
-    ConeCubeMode = true;
-  }
-
-  public void setCube(){
-    ConeCubeMode = false;
-  }
-
-  /**If true Cone mode. If False Cube Mode */
-  public boolean getConeCubeMode(){
-    return ConeCubeMode;
   }
 
 
@@ -205,15 +186,8 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     shoulderEncoder.setDouble(getShoulder1Position());
-    //shoulder2EncoderEntry.setDouble(getShoulder2Position());
     extensionEncoderEntry.setDouble(getExtensionPosition());
     rotationEncoder.setDouble(getRotationPosition());
-    SmartDashboard.putNumber("amp supply", extension.getSupplyCurrent());
-    SmartDashboard.putNumber("amp stator", extension.getStatorCurrent());
-    SmartDashboard.putNumber("output -1 to 1", extension.getMotorOutputPercent());
-    SmartDashboard.putNumber("told to go to", numbertest);
-
-    //setShoulder(0);
   }
 }
 

@@ -38,7 +38,8 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
     powerDistribution = new PowerDistribution(25, ModuleType.kRev);
     powerDistribution.setSwitchableChannel(true);
-    }
+    powerDistribution.clearStickyFaults();
+  }
 
   /**
    * This function is called every robot packet, no matter the mode. Use this for items like

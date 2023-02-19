@@ -90,50 +90,43 @@ public class RunArm extends CommandBase {
       }
     }
     else if(xboxController.getPOV() == 0){
-      System.out.println("up");
       s_Arm.setShoulder(-11);
       s_Arm.setExtension(0);
       s_Intake.setWrist(31);
     }
     else if(xboxController.getPOV() == 90){
-      System.out.println("right");
       s_Arm.setShoulder(-12);
       s_Arm.setExtension(0);
       s_Intake.setWrist(57);
     }
     else if(xboxController.getPOV() == 180){
-      System.out.println("down");
       s_Arm.setShoulder(0.6);
       s_Arm.setExtension(0);
       s_Intake.setWrist(6);
     }
     else if(xboxController.getRawButton(1)){
-      System.out.println("a");
-      if(s_Arm.getConeCubeMode() == true){
+      if(s_Intake.getConeCubeMode() == true){
         s_Intake.setWrist(6);
         s_Arm.setShoulder(0.6);
         s_Arm.setExtension(8865);
         }
-      else if(s_Arm.getConeCubeMode() == false){
+      else if(s_Intake.getConeCubeMode() == false){
           s_Intake.setWrist(13);
           s_Arm.setShoulder(-0.21);
           s_Arm.setExtension(2145);
         }    
       }
     else if(xboxController.getRawButton(4)){
-      System.out.println("y");
       s_Arm.setShoulder(-15);
       s_Arm.setExtension(14845);
       s_Intake.setWrist(53);
     }
     else if(xboxController.getRawButton(3)){
-      System.out.println("X");
       s_Arm.setShoulder(-15); //FIXME hit robot frame
       s_Arm.setExtension(0);
       s_Intake.setWrist(0);
     }
     else if(xboxController.getRawButton(2)){
-      System.out.println("b");
       s_Arm.setShoulder(-7);
       s_Arm.setExtension(0);
       s_Intake.setWrist(8);

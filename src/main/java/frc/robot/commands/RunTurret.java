@@ -5,19 +5,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 
 public class RunTurret extends CommandBase {
   private final Arm s_Arm;
   private final Joystick joystick;
-  private final XboxController xboxController;
   /** Creates a new RunTurret. */
-  public RunTurret(Arm s_Arm, Joystick joystick, XboxController xboxController) {
+  public RunTurret(Arm s_Arm, Joystick joystick) {
     this.s_Arm = s_Arm;
     this.joystick = joystick;
-    this.xboxController = xboxController;
     addRequirements(s_Arm);
   }
 
@@ -30,13 +27,13 @@ public class RunTurret extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (joystick.getRawButton(1)){
+    if(joystick.getRawButton(1)){
       s_Arm.setRotation(0.5);
     }
-    else if (joystick.getRawButton(2)){
+    else if(joystick.getRawButton(2)){
       s_Arm.setRotation(-0.5);
     }
-    else if (joystick.getRawButton(6)){
+    else if(joystick.getRawButton(6)){
       s_Arm.setRotation(0);
     }
   }

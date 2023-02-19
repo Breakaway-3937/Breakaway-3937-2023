@@ -4,11 +4,8 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
 
@@ -40,9 +37,6 @@ public class RunClimber extends CommandBase {
     else if(xboxController.getRawButton(7)){
       s_Climber.setClimber(9); 
     }
-    /*if(xboxController.getRawButton(3)){
-      s_Climber.runClimber(1);
-    }*/
   }
 
   // Called once the command ends or is interrupted.

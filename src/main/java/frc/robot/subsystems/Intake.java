@@ -20,21 +20,26 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
   private final CANSparkMax intakeMotor;
   private final CANSparkMax wristMotor;
-  private final AnalogInput sensor;
+  private final AnalogInput uSSensor, lightSensor;
   private SparkMaxPIDController wristPIDController;
   private RelativeEncoder wristEncoder;
   private double wristkP, wristkI, wristkD, wristkFF;
-  private final GenericEntry distance, wrist;
-  
+  private final GenericEntry usDistance, lightDistance, wrist;
+  private boolean cone = true;
+
   public Intake() {
     intakeMotor = new CANSparkMax(Constants.Intake.INTAKE_MOTOR_ID, MotorType.kBrushless);
+    intakeMotor.setIdleMode(IdleMode.kBrake);
     wristMotor = new CANSparkMax(Constants.Intake.WRIST_MOTOR_ID, MotorType.kBrushless);
-    sensor = new AnalogInput(Constants.Intake.SENSOR_ID);
-    sensor.resetAccumulator();
+    uSSensor = new AnalogInput(Constants.Intake.US_SENSOR_ID);
+    uSSensor.resetAccumulator();
+    lightSensor = new AnalogInput(Constants.Intake.LIGHT_SENSOR_ID);
+    lightSensor.resetAccumulator();
     setValues();
     configWristMotor();
-    distance = Shuffleboard.getTab("Intake").add("Sensor", 0).withPosition(0, 0).getEntry();
-    wrist = Shuffleboard.getTab("Intake").add("Wrist", getWrist()).withPosition(1, 0).getEntry();
+    usDistance = Shuffleboard.getTab("Intake").add("US Sensor", 0).withPosition(0, 0).getEntry();
+    lightDistance = Shuffleboard.getTab("Intake").add("Light Sensor", 0).withPosition(1, 0).getEntry();
+    wrist = Shuffleboard.getTab("Intake").add("Wrist", getWrist()).withPosition(2, 0).getEntry();
   }
   
   public void runIntake(double speed){
@@ -62,12 +67,34 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean intakeFull(){
-    if(getDistance() < 35){
-      return true;
+    if(getConeCubeMode()){
+      if(getDistance() < 0.35){
+        return true;
+      }
+      else{
+        return false;
+      }
     }
     else{
-      return false;
+      if(lightSensor.getValue() > 4000){
+        return true;
+      }
+      else{
+        return false;
+      }
     }
+  }
+
+  public void setCone(){
+    cone = true;
+  }
+
+  public void setCube(){
+    cone = false;
+  }
+
+  public boolean getConeCubeMode(){
+    return cone;
   }
   
   private void configWristMotor(){
@@ -96,13 +123,14 @@ public class Intake extends SubsystemBase {
   }
 
   public double getDistance(){
-    return 0.342 - 0.291 * Math.log(sensor.getVoltage());
+    return 0.342 - 0.291 * Math.log(uSSensor.getVoltage());
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    distance.setDouble(getDistance());
+    usDistance.setDouble(getDistance());
+    lightDistance.setDouble(lightSensor.getValue());
     wrist.setDouble(getWrist());
   }
 }

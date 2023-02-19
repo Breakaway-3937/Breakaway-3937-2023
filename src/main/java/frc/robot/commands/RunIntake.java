@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
@@ -11,10 +13,13 @@ import frc.robot.subsystems.Intake;
 public class RunIntake extends CommandBase {
   private final Intake s_Intake;
   private final XboxController xboxController;
+  private final Timer timer;
+  private boolean flag;
   /** Creates a new RunIntake. */
   public RunIntake(Intake s_Intake, XboxController xboxController) {
     this.s_Intake = s_Intake;
     this.xboxController = xboxController;
+    timer = new Timer();
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(s_Intake);
   }
@@ -22,20 +27,40 @@ public class RunIntake extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("IN intake");
+    s_Intake.setWrist(0);
+    timer.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    s_Intake.runIntake();
+    if(s_Intake.intakeFull()){
+      if(s_Intake.getConeCubeMode() && !flag){
+        timer.reset();
+        flag = true;
+      }
+      else if(!s_Intake.getConeCubeMode()){
+        s_Intake.stopIntake();
+      }
+      if(timer.get() > 0.1){
+        s_Intake.stopIntake();
+        flag = false;
+      }
+    }
+    else if(xboxController.getRightBumper()){
+      s_Intake.runIntake();
+    }
+    if(xboxController.getRightTriggerAxis() > 0.3){
+      s_Intake.spit();
+    }
+    else if(!xboxController.getRightBumper() && xboxController.getRightTriggerAxis() < 0.3){
+      s_Intake.stopIntake();
+    }
   }
   
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    System.out.println("Out of intake");
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

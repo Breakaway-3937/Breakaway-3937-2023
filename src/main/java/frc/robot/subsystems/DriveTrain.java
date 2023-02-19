@@ -100,7 +100,6 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public HolonomicMotionProfiledTrajectoryFollower getFollower() {
-        System.out.println("in HolonomicMotionProfiledTrajectoryFollower");
         return follower;
     }
 
