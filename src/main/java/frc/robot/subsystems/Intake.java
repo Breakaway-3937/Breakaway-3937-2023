@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -18,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  private final CANSparkMax intakeMotor;
+  private final TalonFX intakeMotor;
   private final CANSparkMax wristMotor;
   private final AnalogInput uSSensor, lightSensor;
   private SparkMaxPIDController wristPIDController;
@@ -28,8 +31,8 @@ public class Intake extends SubsystemBase {
   private boolean cone = true;
 
   public Intake() {
-    intakeMotor = new CANSparkMax(Constants.Intake.INTAKE_MOTOR_ID, MotorType.kBrushless);
-    intakeMotor.setIdleMode(IdleMode.kBrake);
+    intakeMotor = new TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
+    intakeMotor.setNeutralMode(NeutralMode.Brake);
     wristMotor = new CANSparkMax(Constants.Intake.WRIST_MOTOR_ID, MotorType.kBrushless);
     uSSensor = new AnalogInput(Constants.Intake.US_SENSOR_ID);
     uSSensor.resetAccumulator();
@@ -43,19 +46,19 @@ public class Intake extends SubsystemBase {
   }
   
   public void runIntake(double speed){
-    intakeMotor.set(speed);
+    intakeMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void runIntake(){
-    intakeMotor.set(1);
+    intakeMotor.set(ControlMode.PercentOutput, 1);
   }
 
   public void spit(){
-    intakeMotor.set(-1);
+    intakeMotor.set(ControlMode.PercentOutput, -1);
   }
   
   public void stopIntake(){
-    intakeMotor.stopMotor();
+    intakeMotor.set(ControlMode.PercentOutput, 0);
   }
 
   public void setWrist(double position){

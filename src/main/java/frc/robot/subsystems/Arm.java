@@ -59,7 +59,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void setExtension(double position){
-    extension.set(ControlMode.Position, position);
+    extension.set(ControlMode.MotionMagic, position);
   }
 
   public void setRotation(double position){
@@ -158,8 +158,8 @@ public class Arm extends SubsystemBase {
     extension.config_kF(0, extensionkFF);
     extension.configPeakOutputForward(1);
     extension.configPeakOutputReverse(-1);
-    extension.configMotionCruiseVelocity(10000);
-    extension.configMotionAcceleration(10000);
+    extension.configMotionCruiseVelocity(5000);
+    extension.configMotionAcceleration(5000);
     extension.setNeutralMode(NeutralMode.Brake);
   }
 

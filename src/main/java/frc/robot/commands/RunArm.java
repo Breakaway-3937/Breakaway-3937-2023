@@ -31,8 +31,8 @@ public class RunArm extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //s_Arm.setShoulder(0);
-    s_Arm.setExtension(10);
+    s_Arm.setShoulder(0);
+    s_Arm.setExtension(-10);
     s_Intake.setWrist(0);
   }
 
@@ -43,53 +43,53 @@ public class RunArm extends CommandBase {
       if(s_Photon.getSelectedScore().get(0)){
         s_Arm.setShoulder(0);
         armPosition = 0;
-        s_Arm.setExtension(s_Arm.getScoreLength());
+        s_Arm.setExtension(-s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(1)){
         s_Arm.setShoulder(0);
         armPosition = 0;
-        s_Arm.setExtension(s_Arm.getScoreLength());
+        s_Arm.setExtension(-s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(2)){
         s_Arm.setShoulder(0);
         armPosition = 0;
-        s_Arm.setExtension(s_Arm.getScoreLength());
+        s_Arm.setExtension(-s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(3)){
         s_Arm.setShoulder(0);
         armPosition = 0;
-        s_Arm.setExtension(s_Arm.getScoreLength());
+        s_Arm.setExtension(-s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(4)){
         s_Arm.setShoulder(0);
         armPosition = 0;
-        s_Arm.setExtension(s_Arm.getScoreLength());
+        s_Arm.setExtension(-s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(5)){
         s_Arm.setShoulder(0);
         armPosition = 0;
-        s_Arm.setExtension(s_Arm.getScoreLength());
+        s_Arm.setExtension(-s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(6)){
         s_Arm.setShoulder(0);
         armPosition = 0;
-        s_Arm.setExtension(s_Arm.getScoreLength());
+        s_Arm.setExtension(-s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(7)){
         s_Arm.setShoulder(0);
         armPosition = 0;
-        s_Arm.setExtension(s_Arm.getScoreLength());
+        s_Arm.setExtension(-s_Arm.getScoreLength());
       }
       else if(s_Photon.getSelectedScore().get(8)){
         s_Arm.setShoulder(0);
         armPosition = 0;
-        s_Arm.setExtension(s_Arm.getScoreLength());
+        s_Arm.setExtension(-s_Arm.getScoreLength());
       }
       if(s_Arm.getShoulder1Position() < armPosition + 0.2 && s_Arm.getShoulder1Position() > armPosition - 0.2){
-        s_Arm.setExtension(s_Arm.getScoreLength());
+        s_Arm.setExtension(-s_Arm.getScoreLength());
       }
     }
-    else if(xboxController.getPOV() == 0){
+    /*else if(xboxController.getPOV() == 0){
       s_Arm.setShoulder(-11);
       s_Arm.setExtension(0);
       s_Intake.setWrist(31);
@@ -103,26 +103,26 @@ public class RunArm extends CommandBase {
       s_Arm.setShoulder(0.6);
       s_Arm.setExtension(0);
       s_Intake.setWrist(6);
-    }
+    }*/
     else if(xboxController.getRawButton(1)){
       if(s_Intake.getConeCubeMode() == true){
         s_Intake.setWrist(6);
         s_Arm.setShoulder(0.6);
-        s_Arm.setExtension(8865);
+        s_Arm.setExtension(-8865);
         }
       else if(s_Intake.getConeCubeMode() == false){
           s_Intake.setWrist(13);
           s_Arm.setShoulder(-0.21);
-          s_Arm.setExtension(2145);
+          s_Arm.setExtension(-2145);
         }    
       }
     else if(xboxController.getRawButton(4)){
-      s_Arm.setShoulder(-15);
-      s_Arm.setExtension(14845);
+      s_Arm.setShoulder(-10);
+      s_Arm.setExtension(-14845);
       s_Intake.setWrist(53);
     }
     else if(xboxController.getRawButton(3)){
-      s_Arm.setShoulder(-15); //FIXME hit robot frame
+      s_Arm.setShoulder(-10); //FIXME hit robot frame
       s_Arm.setExtension(0);
       s_Intake.setWrist(0);
     }
@@ -131,7 +131,11 @@ public class RunArm extends CommandBase {
       s_Arm.setExtension(0);
       s_Intake.setWrist(8);
     }
+    else if(xboxController.getRawButton(7)){
+      s_Arm.setShoulder(-5);
+      s_Arm.setExtension(-20000);
     }
+  }
   
   
 
