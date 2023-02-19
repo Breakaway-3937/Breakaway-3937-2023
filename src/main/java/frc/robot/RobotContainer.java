@@ -104,8 +104,8 @@ public class RobotContainer {
 
     s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     //s_Intake.setDefaultCommand(c_RunIntake);
-    //s_Arm.setDefaultCommand(c_RunArm);
-    s_Arm.setDefaultCommand(c_SetIntake);
+    s_Arm.setDefaultCommand(c_RunArm);
+    //s_Arm.setDefaultCommand(c_SetIntake);
     //s_Climber.setDefaultCommand(c_RunClimber);
     //s_Arm.setDefaultCommand(c_RunTurret);
     Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
@@ -137,8 +137,7 @@ public class RobotContainer {
     rightStickButton.onTrue(new InstantCommand(() -> s_Arm.setCone()));
     rbButton.whileTrue(new InstantCommand(() -> s_Intake.runIntake(0.8)))
             .onFalse(new InstantCommand(() -> s_Intake.stopIntake()));
-    lbButton.whileTrue(new InstantCommand(() -> s_Intake.runIntake(-0.8)))
-            .onFalse(new InstantCommand(() -> s_Intake.stopIntake()));
+    triggerController.rightTrigger(0.3).whileTrue(new InstantCommand(() -> s_Intake.spit()));
   } 
 
   public DriveTrain getDrivetrain(){

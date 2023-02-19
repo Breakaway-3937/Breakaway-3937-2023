@@ -7,19 +7,16 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Intake;
 
 public class SetIntake extends CommandBase {
-  private final Intake s_Intake;
   private final XboxController xboxController;
   private final Arm s_Arm;
   /** Creates a new RunWrist. */
-  public SetIntake(Intake s_Intake, XboxController xboxController , Arm s_Arm) {
+  public SetIntake(XboxController xboxController , Arm s_Arm) {
     this.xboxController = xboxController;
-    this.s_Intake = s_Intake;
     this.s_Arm = s_Arm;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(s_Intake, s_Arm);
+    addRequirements(s_Arm);
   }
 
   // Called when the command is initially scheduled.
@@ -30,19 +27,16 @@ public class SetIntake extends CommandBase {
   @Override
   public void execute() {
     if(xboxController.getRawButton(1)){
-      s_Arm.setShoulder(0);
-      s_Arm.setExtension(0);
-      s_Intake.setWrist(5);
+      s_Arm.setShoulder(-5);
+      s_Arm.setExtension(20);
     }
-    else if(xboxController.getRawButton(4)){
-      s_Arm.setShoulder(0);
-      s_Arm.setExtension(0);
-      s_Intake.setWrist(15);
+    else if(xboxController.getRawButton(2)){
+      s_Arm.setShoulder(-5);
+      s_Arm.setExtension(10000);
     }
-    else if(xboxController.getRawButton(11)){
-      s_Arm.setShoulder(0);
-      s_Arm.setExtension(50);
-      s_Intake.setWrist(15);
+    else if(xboxController.getRawButton(3)){
+      s_Arm.setShoulder(-5);
+      s_Arm.setExtension(14000);
     }
   }
 

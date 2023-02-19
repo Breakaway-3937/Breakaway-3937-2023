@@ -91,21 +91,21 @@ public class RunArm extends CommandBase {
     }
     else if(xboxController.getPOV() == 0){
       System.out.println("up");
-      s_Arm.setShoulder(0);
+      s_Arm.setShoulder(-11);
       s_Arm.setExtension(0);
-
+      s_Intake.setWrist(31);
     }
     else if(xboxController.getPOV() == 90){
       System.out.println("right");
-      s_Arm.setShoulder(0);
+      s_Arm.setShoulder(-12);
       s_Arm.setExtension(0);
-
+      s_Intake.setWrist(57);
     }
     else if(xboxController.getPOV() == 180){
       System.out.println("down");
+      s_Arm.setShoulder(0.6);
       s_Arm.setExtension(0);
-      s_Arm.setExtension(0);
-
+      s_Intake.setWrist(6);
     }
     else if(xboxController.getRawButton(1)){
       System.out.println("a");
