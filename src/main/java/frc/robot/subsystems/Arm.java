@@ -31,10 +31,11 @@ public class Arm extends SubsystemBase {
   private final CANSparkMax shoulder2;
   private final WPI_TalonFX extension;
   private final CANSparkMax rotation;
+  private final CANSparkMax wristMotor;
   private TalonFXSensorCollection extensionEncoder;
-  private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, shoulder2kP, shoulder2kI, shoulder2kD, shoulder2kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF;
-  private RelativeEncoder shoulder1Encoder, shoulder2Encoder, rotateEncoder;
-  private SparkMaxPIDController shoulder1PIDController, shoulder2PIDController, rotatePIDController;
+  private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, shoulder2kP, shoulder2kI, shoulder2kD, shoulder2kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF, wristkP, wristkI, wristkD, wristkFF;
+  private RelativeEncoder shoulder1Encoder, shoulder2Encoder, rotateEncoder, wristEncoder;
+  private SparkMaxPIDController shoulder1PIDController, shoulder2PIDController, rotatePIDController, wristPIDController;
   private final GenericEntry shoulderEncoder, extensionEncoderEntry, rotationEncoder;
 
   /** Creates a new Arm. */
@@ -44,7 +45,9 @@ public class Arm extends SubsystemBase {
     shoulder2 = new CANSparkMax(Constants.Arm.SHOULDER_2_ID, MotorType.kBrushless);
     extension = new WPI_TalonFX(Constants.Arm.EXTENSION_ID);
     rotation = new CANSparkMax(Constants.Arm.ROTATION_ID, MotorType.kBrushless);
+    wristMotor = new CANSparkMax(Constants.Intake.WRIST_MOTOR_ID, MotorType.kBrushless);
     setValues();
+    configWristMotor();
     configExtention();
     configRotation();
     configShoulder1();
@@ -91,6 +94,27 @@ public class Arm extends SubsystemBase {
     }
   }
 
+  public void setWrist(double position){
+    wristPIDController.setReference(position, ControlType.kSmartMotion);
+  }
+
+  private void configWristMotor(){
+    wristMotor.restoreFactoryDefaults();
+    wristEncoder = wristMotor.getEncoder();
+    wristPIDController = wristMotor.getPIDController();
+    wristPIDController.setFeedbackDevice(wristEncoder);
+    wristEncoder.setPosition(0);
+    wristMotor.setInverted(true);
+    wristPIDController.setSmartMotionMaxVelocity(550, 0);
+    wristPIDController.setSmartMotionMaxAccel(250, 0);
+    wristPIDController.setOutputRange(-1, 1);
+    wristMotor.setIdleMode(IdleMode.kBrake);
+
+    wristPIDController.setP(wristkP);
+    wristPIDController.setI(wristkI);
+    wristPIDController.setD(wristkD);
+    wristPIDController.setFF(wristkFF);
+  }
 
   private void configShoulder1(){
     shoulder1.restoreFactoryDefaults();
@@ -180,6 +204,10 @@ public class Arm extends SubsystemBase {
     rotatekI = 0.1e-6;
     rotatekD = 0;
     rotatekFF = 0.004;
+    wristkP = 9e-6;
+    wristkI = 0.1e-6;
+    wristkD = 0;
+    wristkFF = 0.00156;
   }
 
   @Override

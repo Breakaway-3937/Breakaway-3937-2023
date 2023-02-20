@@ -15,17 +15,15 @@ public class RunArm extends CommandBase {
   private final Joystick joystick;
   private final PhotonVision s_Photon;
   private final XboxController xboxController;
-  private final Intake s_Intake;
   private double armPosition;
   /** Creates a new RunArm. */
-  public RunArm(Arm s_Arm, Joystick joystick, PhotonVision s_Photon, XboxController xboxController, Intake s_Intake) {
+  public RunArm(Arm s_Arm, Joystick joystick, PhotonVision s_Photon, XboxController xboxController){
     this.joystick = joystick;
     this.s_Arm = s_Arm;
     this.s_Photon = s_Photon;
     this.xboxController = xboxController;
-    this.s_Intake = s_Intake;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(s_Arm, s_Photon, s_Intake);
+    addRequirements(s_Arm, s_Photon);
   }
 
   // Called when the command is initially scheduled.
@@ -33,7 +31,7 @@ public class RunArm extends CommandBase {
   public void initialize() {
     s_Arm.setShoulder(0);
     s_Arm.setExtension(-10);
-    s_Intake.setWrist(0);
+    s_Arm.setWrist(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -106,12 +104,12 @@ public class RunArm extends CommandBase {
     }*/
     else if(xboxController.getRawButton(1)){
       if(s_Intake.getConeCubeMode() == true){
-        s_Intake.setWrist(6);
+        s_Arm.setWrist(6);
         s_Arm.setShoulder(0.6);
         s_Arm.setExtension(-8865);
         }
       else if(s_Intake.getConeCubeMode() == false){
-          s_Intake.setWrist(13);
+          s_Arm.setWrist(13);
           s_Arm.setShoulder(-0.21);
           s_Arm.setExtension(-2145);
         }    
@@ -119,17 +117,17 @@ public class RunArm extends CommandBase {
     else if(xboxController.getRawButton(4)){
       s_Arm.setShoulder(-10);
       s_Arm.setExtension(-14845);
-      s_Intake.setWrist(53);
+      s_Arm.setWrist(53);
     }
     else if(xboxController.getRawButton(3)){
       s_Arm.setShoulder(-10); //FIXME hit robot frame
       s_Arm.setExtension(0);
-      s_Intake.setWrist(0);
+      s_Arm.setWrist(0);
     }
     else if(xboxController.getRawButton(2)){
       s_Arm.setShoulder(-7);
       s_Arm.setExtension(0);
-      s_Intake.setWrist(8);
+      s_Arm.setWrist(8);
     }
     else if(xboxController.getRawButton(7)){
       s_Arm.setShoulder(-5);
