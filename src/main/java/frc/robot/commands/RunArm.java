@@ -16,6 +16,7 @@ public class RunArm extends CommandBase {
   private final XboxController xboxController;
   private double shoulderPosition, turretPosition, extensionPosition, wristPosition;
   private int state;
+  private boolean flag, flag1;
   /** Creates a new RunArm. */
   public RunArm(Arm s_Arm, Joystick joystick, PhotonVision s_Photon, XboxController xboxController){
     this.joystick = joystick;
@@ -158,7 +159,10 @@ public class RunArm extends CommandBase {
     }
     else if(xboxController.getRawButton(3)){
       shoulderPosition = -10;
-      if(extensionPosition > -20){
+      if(extensionPosition == -3526 || extensionPosition == -13108){
+        state = 0;
+      }
+      else if(extensionPosition > -20){
         state = 0;
       }
       else{
@@ -167,7 +171,6 @@ public class RunArm extends CommandBase {
       extensionPosition = -20;
       wristPosition = 0;
       turretPosition = 0;
-      state = 1;
     }
     else if(xboxController.getRawButton(2)){
       shoulderPosition = -7.1;
@@ -194,13 +197,19 @@ public class RunArm extends CommandBase {
       wristPosition = 0;
     }
 
-    if(shoulderPosition == -0.2 && s_Arm.getShoulder1Position() < shoulderPosition + 0.2 && s_Arm.getShoulder1Position() > shoulderPosition - 0.2){
+    if(shoulderPosition == -0.2 && s_Arm.getShoulder1Position() < shoulderPosition + 1 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
       s_Arm.stopShoulder();
+      flag1 = true;
+    }
+    else{
+      flag1 = false;
     }
 
     switch(state){
       case 0: 
-        s_Arm.setShoulder(shoulderPosition);
+        if(!flag1){
+          s_Arm.setShoulder(shoulderPosition);
+        }
         if(s_Arm.getShoulder1Position() < shoulderPosition + 0.5 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
           s_Arm.setRotation(turretPosition);
         }
@@ -218,9 +227,11 @@ public class RunArm extends CommandBase {
         }
         if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125){
           s_Arm.setRotation(turretPosition);
+          flag = true;
         }
-        if(s_Arm.getRotationPosition() < turretPosition + 0.5 && s_Arm.getRotationPosition() > turretPosition - 0.5){
+        if(s_Arm.getRotationPosition() < turretPosition + 0.5 && s_Arm.getRotationPosition() > turretPosition - 0.5 && flag){
           s_Arm.setShoulder(shoulderPosition);
+          flag = false;
         }
         break;
     }
