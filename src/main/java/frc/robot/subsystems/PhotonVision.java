@@ -274,7 +274,7 @@ public class PhotonVision extends SubsystemBase{
         if(dP < Constants.VisionConstants.MAX_EXTEND_LENGTH + 0.54){
             var result = photonCamera.getLatestResult();
             if(result.hasTargets()){
-                //idNum = photonCamera.getLatestResult().getBestTarget().getFiducialId();
+                idNum = photonCamera.getLatestResult().getBestTarget().getFiducialId();
             }
             return true;
         }
