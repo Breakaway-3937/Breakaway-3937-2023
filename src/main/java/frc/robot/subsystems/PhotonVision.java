@@ -108,14 +108,14 @@ public class PhotonVision extends SubsystemBase{
     public Pair<Double, Double> getArmStuff(){
         var result = photonCamera.getLatestResult();
         if(result.hasTargets()){
-        rY = result.getBestTarget().getBestCameraToTarget().getY();
-        rX = result.getBestTarget().getBestCameraToTarget().getX();
-        angle = result.getBestTarget().getBestCameraToTarget().getRotation().getAngle();
-        rR = Math.sqrt(Math.pow(rX, 2) + Math.pow(rY, 2));
-        dP = Math.sqrt(Math.pow((pX - rX), 2) + Math.pow((pY - rY), 2));
-        cos = Math.abs((Math.pow(pR, 2) - Math.pow(rR, 2) - Math.pow(dP, 2)) / (2 * (rR * dP)));
-        theta = Math.toDegrees(Math.acos(cos));
-        return new Pair<Double, Double>(dP, theta);
+            rY = result.getBestTarget().getBestCameraToTarget().getY();
+            rX = result.getBestTarget().getBestCameraToTarget().getX();
+            angle = result.getBestTarget().getBestCameraToTarget().getRotation().getAngle();
+            rR = Math.sqrt(Math.pow(rX, 2) + Math.pow(rY, 2));
+            dP = Math.sqrt(Math.pow((pX - rX), 2) + Math.pow((pY - rY), 2));
+            cos = Math.abs((Math.pow(pR, 2) - Math.pow(rR, 2) - Math.pow(dP, 2)) / (2 * (rR * dP)));
+            theta = Math.toDegrees(Math.acos(cos));
+            return new Pair<Double, Double>(dP, theta);
         }
         else{
             return new Pair<Double,Double>(0.0, 0.0);
@@ -271,8 +271,11 @@ public class PhotonVision extends SubsystemBase{
     }
 
     public boolean closeEnough(){
-        if(photonCamera.getLatestResult().getBestTarget() != null && dP < Constants.VisionConstants.MAX_EXTEND_LENGTH + 0.54){
-            idNum = photonCamera.getLatestResult().getBestTarget().getFiducialId();
+        if(dP < Constants.VisionConstants.MAX_EXTEND_LENGTH + 0.54){
+            var result = photonCamera.getLatestResult();
+            if(result.hasTargets()){
+                //idNum = photonCamera.getLatestResult().getBestTarget().getFiducialId();
+            }
             return true;
         }
         else{
@@ -316,7 +319,10 @@ public class PhotonVision extends SubsystemBase{
         }
         else if(photonCamera.getLatestResult().getBestTarget() != null){
             s_LED.white();
-            idNum = photonCamera.getLatestResult().getBestTarget().getFiducialId();
+            var result = photonCamera.getLatestResult();
+            if(result.hasTargets()){
+                idNum = photonCamera.getLatestResult().getBestTarget().getFiducialId();
+            }
         }
         else if(photonCamera.getLatestResult().getBestTarget() == null){
             s_LED.red();

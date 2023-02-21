@@ -7,7 +7,6 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -18,9 +17,8 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
   private final TalonFX intakeMotor;
   private final AnalogInput uSSensor, lightSensor;
-  private RelativeEncoder wristEncoder;
-  private final GenericEntry usDistance, lightDistance, wrist;
-  private boolean cone = true;
+  private final GenericEntry usDistance, lightDistance;
+  private static boolean cone;
 
   public Intake() {
     intakeMotor = new TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
@@ -31,7 +29,6 @@ public class Intake extends SubsystemBase {
     lightSensor.resetAccumulator();
     usDistance = Shuffleboard.getTab("Intake").add("US Sensor", 0).withPosition(0, 0).getEntry();
     lightDistance = Shuffleboard.getTab("Intake").add("Light Sensor", 0).withPosition(1, 0).getEntry();
-    wrist = Shuffleboard.getTab("Intake").add("Wrist", getWrist()).withPosition(2, 0).getEntry();
   }
   
   public void runIntake(double speed){
@@ -43,15 +40,11 @@ public class Intake extends SubsystemBase {
   }
 
   public void spit(){
-    intakeMotor.set(ControlMode.PercentOutput, -1);
+    intakeMotor.set(ControlMode.PercentOutput, -0.8);
   }
   
   public void stopIntake(){
     intakeMotor.set(ControlMode.PercentOutput, 0);
-  }
-
-  public double getWrist(){
-    return wristEncoder.getPosition();
   }
 
   public boolean intakeFull(){
@@ -81,11 +74,9 @@ public class Intake extends SubsystemBase {
     cone = false;
   }
 
-  public boolean getConeCubeMode(){
+  public static boolean getConeCubeMode(){
     return cone;
   }
-  
-
 
   public double getDistance(){
     return 0.342 - 0.291 * Math.log(uSSensor.getVoltage());
@@ -96,6 +87,5 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
     usDistance.setDouble(getDistance());
     lightDistance.setDouble(lightSensor.getValue());
-    wrist.setDouble(getWrist());
   }
 }

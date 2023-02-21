@@ -8,17 +8,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.autos.AutoChooser;
-import frc.robot.autos.AutoTrajectories;
+//import frc.robot.autos.AutoChooser;
+//import frc.robot.autos.AutoTrajectories;
 import frc.robot.commands.RunArm;
 import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunIntake;
-import frc.robot.commands.RunTurret;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
@@ -77,10 +75,9 @@ public class RobotContainer {
   /* Commands */
   public final RunIntake c_RunIntake = new RunIntake(s_Intake, xboxController);
   public final RunClimber c_RunClimber = new RunClimber(s_Climber, xboxController, s_Arm);
-  public final RunArm c_RunArm = new RunArm(s_Arm, buttonGrid, s_Photon, xboxController, s_Intake);
-  public final RunTurret c_RunTurret = new RunTurret(s_Arm, translationController);
+  public final RunArm c_RunArm = new RunArm(s_Arm, buttonGrid, s_Photon, xboxController);
   /* Autos */
-  private final AutoChooser autoChooser = new AutoChooser(new AutoTrajectories(Constants.DriveTrain.TRAJECTORY_CONSTRAINTS));
+  //private final AutoChooser autoChooser = new AutoChooser(new AutoTrajectories(Constants.DriveTrain.TRAJECTORY_CONSTRAINTS));
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -93,10 +90,9 @@ public class RobotContainer {
 
     s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     s_Intake.setDefaultCommand(c_RunIntake);
-    //s_Arm.setDefaultCommand(c_RunArm);
+    s_Arm.setDefaultCommand(c_RunArm);
     //s_Climber.setDefaultCommand(c_RunClimber);
-    //s_Arm.setDefaultCommand(c_RunTurret);
-    Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
+    //Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -134,6 +130,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // A command that is selected will run in autonomous
-    return autoChooser.getCommand(this);
+    //return autoChooser.getCommand(this);
+    return null;
   }
 }

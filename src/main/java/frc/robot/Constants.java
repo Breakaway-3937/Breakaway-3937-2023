@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import frc.lib.util.SwerveModuleConstants;
@@ -24,9 +25,7 @@ public final class Constants {
     public static final boolean FIELD_RELATIVE = true;
     public static final boolean OPEN_LOOP = true;
     public static final int CANDLE_ID = 15;
-    public static final int PCM_ID = 16;
     public static final String PRACTICE_MAC = "00:80:2F:25:DE:54";
-    public static final double SAMPLE_DISTANCE = Units.inchesToMeters(0.1);
     public static final boolean PRACTICE_BOT = getMACAddress().equals(PRACTICE_MAC);
 
     
@@ -205,6 +204,22 @@ public final class Constants {
 
     }
 
+    public static final class Auto {
+        public static final double KMAX_SPEED_METERS_PER_SECOND = 3;
+        public static final double KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 3;
+        public static final double KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
+        public static final double KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Math.PI;
+    
+        public static final double KP_X_CONTROLLER = 1;
+        public static final double KP_Y_CONTROLLER = 1;
+        public static final double KP_THETA_CONTROLLER = 5;
+    
+        // Constraint for the motion profilied robot angle controller
+        public static final TrapezoidProfile.Constraints KTHETA_CONTROLLER_CONSTRAINTS =
+            new TrapezoidProfile.Constraints(
+                KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND, KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
+    }
+
     public static final class Intake{
         public static final int INTAKE_MOTOR_ID = 6;
         public static final int WRIST_MOTOR_ID = 5; 
@@ -224,9 +239,6 @@ public final class Constants {
         public static final int ROTATION_ID = 14;
         public static final SparkMaxAlternateEncoder.Type ALT_ENC_TYPE = SparkMaxAlternateEncoder.Type.kQuadrature;
         public static final int CPR = 8192;
-        public static final double MAX_VELOCITY_RAISE_ARM = 500;
-        public static final double MAX_ACCEL_RAISE_ARM = 250;
-        public static final double METER_TO_FALCON = 0.0000271245287113;
     }
 
     public static String getMACAddress() {

@@ -36,7 +36,7 @@ public class Arm extends SubsystemBase {
   private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, shoulder2kP, shoulder2kI, shoulder2kD, shoulder2kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF, wristkP, wristkI, wristkD, wristkFF;
   private RelativeEncoder shoulder1Encoder, shoulder2Encoder, rotateEncoder, wristEncoder;
   private SparkMaxPIDController shoulder1PIDController, shoulder2PIDController, rotatePIDController, wristPIDController;
-  private final GenericEntry shoulderEncoder, extensionEncoderEntry, rotationEncoder;
+  private final GenericEntry shoulderEncoder, extensionEncoderEntry, rotationEncoder, wrist;
 
   /** Creates a new Arm. */
   public Arm(PhotonVision s_Photon) {
@@ -55,6 +55,7 @@ public class Arm extends SubsystemBase {
     shoulderEncoder = Shuffleboard.getTab("Arm").add("Shoulder", getShoulder1Position()).withPosition(0, 0).getEntry();
     extensionEncoderEntry = Shuffleboard.getTab("Arm").add("Extension", getExtensionPosition()).withPosition(1, 0).getEntry();
     rotationEncoder = Shuffleboard.getTab("Arm").add("Rotation", getRotationPosition()).withPosition(2, 0).getEntry();
+    wrist = Shuffleboard.getTab("Arm").add("Wrist", getWrist()).withPosition(3, 0).getEntry();
   }
 
   public void setShoulder(double position){
@@ -87,7 +88,8 @@ public class Arm extends SubsystemBase {
 
   public double getScoreLength(){
     if(s_Photon.closeEnough()){
-      return s_Photon.getArmStuff().getFirst() / Constants.Arm.METER_TO_FALCON;
+      //return s_Photon.getArmStuff().getFirst() / Constants.Arm.METER_TO_FALCON;
+      return 10;
     }
     else{
       return 10;
@@ -96,6 +98,10 @@ public class Arm extends SubsystemBase {
 
   public void setWrist(double position){
     wristPIDController.setReference(position, ControlType.kSmartMotion);
+  }
+
+  public double getWrist(){
+    return wristEncoder.getPosition();
   }
 
   private void configWristMotor(){
@@ -128,8 +134,8 @@ public class Arm extends SubsystemBase {
     shoulder1PIDController.setI(shoulder1kI);
     shoulder1PIDController.setD(shoulder1kD);
     shoulder1PIDController.setFF(shoulder1kFF);
-    shoulder1PIDController.setSmartMotionMaxVelocity(Constants.Arm.MAX_VELOCITY_RAISE_ARM, 0);
-    shoulder1PIDController.setSmartMotionMaxAccel(Constants.Arm.MAX_ACCEL_RAISE_ARM, 0);
+    shoulder1PIDController.setSmartMotionMaxVelocity(500, 0);
+    shoulder1PIDController.setSmartMotionMaxAccel(254, 0);
     shoulder1PIDController.setOutputRange(-1, 1);
     shoulder1.setInverted(true);
     shoulder1.setIdleMode(IdleMode.kBrake);
@@ -146,8 +152,8 @@ public class Arm extends SubsystemBase {
     shoulder2PIDController.setI(shoulder2kI);
     shoulder2PIDController.setD(shoulder2kD);
     shoulder2PIDController.setFF(shoulder2kFF);
-    shoulder2PIDController.setSmartMotionMaxVelocity(Constants.Arm.MAX_VELOCITY_RAISE_ARM, 0);
-    shoulder2PIDController.setSmartMotionMaxAccel(Constants.Arm.MAX_ACCEL_RAISE_ARM, 0);
+    shoulder2PIDController.setSmartMotionMaxVelocity(500, 0);
+    shoulder2PIDController.setSmartMotionMaxAccel(254, 0);
     shoulder2PIDController.setOutputRange(-1, 1);
     shoulder2.setIdleMode(IdleMode.kBrake);
 
@@ -182,28 +188,28 @@ public class Arm extends SubsystemBase {
     extension.config_kF(0, extensionkFF);
     extension.configPeakOutputForward(1);
     extension.configPeakOutputReverse(-1);
-    extension.configMotionCruiseVelocity(5000);
-    extension.configMotionAcceleration(5000);
+    extension.configMotionCruiseVelocity(15000);
+    extension.configMotionAcceleration(12500);
     extension.setNeutralMode(NeutralMode.Brake);
   }
 
   public void setValues(){
-    extensionkP = 0.35;
+    extensionkP = 0.55;
     extensionkI = 0;
     extensionkD = 0;
-    extensionkFF = 0.2;
-    shoulder1kP = 6.5e-7;
+    extensionkFF = 0.4;
+    shoulder1kP = 6.5e-8;
     shoulder1kI = 0.5e-6;
     shoulder1kD = 0;
     shoulder1kFF = 0.0019;
-    shoulder2kP = 6.5e-7;
+    shoulder2kP = 6.5e-8;
     shoulder2kI = 0.5e-6;
     shoulder2kD = 0;
     shoulder2kFF = 0.00156;
-    rotatekP = 4e-7;
+    rotatekP = 4e-6;
     rotatekI = 0.1e-6;
-    rotatekD = 0;
-    rotatekFF = 0.004;
+    rotatekD = 0.3e-6;
+    rotatekFF = 0.008;
     wristkP = 9e-6;
     wristkI = 0.1e-6;
     wristkD = 0;
@@ -216,6 +222,7 @@ public class Arm extends SubsystemBase {
     shoulderEncoder.setDouble(getShoulder1Position());
     extensionEncoderEntry.setDouble(getExtensionPosition());
     rotationEncoder.setDouble(getRotationPosition());
+    wrist.setDouble(getWrist());
   }
 }
 

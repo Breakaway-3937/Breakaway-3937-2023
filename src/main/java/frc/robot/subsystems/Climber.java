@@ -50,8 +50,8 @@ public class Climber extends SubsystemBase {
     pid1.setOutputRange(-1, 1);
     climber1.setIdleMode(IdleMode.kBrake);   
     climber1.setInverted(false);
-    pid1.setSmartMotionMaxVelocity(Constants.Arm.MAX_VELOCITY_RAISE_ARM, 0);
-    pid1.setSmartMotionMaxAccel(Constants.Arm.MAX_ACCEL_RAISE_ARM, 0);
+    pid1.setSmartMotionMaxVelocity(500, 0);
+    pid1.setSmartMotionMaxAccel(254, 0);
 
     pid1.setP(climber1kP);
     pid1.setI(climber1kI);

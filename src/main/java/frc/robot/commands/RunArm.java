@@ -1,4 +1,3 @@
-//FIXME
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -15,7 +14,8 @@ public class RunArm extends CommandBase {
   private final Joystick joystick;
   private final PhotonVision s_Photon;
   private final XboxController xboxController;
-  private double armPosition;
+  private double shoulderPosition, turretPosition, extensionPosition, wristPosition;
+  private int state;
   /** Creates a new RunArm. */
   public RunArm(Arm s_Arm, Joystick joystick, PhotonVision s_Photon, XboxController xboxController){
     this.joystick = joystick;
@@ -32,12 +32,13 @@ public class RunArm extends CommandBase {
     s_Arm.setShoulder(0);
     s_Arm.setExtension(-10);
     s_Arm.setWrist(0);
+    s_Arm.setRotation(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(joystick.getRawButton(0)){
+    /*if(joystick.getRawButton(0)){
       if(s_Photon.getSelectedScore().get(0)){
         s_Arm.setShoulder(0);
         armPosition = 0;
@@ -86,52 +87,126 @@ public class RunArm extends CommandBase {
       if(s_Arm.getShoulder1Position() < armPosition + 0.2 && s_Arm.getShoulder1Position() > armPosition - 0.2){
         s_Arm.setExtension(-s_Arm.getScoreLength());
       }
-    }
-    /*else if(xboxController.getPOV() == 0){
-      s_Arm.setShoulder(-11);
-      s_Arm.setExtension(0);
-      s_Intake.setWrist(31);
+    }*/
+    if(xboxController.getPOV() == 0){
+      shoulderPosition = -12;
+      extensionPosition = -56000;
+      wristPosition = 39.5;
+      turretPosition = 0;
+      state = 0;
     }
     else if(xboxController.getPOV() == 90){
-      s_Arm.setShoulder(-12);
-      s_Arm.setExtension(0);
-      s_Intake.setWrist(57);
+      shoulderPosition = -13;
+      if(extensionPosition > -27775){
+        state = 0;
+      }
+      else{
+        state = 1;
+      }
+      extensionPosition = -27775;
+      wristPosition = 51.7;
+      turretPosition = 0;
     }
     else if(xboxController.getPOV() == 180){
-      s_Arm.setShoulder(0.6);
-      s_Arm.setExtension(0);
-      s_Intake.setWrist(6);
-    }*/
-    else if(xboxController.getRawButton(1)){
-      if(s_Intake.getConeCubeMode() == true){
-        s_Arm.setWrist(6);
-        s_Arm.setShoulder(0.6);
-        s_Arm.setExtension(-8865);
-        }
-      else if(s_Intake.getConeCubeMode() == false){
-          s_Arm.setWrist(13);
-          s_Arm.setShoulder(-0.21);
-          s_Arm.setExtension(-2145);
-        }    
+      shoulderPosition = -5;
+      if(extensionPosition > -307){
+        state = 0;
       }
+      else{
+        state = 1;
+      }
+      extensionPosition = -307;
+      wristPosition = 35;
+    }
+    if(xboxController.getRawButton(1)){
+      if(Intake.getConeCubeMode()){
+        shoulderPosition = -0.2;
+        if(extensionPosition > -3526){
+          state = 0;
+        }
+        else{
+          state = 1;
+        }
+        extensionPosition = -3526;
+        wristPosition = 10;
+        turretPosition = 0;
+      }
+      else if(!Intake.getConeCubeMode()){
+        shoulderPosition = -0.21;
+        if(extensionPosition > -13108){
+          state = 0;
+        }
+        else{
+          state = 1;
+        }
+        extensionPosition = -13108;
+        wristPosition = 7.7;
+        turretPosition = 0;
+      }    
+    }
     else if(xboxController.getRawButton(4)){
-      s_Arm.setShoulder(-10);
-      s_Arm.setExtension(-14845);
-      s_Arm.setWrist(53);
+      shoulderPosition = -15;
+      if(extensionPosition > -14845){
+        state = 0;
+      }
+      else{
+        state = 1;
+      }
+      extensionPosition = -14845;
+      wristPosition = 53;
+      turretPosition = 0;
     }
     else if(xboxController.getRawButton(3)){
-      s_Arm.setShoulder(-10); //FIXME hit robot frame
-      s_Arm.setExtension(0);
-      s_Arm.setWrist(0);
+      shoulderPosition = -15;
+      if(extensionPosition > -10){
+        state = 0;
+      }
+      else{
+        state = 1;
+      }
+      extensionPosition = 10;
+      wristPosition = 0;
+      turretPosition = 0;
+      state = 1;
     }
     else if(xboxController.getRawButton(2)){
-      s_Arm.setShoulder(-7);
-      s_Arm.setExtension(0);
-      s_Arm.setWrist(8);
+      shoulderPosition = -7.1;
+      if(extensionPosition > -417){
+        state = 0;
+      }
+      else{
+        state = 1;
+      }
+      extensionPosition = -417;
+      wristPosition = 0.2;
+      turretPosition = 0;
     }
-    else if(xboxController.getRawButton(7)){
-      s_Arm.setShoulder(-5);
-      s_Arm.setExtension(-20000);
+
+    switch(state){
+      case 0: 
+        s_Arm.setShoulder(shoulderPosition);
+        if(s_Arm.getShoulder1Position() < shoulderPosition + 0.2 && s_Arm.getShoulder1Position() > shoulderPosition - 0.2){
+          s_Arm.setRotation(turretPosition);
+        }
+        else if(s_Arm.getRotationPosition() < turretPosition + 0.2 && s_Arm.getRotationPosition() > turretPosition - 0.2){
+          s_Arm.setExtension(extensionPosition);
+        }
+        else if(s_Arm.getExtensionPosition() < extensionPosition + 0.2 && s_Arm.getExtensionPosition() > extensionPosition - 0.2){
+          s_Arm.setWrist(wristPosition);
+        }
+        break;
+      case 1: 
+        s_Arm.setWrist(wristPosition);
+        if(s_Arm.getWrist() < wristPosition + 0.2 && s_Arm.getWrist() > wristPosition - 0.2){
+          s_Arm.setExtension(extensionPosition);
+        }
+        else if(s_Arm.getExtensionPosition() < extensionPosition + 0.2 && s_Arm.getExtensionPosition() > extensionPosition - 0.2){
+          s_Arm.setRotation(turretPosition);
+        }
+        else if(s_Arm.getRotationPosition() < turretPosition + 0.2 && s_Arm.getRotationPosition() > turretPosition - 0.2){
+          s_Arm.setShoulder(shoulderPosition);
+        }
+        break;
     }
   }
   
