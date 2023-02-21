@@ -181,6 +181,18 @@ public class RunArm extends CommandBase {
       wristPosition = 0.2;
       turretPosition = 0;
     }
+    else if(xboxController.getRawButton(5)){
+      shoulderPosition = -7;
+      if(extensionPosition > -50){
+        state = 0;
+      }
+      else{
+        state = 1;
+      }
+      extensionPosition = -50;
+      turretPosition = 0;
+      wristPosition = 0;
+    }
 
     switch(state){
       case 0: 

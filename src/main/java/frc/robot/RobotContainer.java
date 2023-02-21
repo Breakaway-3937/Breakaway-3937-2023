@@ -56,7 +56,7 @@ public class RobotContainer {
   private final JoystickButton highLeft = new JoystickButton(buttonGrid, 1);
   private final JoystickButton highMid = new JoystickButton(buttonGrid, 2);
   private final JoystickButton highRight = new JoystickButton(buttonGrid, 3);
-  private final JoystickButton midLeft = new JoystickButton(buttonGrid, 4); //FIXME
+  private final JoystickButton midLeft = new JoystickButton(buttonGrid, 4);
   private final JoystickButton midMid = new JoystickButton(buttonGrid, 5);
   private final JoystickButton midRight = new JoystickButton(buttonGrid, 6);
   private final JoystickButton lowLeft = new JoystickButton(buttonGrid, 7);
@@ -74,7 +74,7 @@ public class RobotContainer {
   
   /* Commands */
   public final RunIntake c_RunIntake = new RunIntake(s_Intake, xboxController);
-  public final RunClimber c_RunClimber = new RunClimber(s_Climber, xboxController, s_Arm);
+  public final RunClimber c_RunClimber = new RunClimber(s_Climber, xboxController);
   public final RunArm c_RunArm = new RunArm(s_Arm, buttonGrid, s_Photon, xboxController);
   /* Autos */
   //private final AutoChooser autoChooser = new AutoChooser(new AutoTrajectories(Constants.DriveTrain.TRAJECTORY_CONSTRAINTS));
@@ -91,7 +91,7 @@ public class RobotContainer {
     s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     s_Intake.setDefaultCommand(c_RunIntake);
     s_Arm.setDefaultCommand(c_RunArm);
-    //s_Climber.setDefaultCommand(c_RunClimber);
+    s_Climber.setDefaultCommand(c_RunClimber);
     //Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
     // Configure the button bindings
     configureButtonBindings();
