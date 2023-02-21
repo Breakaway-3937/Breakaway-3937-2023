@@ -62,6 +62,10 @@ public class Arm extends SubsystemBase {
     shoulder1PIDController.setReference(position, ControlType.kSmartMotion);
   }
 
+  public void stopShoulder(){
+    shoulder1.set(0);
+  }
+
   public void setExtension(double position){
     extension.set(ControlMode.MotionMagic, position);
   }
@@ -194,10 +198,10 @@ public class Arm extends SubsystemBase {
   }
 
   public void setValues(){
-    extensionkP = 0.55;
+    extensionkP = 0.6;
     extensionkI = 0;
     extensionkD = 0;
-    extensionkFF = 0.4;
+    extensionkFF = 0.5;
     shoulder1kP = 6.5e-8;
     shoulder1kI = 0.5e-6;
     shoulder1kD = 0;
@@ -206,9 +210,9 @@ public class Arm extends SubsystemBase {
     shoulder2kI = 0.5e-6;
     shoulder2kD = 0;
     shoulder2kFF = 0.00156;
-    rotatekP = 4e-6;
+    rotatekP = 4e-9;
     rotatekI = 0.1e-6;
-    rotatekD = 0.3e-6;
+    rotatekD = 0.3e-8;
     rotatekFF = 0.008;
     wristkP = 9e-6;
     wristkI = 0.1e-6;

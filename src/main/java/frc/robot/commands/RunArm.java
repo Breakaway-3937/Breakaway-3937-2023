@@ -132,7 +132,7 @@ public class RunArm extends CommandBase {
         turretPosition = 0;
       }
       else if(!Intake.getConeCubeMode()){
-        shoulderPosition = -0.21;
+        shoulderPosition = -0.2;
         if(extensionPosition > -13108){
           state = 0;
         }
@@ -145,7 +145,7 @@ public class RunArm extends CommandBase {
       }    
     }
     else if(xboxController.getRawButton(4)){
-      shoulderPosition = -15;
+      shoulderPosition = -10;
       if(extensionPosition > -14845){
         state = 0;
       }
@@ -157,14 +157,14 @@ public class RunArm extends CommandBase {
       turretPosition = 0;
     }
     else if(xboxController.getRawButton(3)){
-      shoulderPosition = -15;
-      if(extensionPosition > -10){
+      shoulderPosition = -10;
+      if(extensionPosition > -20){
         state = 0;
       }
       else{
         state = 1;
       }
-      extensionPosition = 10;
+      extensionPosition = -20;
       wristPosition = 0;
       turretPosition = 0;
       state = 1;
@@ -194,28 +194,32 @@ public class RunArm extends CommandBase {
       wristPosition = 0;
     }
 
+    if(shoulderPosition == -0.2 && s_Arm.getShoulder1Position() < shoulderPosition + 0.2 && s_Arm.getShoulder1Position() > shoulderPosition - 0.2){
+      s_Arm.stopShoulder();
+    }
+
     switch(state){
       case 0: 
         s_Arm.setShoulder(shoulderPosition);
-        if(s_Arm.getShoulder1Position() < shoulderPosition + 0.2 && s_Arm.getShoulder1Position() > shoulderPosition - 0.2){
+        if(s_Arm.getShoulder1Position() < shoulderPosition + 0.5 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
           s_Arm.setRotation(turretPosition);
         }
-        else if(s_Arm.getRotationPosition() < turretPosition + 0.2 && s_Arm.getRotationPosition() > turretPosition - 0.2){
+        if(s_Arm.getRotationPosition() < turretPosition + 0.5 && s_Arm.getRotationPosition() > turretPosition - 0.5){
           s_Arm.setExtension(extensionPosition);
         }
-        else if(s_Arm.getExtensionPosition() < extensionPosition + 0.2 && s_Arm.getExtensionPosition() > extensionPosition - 0.2){
+        if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125){
           s_Arm.setWrist(wristPosition);
         }
         break;
       case 1: 
         s_Arm.setWrist(wristPosition);
-        if(s_Arm.getWrist() < wristPosition + 0.2 && s_Arm.getWrist() > wristPosition - 0.2){
+        if(s_Arm.getWrist() < wristPosition + 0.5 && s_Arm.getWrist() > wristPosition - 0.5){
           s_Arm.setExtension(extensionPosition);
         }
-        else if(s_Arm.getExtensionPosition() < extensionPosition + 0.2 && s_Arm.getExtensionPosition() > extensionPosition - 0.2){
+        if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125){
           s_Arm.setRotation(turretPosition);
         }
-        else if(s_Arm.getRotationPosition() < turretPosition + 0.2 && s_Arm.getRotationPosition() > turretPosition - 0.2){
+        if(s_Arm.getRotationPosition() < turretPosition + 0.5 && s_Arm.getRotationPosition() > turretPosition - 0.5){
           s_Arm.setShoulder(shoulderPosition);
         }
         break;
