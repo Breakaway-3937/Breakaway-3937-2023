@@ -30,10 +30,10 @@ public class RunArm extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    s_Arm.setShoulder(0);
-    s_Arm.setExtension(-10);
-    s_Arm.setWrist(0);
-    s_Arm.setRotation(0);
+    shoulderPosition = 0;
+    extensionPosition = -20;
+    wristPosition = 0;
+    turretPosition = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.

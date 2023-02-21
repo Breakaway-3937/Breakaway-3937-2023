@@ -29,14 +29,14 @@ public class Arm extends SubsystemBase {
   private final PhotonVision s_Photon;
   private final CANSparkMax shoulder1;
   private final CANSparkMax shoulder2;
-  private final WPI_TalonFX extension;
+  private final WPI_TalonFX extension, extension1;
   private final CANSparkMax rotation;
   private final CANSparkMax wristMotor;
-  private TalonFXSensorCollection extensionEncoder;
+  private TalonFXSensorCollection extensionEncoder, extension1Encoder;
   private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, shoulder2kP, shoulder2kI, shoulder2kD, shoulder2kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF, wristkP, wristkI, wristkD, wristkFF;
   private RelativeEncoder shoulder1Encoder, shoulder2Encoder, rotateEncoder, wristEncoder;
   private SparkMaxPIDController shoulder1PIDController, shoulder2PIDController, rotatePIDController, wristPIDController;
-  private final GenericEntry shoulderEncoder, extensionEncoderEntry, rotationEncoder, wrist;
+  private final GenericEntry shoulderEncoder, extensionEncoderEntry, extension1EncoderEntry, rotationEncoder, wrist;
 
   /** Creates a new Arm. */
   public Arm(PhotonVision s_Photon) {
@@ -44,6 +44,7 @@ public class Arm extends SubsystemBase {
     shoulder1 = new CANSparkMax(Constants.Arm.SHOULDER_ID, MotorType.kBrushless);
     shoulder2 = new CANSparkMax(Constants.Arm.SHOULDER_2_ID, MotorType.kBrushless);
     extension = new WPI_TalonFX(Constants.Arm.EXTENSION_ID);
+    extension1 = new WPI_TalonFX(Constants.Arm.EXTENSION_ID_1);
     rotation = new CANSparkMax(Constants.Arm.ROTATION_ID, MotorType.kBrushless);
     wristMotor = new CANSparkMax(Constants.Intake.WRIST_MOTOR_ID, MotorType.kBrushless);
     setValues();
@@ -54,8 +55,9 @@ public class Arm extends SubsystemBase {
     configShoulder2();
     shoulderEncoder = Shuffleboard.getTab("Arm").add("Shoulder", getShoulder1Position()).withPosition(0, 0).getEntry();
     extensionEncoderEntry = Shuffleboard.getTab("Arm").add("Extension", getExtensionPosition()).withPosition(1, 0).getEntry();
-    rotationEncoder = Shuffleboard.getTab("Arm").add("Rotation", getRotationPosition()).withPosition(2, 0).getEntry();
-    wrist = Shuffleboard.getTab("Arm").add("Wrist", getWrist()).withPosition(3, 0).getEntry();
+    extension1EncoderEntry = Shuffleboard.getTab("Arm").add("Extension 1", getExtensionPosition()).withPosition(2, 0).getEntry();
+    rotationEncoder = Shuffleboard.getTab("Arm").add("Rotation", getRotationPosition()).withPosition(3, 0).getEntry();
+    wrist = Shuffleboard.getTab("Arm").add("Wrist", getWrist()).withPosition(4, 0).getEntry();
   }
 
   public void setShoulder(double position){
@@ -84,6 +86,10 @@ public class Arm extends SubsystemBase {
 
   public double getExtensionPosition(){
     return extensionEncoder.getIntegratedSensorPosition();
+  }
+
+  public double getExtension1Position(){
+    return extension1Encoder.getIntegratedSensorPosition();
   }
 
   public double getRotationPosition(){
@@ -183,8 +189,11 @@ public class Arm extends SubsystemBase {
 
   private void configExtention(){
     extension.configFactoryDefault();
+    extension1.configFactoryDefault();
     extensionEncoder = extension.getSensorCollection();
+    extension1Encoder = extension1.getSensorCollection();
     extension.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+    extension1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
     extensionEncoder.setIntegratedSensorPosition(0, 0);
     extension.config_kP(0, extensionkP);
     extension.config_kI(0, extensionkI);
@@ -195,6 +204,8 @@ public class Arm extends SubsystemBase {
     extension.configMotionCruiseVelocity(15000);
     extension.configMotionAcceleration(12500);
     extension.setNeutralMode(NeutralMode.Brake);
+    extension1.setNeutralMode(NeutralMode.Brake);
+    extension1.follow(extension);
   }
 
   public void setValues(){
@@ -225,6 +236,7 @@ public class Arm extends SubsystemBase {
     // This method will be called once per scheduler run
     shoulderEncoder.setDouble(getShoulder1Position());
     extensionEncoderEntry.setDouble(getExtensionPosition());
+    extension1EncoderEntry.setDouble(getExtension1Position());
     rotationEncoder.setDouble(getRotationPosition());
     wrist.setDouble(getWrist());
   }

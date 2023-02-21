@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
@@ -12,10 +13,13 @@ import frc.robot.subsystems.Intake;
 public class RunIntake extends CommandBase {
   private final Intake s_Intake;
   private final XboxController xboxController;
+  private boolean flag;
+  private final Timer timer;
   /** Creates a new RunIntake. */
   public RunIntake(Intake s_Intake, XboxController xboxController) {
     this.s_Intake = s_Intake;
     this.xboxController = xboxController;
+    timer = new Timer();
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(s_Intake);
   }
@@ -28,6 +32,17 @@ public class RunIntake extends CommandBase {
   @Override
   public void execute() {
     if(s_Intake.intakeFull()){
+      if(Intake.getConeCubeMode() && flag){
+        timer.reset();
+        flag = false;
+      }
+      else if(Intake.getConeCubeMode()){
+        s_Intake.stopIntake();
+      }
+      if(timer.get() > 0.1){
+        s_Intake.stopIntake();
+        flag = false;
+      }
       s_Intake.stopIntake();
     }
     else if(xboxController.getRawButton(6)){

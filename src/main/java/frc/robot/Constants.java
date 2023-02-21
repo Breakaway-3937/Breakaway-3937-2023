@@ -236,6 +236,7 @@ public final class Constants {
         public static final int SHOULDER_ID = 3;
         public static final int SHOULDER_2_ID = 2;
         public static final int EXTENSION_ID = 4;
+        public static final int EXTENSION_ID_1 = 16;
         public static final int ROTATION_ID = 14;
         public static final SparkMaxAlternateEncoder.Type ALT_ENC_TYPE = SparkMaxAlternateEncoder.Type.kQuadrature;
         public static final int CPR = 8192;
