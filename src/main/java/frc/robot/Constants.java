@@ -158,7 +158,7 @@ public final class Constants {
             public static final int CANCODER_ID = 21;
             
             public static final double ANGLE_OFFSET = 0;
-            public static final double ANGLE_OFFSET_PRACTICE = 238.1835 + 180.0;
+            public static final double ANGLE_OFFSET_PRACTICE = 60.4685;
             public static final SwerveModuleConstants CONSTANTS = 
                 new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET, ANGLE_OFFSET_PRACTICE);
         }

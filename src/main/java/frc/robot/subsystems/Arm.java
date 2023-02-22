@@ -195,12 +195,13 @@ public class Arm extends SubsystemBase {
     extension.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
     extension1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
     extensionEncoder.setIntegratedSensorPosition(0, 0);
+    extension1Encoder.setIntegratedSensorPosition(0, 0);
     extension.config_kP(0, extensionkP);
     extension.config_kI(0, extensionkI);
     extension.config_kD(0, extensionkD);
     extension.config_kF(0, extensionkFF);
-    extension.configPeakOutputForward(1);
-    extension.configPeakOutputReverse(-1);
+    extension.configPeakOutputForward(0.9);
+    extension.configPeakOutputReverse(-0.9);
     extension.configMotionCruiseVelocity(15000);
     extension.configMotionAcceleration(12500);
     extension.setNeutralMode(NeutralMode.Brake);
@@ -212,7 +213,7 @@ public class Arm extends SubsystemBase {
     extensionkP = 0.6;
     extensionkI = 0;
     extensionkD = 0;
-    extensionkFF = 0.5;
+    extensionkFF = 0.2;
     shoulder1kP = 6.5e-8;
     shoulder1kI = 0.5e-6;
     shoulder1kD = 0;

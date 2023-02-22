@@ -30,7 +30,7 @@ public class RunArm extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shoulderPosition = 0;
+    shoulderPosition = -10;
     extensionPosition = -20;
     wristPosition = 0;
     turretPosition = 0;
@@ -90,22 +90,22 @@ public class RunArm extends CommandBase {
       }
     }*/
     if(xboxController.getPOV() == 0){
-      shoulderPosition = -12;
-      extensionPosition = -56000;
-      wristPosition = 39.5;
+      shoulderPosition = -14;
+      extensionPosition = -54000;
+      wristPosition = 27;
       turretPosition = 0;
       state = 0;
     }
     else if(xboxController.getPOV() == 90){
-      shoulderPosition = -13;
-      if(extensionPosition > -27775){
+      shoulderPosition = -13.5;
+      if(extensionPosition > -30000){
         state = 0;
       }
       else{
         state = 1;
       }
-      extensionPosition = -27775;
-      wristPosition = 51.7;
+      extensionPosition = -30000;
+      wristPosition = 45;
       turretPosition = 0;
     }
     else if(xboxController.getPOV() == 180){
