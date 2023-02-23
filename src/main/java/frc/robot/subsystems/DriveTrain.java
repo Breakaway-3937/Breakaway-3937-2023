@@ -2,9 +2,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 
-import frc.lib.util.control.HolonomicMotionProfiledTrajectoryFollower;
-import frc.lib.util.control.PidConstants;
-import frc.lib.util.util.HolonomicFeedforward;
 import frc.robot.Constants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -24,11 +21,6 @@ public class DriveTrain extends SubsystemBase {
     private final Pigeon2 gyro;
     private GenericEntry mod0Cancoder, mod1Cancoder, mod2Cancoder, mod3Cancoder;
     private GenericEntry gyroHeading;
-
-    
-    private final HolonomicMotionProfiledTrajectoryFollower follower = new HolonomicMotionProfiledTrajectoryFollower(
-            new PidConstants(Constants.DriveTrain.DRIVE_KP, Constants.DriveTrain.DRIVE_KI, Constants.DriveTrain.DRIVE_KD), new PidConstants(Constants.DriveTrain.ANGLE_KP, Constants.DriveTrain.ANGLE_KI, Constants.DriveTrain.ANGLE_KD),
-            new HolonomicFeedforward(Constants.DriveTrain.FEEDFORWARD_CONSTANTS));
 
     public DriveTrain() {
         gyro = new Pigeon2(Constants.DriveTrain.PIGEON_ID, "CANivore");
@@ -95,12 +87,16 @@ public class DriveTrain extends SubsystemBase {
         return (Constants.DriveTrain.INVERT_GYRO) ? Rotation2d.fromDegrees(360 - ypr[0]) : Rotation2d.fromDegrees(ypr[0]);
     }
 
-    public void setPose(Pose2d pose) {
-        swerveOdometry.resetPosition(getYaw(), getStates(), pose);
-    }
+    public void setModuleStates(SwerveModuleState[] desiredStates) {
+        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.DriveTrain.MAX_SPEED);
+        
+        for(SwerveModule mod : swerveMods){
+            mod.setDesiredState(desiredStates[mod.moduleNumber], false);
+        }
+    } 
 
-    public HolonomicMotionProfiledTrajectoryFollower getFollower() {
-        return follower;
+    public void resetOdometry(Pose2d pose) {
+        swerveOdometry.resetPosition(getYaw(), getStates(), pose);
     }
 
     @Override
