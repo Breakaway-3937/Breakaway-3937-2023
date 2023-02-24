@@ -1,6 +1,5 @@
 package frc.lib.util;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 public class SwerveModuleConstants {
@@ -30,6 +29,5 @@ public class SwerveModuleConstants {
             this.cancoderID = canCoderID;
             this.angleOffset = angleOffsetPractice;
         }
-        SmartDashboard.putBoolean("Practice", Constants.PRACTICE_BOT);
     }
 }

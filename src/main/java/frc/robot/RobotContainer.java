@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 //import frc.robot.autos.AutoChooser;
 //import frc.robot.autos.AutoTrajectories;
 import frc.robot.commands.RunArm;
@@ -51,8 +52,6 @@ public class RobotContainer {
 
   /* Driver Buttons */
   private final JoystickButton translationButton = new JoystickButton(translationController, Constants.Controllers.TRANSLATION_BUTTON);
-  private final JoystickButton leftStickButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_LEFT_SITCK_BUTTON);
-  private final JoystickButton rightStickButton = new JoystickButton(xboxController, Constants.Controllers.XBOXCONTROLLER_RIGHT_SITCK_BUTTON);
   private final JoystickButton highLeft = new JoystickButton(buttonGrid, 1);
   private final JoystickButton highMid = new JoystickButton(buttonGrid, 2);
   private final JoystickButton highRight = new JoystickButton(buttonGrid, 3);
@@ -115,8 +114,9 @@ public class RobotContainer {
     lowMid.onTrue(new InstantCommand(() -> s_Photon.setHybridMid()));
     lowRight.onTrue(new InstantCommand(() -> s_Photon.setHybridRight()));
     lowLeft.onTrue(new InstantCommand(() -> s_Photon.setHybridLeft()));
-    rightStickButton.onTrue(new InstantCommand(() -> s_LED.cone()).alongWith(new InstantCommand(() -> s_Intake.setCone())));
-    leftStickButton.onTrue(new InstantCommand(() -> s_LED.cube()).alongWith(new InstantCommand(() -> s_Intake.setCube())));
+    new POVButton(xboxController, 0).onTrue(new InstantCommand(() -> s_LED.cone()).alongWith(new InstantCommand(() -> s_Intake.setCone())));
+    new POVButton(xboxController, 90).onTrue(new InstantCommand(() -> s_LED.cube()).alongWith(new InstantCommand(() -> s_Intake.setCube())));
+    new POVButton(xboxController, 180).onTrue(new InstantCommand(() -> s_LED.cone()).alongWith(new InstantCommand(() -> s_Intake.setDeadCone())));
   } 
 
   public DriveTrain getDrivetrain(){

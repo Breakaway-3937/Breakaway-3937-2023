@@ -18,7 +18,7 @@ public class Intake extends SubsystemBase {
   private final TalonFX intakeMotor;
   private final AnalogInput uSSensor, lightSensor;
   private final GenericEntry usDistance, lightDistance;
-  private static boolean cone;
+  private static boolean cone, deadCone;
 
   public Intake() {
     intakeMotor = new TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
@@ -40,7 +40,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void spit(){
-    intakeMotor.set(ControlMode.PercentOutput, -0.8);
+    intakeMotor.set(ControlMode.PercentOutput, -0.9);
   }
   
   public void stopIntake(){
@@ -48,7 +48,7 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean intakeFull(){
-    if(getConeCubeMode()){
+    if(getConeCubeMode() || getDeadCone()){
       if(getDistance() < 0.35){
         return true;
       }
@@ -68,14 +68,25 @@ public class Intake extends SubsystemBase {
 
   public void setCone(){
     cone = true;
+    deadCone = true;
   }
 
   public void setCube(){
     cone = false;
+    deadCone = true;
+  }
+
+  public void setDeadCone(){
+    cone = false;
+    deadCone = true;
   }
 
   public static boolean getConeCubeMode(){
     return cone;
+  }
+
+  public static boolean getDeadCone(){
+    return deadCone;
   }
 
   public double getDistance(){

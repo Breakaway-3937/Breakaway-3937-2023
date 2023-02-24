@@ -56,8 +56,7 @@ public class PhotonVision extends SubsystemBase{
     private Pair<Pose2d, Double> pair;
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));;
     private double rY, rX, rR, dP, pR, theta, pX, pY, cos, idNum, angle;
-    private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridRight = false;
-    private boolean hybridMid = true;
+    private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridMid, hybridRight = false;
     private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
 
     public PhotonVision(LED s_LED) {
@@ -293,6 +292,18 @@ public class PhotonVision extends SubsystemBase{
 
     public double getAngle(){
         return angle;
+    }
+
+    public void setAllFalse(){
+        highLeft = false;
+        highMid = false;
+        highRight = false;
+        midLeft = false;
+        midMid = false;
+        midRight = false;
+        hybridLeft = false;
+        hybridMid = false;
+        hybridRight = false;
     }
 
     @Override

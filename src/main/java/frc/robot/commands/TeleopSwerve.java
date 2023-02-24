@@ -50,6 +50,6 @@ public class TeleopSwerve extends CommandBase {
 
         translation = new Translation2d(yAxis, xAxis).times(Constants.DriveTrain.MAX_SPEED);
         rotation = rAxis * Constants.DriveTrain.MAX_ANGULAR_VELOCITY;
-        s_DriveTrain.drive(translation, rotation, fieldRelative, openLoop);
+        s_DriveTrain.drive(translation, rotation, false, openLoop);
     }
 }

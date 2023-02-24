@@ -213,7 +213,7 @@ public class Arm extends SubsystemBase {
     extensionkP = 0.6;
     extensionkI = 0;
     extensionkD = 0;
-    extensionkFF = 0.2;
+    extensionkFF = 0.3;
     shoulder1kP = 6.5e-8;
     shoulder1kI = 0.5e-6;
     shoulder1kD = 0;
@@ -229,7 +229,7 @@ public class Arm extends SubsystemBase {
     wristkP = 9e-6;
     wristkI = 0.1e-6;
     wristkD = 0;
-    wristkFF = 0.00156;
+    wristkFF = 0.0018;
   }
 
   @Override
