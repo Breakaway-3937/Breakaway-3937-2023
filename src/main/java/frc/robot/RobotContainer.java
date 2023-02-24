@@ -8,13 +8,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-//import frc.robot.autos.AutoChooser;
-//import frc.robot.autos.AutoTrajectories;
+import frc.robot.autos.AutoChooser;
+import frc.robot.autos.AutoTrajectories;
 import frc.robot.commands.RunArm;
 import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunIntake;
@@ -76,7 +77,7 @@ public class RobotContainer {
   public final RunClimber c_RunClimber = new RunClimber(s_Climber, xboxController);
   public final RunArm c_RunArm = new RunArm(s_Arm, buttonGrid, s_Photon, xboxController);
   /* Autos */
-  //private final AutoChooser autoChooser = new AutoChooser(new AutoTrajectories(Constants.DriveTrain.TRAJECTORY_CONSTRAINTS));
+  private final AutoChooser autoChooser = new AutoChooser(new AutoTrajectories(), s_DriveTrain);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -91,7 +92,7 @@ public class RobotContainer {
     s_Intake.setDefaultCommand(c_RunIntake);
     s_Arm.setDefaultCommand(c_RunArm);
     s_Climber.setDefaultCommand(c_RunClimber);
-    //Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
+    Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -130,7 +131,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // A command that is selected will run in autonomous
-    //return autoChooser.getCommand(this);
-    return null;
+    return autoChooser.getCommand();
   }
 }
