@@ -39,7 +39,7 @@ public class RunIntake extends CommandBase {
       else if(Intake.getConeCubeMode()){
         s_Intake.stopIntake();
       }
-      if(timer.get() > 0.3){
+      if(timer.get() > 2){
         s_Intake.stopIntake();
         flag = false;
       }

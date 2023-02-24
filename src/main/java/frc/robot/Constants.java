@@ -16,8 +16,6 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import frc.lib.util.SwerveModuleConstants;
-import frc.lib.util.control.*;
-import frc.lib.util.util.DrivetrainFeedforwardConstants;
 
 /* Name All Variables in ALL_CAPS Format */
 
@@ -195,12 +193,6 @@ public final class Constants {
             public static final SwerveModuleConstants CONSTANTS = 
                 new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET, ANGLE_OFFSET_PRACTICE);
         }
-
-        public static final DrivetrainFeedforwardConstants FEEDFORWARD_CONSTANTS = new DrivetrainFeedforwardConstants(DRIVE_KV, DRIVE_KA, DRIVE_KS);
-
-        public static final TrajectoryConstraint[] TRAJECTORY_CONSTRAINTS = {
-            new FeedforwardConstraint(4.0, FEEDFORWARD_CONSTANTS.getVelocityConstant(), FEEDFORWARD_CONSTANTS.getAccelerationConstant(), false),
-            new MaxAccelerationConstraint(5.0), new CentripetalAccelerationConstraint(5.0)};  //FIXME
 
     }
 

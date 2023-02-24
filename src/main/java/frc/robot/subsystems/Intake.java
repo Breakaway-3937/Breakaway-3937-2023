@@ -68,12 +68,12 @@ public class Intake extends SubsystemBase {
 
   public void setCone(){
     cone = true;
-    deadCone = true;
+    deadCone = false;
   }
 
   public void setCube(){
     cone = false;
-    deadCone = true;
+    deadCone = false;
   }
 
   public void setDeadCone(){

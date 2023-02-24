@@ -98,7 +98,7 @@ public class RunArm extends CommandBase {
       state = 0;
     }
     else if(s_Photon.getSelectedScore().get(3) || s_Photon.getSelectedScore().get(4) || s_Photon.getSelectedScore().get(5)){
-      shoulderPosition = -12.5;
+      shoulderPosition = -12.75;
       if(extensionPosition > -27000){
         state = 0;
       }
@@ -177,7 +177,7 @@ public class RunArm extends CommandBase {
     else if(xboxController.getRawButton(3)){
       s_Photon.setAllFalse();
       shoulderPosition = -10;
-      if(extensionPosition == -3526 || extensionPosition == -13108){
+      if(extensionPosition == -20 || extensionPosition == -13000){
         state = 0;
       }
       else if(extensionPosition > -20){
@@ -190,10 +190,11 @@ public class RunArm extends CommandBase {
       wristPosition = 0;
       turretPosition = 0;
       flag = false;
+      flag1 = false;
     }
     else if(xboxController.getRawButton(2)){
       s_Photon.setAllFalse();
-      shoulderPosition = -7.1;
+      shoulderPosition = -6.5;
       if(extensionPosition > -417){
         state = 0;
       }
@@ -232,15 +233,18 @@ public class RunArm extends CommandBase {
       case 0: 
         if(!flag1){
           s_Arm.setShoulder(shoulderPosition);
+          System.out.println("Set Shoulder");
         }
         if(s_Arm.getShoulder1Position() < shoulderPosition + 0.5 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
           s_Arm.setRotation(turretPosition);
           flag = true;
+          System.out.println("Set Turret");
         }
         if(s_Arm.getRotationPosition() < turretPosition + 0.5 && s_Arm.getRotationPosition() > turretPosition - 0.5 && flag){
           s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
           flag = false;
+          System.out.println("Set Extension and Wrist");
         }
         break;
       case 1: 
