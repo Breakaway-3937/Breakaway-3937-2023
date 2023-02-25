@@ -28,7 +28,6 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
@@ -51,20 +50,16 @@ public class PhotonVision extends SubsystemBase{
     private final PhotonCamera photonCamera;
     private final PhotonPoseEstimator photonPoseEstimator;
     private AprilTagFieldLayout atfl;
-    private GenericEntry poseX, poseY, distanceBoard, angleBoard;
+    private GenericEntry distanceBoard, angleBoard;
     private double x, y, d, a;
-    private Pair<Pose2d, Double> pair;
-    private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));;
     private double rY, rX, rR, dP, pR, theta, pX, pY, cos, angle;
     private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridMid, hybridRight = false;
     private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
 
     public PhotonVision(LED s_LED) {
         this.s_LED = s_LED;
-        poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
-        poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", y).withPosition(1, 0).getEntry();
-        distanceBoard = Shuffleboard.getTab("SyrupTag").add("Distance", d).withPosition(2, 0).getEntry();
-        angleBoard = Shuffleboard.getTab("SyrupTag").add("Angle", a).withPosition(3, 0).getEntry();                
+        distanceBoard = Shuffleboard.getTab("SyrupTag").add("Distance", d).withPosition(0, 0).getEntry();
+        angleBoard = Shuffleboard.getTab("SyrupTag").add("Angle", a).withPosition(1, 0).getEntry();                
         try {
             atfl = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
         } catch (IOException e) {}
@@ -300,14 +295,8 @@ public class PhotonVision extends SubsystemBase{
 
     @Override
     public void periodic(){
-        pair = getEstimatedGlobalPose(pose2d);
-        pose2d = pair.getFirst();
-        x = pose2d.getX();
-        y = pose2d.getY();
         d = getArmStuff().getFirst();
         a = getArmStuff().getSecond();
-        poseX.setDouble(x);
-        poseY.setDouble(y);
         distanceBoard.setDouble(d);
         angleBoard.setDouble(a);
         if(!photonCamera.isConnected()){
