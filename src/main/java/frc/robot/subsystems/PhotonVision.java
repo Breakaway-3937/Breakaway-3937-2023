@@ -51,11 +51,11 @@ public class PhotonVision extends SubsystemBase{
     private final PhotonCamera photonCamera;
     private final PhotonPoseEstimator photonPoseEstimator;
     private AprilTagFieldLayout atfl;
-    private GenericEntry poseX, poseY, distanceBoard, angleBoard, id;
+    private GenericEntry poseX, poseY, distanceBoard, angleBoard;
     private double x, y, d, a;
     private Pair<Pose2d, Double> pair;
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));;
-    private double rY, rX, rR, dP, pR, theta, pX, pY, cos, idNum, angle;
+    private double rY, rX, rR, dP, pR, theta, pX, pY, cos, angle;
     private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridMid, hybridRight = false;
     private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
 
@@ -64,13 +64,9 @@ public class PhotonVision extends SubsystemBase{
         poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
         poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", y).withPosition(1, 0).getEntry();
         distanceBoard = Shuffleboard.getTab("SyrupTag").add("Distance", d).withPosition(2, 0).getEntry();
-        angleBoard = Shuffleboard.getTab("SyrupTag").add("Angle", a).withPosition(3, 0).getEntry();
-        id = Shuffleboard.getTab("SyrupTag").add("ID", idNum).withPosition(4, 0).getEntry();
-        
-        setHighLeft();
-        
+        angleBoard = Shuffleboard.getTab("SyrupTag").add("Angle", a).withPosition(3, 0).getEntry();                
         try {
-            atfl = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
+            atfl = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
         } catch (IOException e) {}
 
         photonCamera =
@@ -271,10 +267,6 @@ public class PhotonVision extends SubsystemBase{
 
     public boolean closeEnough(){
         if(dP < Constants.VisionConstants.MAX_EXTEND_LENGTH + 0.54){
-            var result = photonCamera.getLatestResult();
-            if(result.hasTargets()){
-                idNum = photonCamera.getLatestResult().getBestTarget().getFiducialId();
-            }
             return true;
         }
         else{
@@ -318,7 +310,6 @@ public class PhotonVision extends SubsystemBase{
         poseY.setDouble(y);
         distanceBoard.setDouble(d);
         angleBoard.setDouble(a);
-        id.setDouble(idNum);
         if(!photonCamera.isConnected()){
             s_LED.bad();
         }
@@ -330,10 +321,6 @@ public class PhotonVision extends SubsystemBase{
         }
         else if(photonCamera.getLatestResult().getBestTarget() != null){
             s_LED.white();
-            var result = photonCamera.getLatestResult();
-            if(result.hasTargets()){
-                idNum = photonCamera.getLatestResult().getBestTarget().getFiducialId();
-            }
         }
         else if(photonCamera.getLatestResult().getBestTarget() == null){
             s_LED.red();

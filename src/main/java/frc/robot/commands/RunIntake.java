@@ -36,14 +36,10 @@ public class RunIntake extends CommandBase {
         timer.reset();
         flag = false;
       }
-      else if(Intake.getConeCubeMode()){
+      if(timer.get() > 0.25){
         s_Intake.stopIntake();
+        flag = true;
       }
-      if(timer.get() > 2){
-        s_Intake.stopIntake();
-        flag = false;
-      }
-      s_Intake.stopIntake();
     }
     else if(xboxController.getRawButton(6)){
       s_Intake.runIntake(0.8);

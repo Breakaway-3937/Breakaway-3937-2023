@@ -138,7 +138,7 @@ public final class Constants {
         public static final double MAX_ANGULAR_VELOCITY = 11.5;
 
         /* Neutral Modes */
-        public static final NeutralMode ANGLE_NEUTRAL_MODE = NeutralMode.Coast;
+        public static final NeutralMode ANGLE_NEUTRAL_MODE = NeutralMode.Brake;
         public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
 
         /* Motor Inverts */

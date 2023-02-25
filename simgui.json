@@ -7,7 +7,15 @@
       "/LiveWindow/Ungrouped/Talon SRX [6]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon SRX [7]": "Motor Controller",
       "/Shuffleboard/Auto/Chooser": "String Chooser",
-      "/Shuffleboard/Auto/SendableChooser[0]": "String Chooser"
+      "/Shuffleboard/Auto/SendableChooser[0]": "String Chooser",
+      "/SmartDashboard/Field": "Field2d"
+    },
+    "windows": {
+      "/SmartDashboard/Field": {
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {

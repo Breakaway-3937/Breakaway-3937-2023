@@ -58,6 +58,8 @@ public class Climber extends SubsystemBase {
     pid1.setD(climber1kD);
     pid1.setFF(climber1kFF);
 
+    climber2.restoreFactoryDefaults();
+    climber2.setIdleMode(IdleMode.kBrake);   
     climber2.follow(climber1, true);
   }
 

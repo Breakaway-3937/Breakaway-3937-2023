@@ -32,11 +32,11 @@ public class Arm extends SubsystemBase {
   private final WPI_TalonFX extension, extension1;
   private final CANSparkMax rotation;
   private final CANSparkMax wristMotor;
-  private TalonFXSensorCollection extensionEncoder, extension1Encoder;
-  private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, shoulder2kP, shoulder2kI, shoulder2kD, shoulder2kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF, wristkP, wristkI, wristkD, wristkFF;
-  private RelativeEncoder shoulder1Encoder, shoulder2Encoder, rotateEncoder, wristEncoder;
-  private SparkMaxPIDController shoulder1PIDController, shoulder2PIDController, rotatePIDController, wristPIDController;
-  private final GenericEntry shoulderEncoder, extensionEncoderEntry, extension1EncoderEntry, rotationEncoder, wrist;
+  private TalonFXSensorCollection extensionEncoder;
+  private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF, wristkP, wristkI, wristkD, wristkFF;
+  private RelativeEncoder shoulder1Encoder, rotateEncoder, wristEncoder;
+  private SparkMaxPIDController shoulder1PIDController, rotatePIDController, wristPIDController;
+  private final GenericEntry shoulderEncoder, extensionEncoderEntry, rotationEncoder, wrist;
 
   /** Creates a new Arm. */
   public Arm(PhotonVision s_Photon) {
@@ -55,9 +55,8 @@ public class Arm extends SubsystemBase {
     configShoulder2();
     shoulderEncoder = Shuffleboard.getTab("Arm").add("Shoulder", getShoulder1Position()).withPosition(0, 0).getEntry();
     extensionEncoderEntry = Shuffleboard.getTab("Arm").add("Extension", getExtensionPosition()).withPosition(1, 0).getEntry();
-    extension1EncoderEntry = Shuffleboard.getTab("Arm").add("Extension 1", getExtensionPosition()).withPosition(2, 0).getEntry();
-    rotationEncoder = Shuffleboard.getTab("Arm").add("Rotation", getRotationPosition()).withPosition(3, 0).getEntry();
-    wrist = Shuffleboard.getTab("Arm").add("Wrist", getWrist()).withPosition(4, 0).getEntry();
+    rotationEncoder = Shuffleboard.getTab("Arm").add("Rotation", getRotationPosition()).withPosition(2, 0).getEntry();
+    wrist = Shuffleboard.getTab("Arm").add("Wrist", getWrist()).withPosition(3, 0).getEntry();
   }
 
   public void setShoulder(double position){
@@ -72,6 +71,10 @@ public class Arm extends SubsystemBase {
     extension.set(ControlMode.MotionMagic, position);
   }
 
+  public void stopExtension(){
+    extension.stopMotor();
+  }
+
   public void setRotation(double position){
     rotatePIDController.setReference(position, ControlType.kSmartMotion);
   }
@@ -80,16 +83,8 @@ public class Arm extends SubsystemBase {
     return shoulder1Encoder.getPosition();
   }
 
-  public double getShoulder2Position(){
-    return shoulder2Encoder.getPosition();
-  }
-
   public double getExtensionPosition(){
     return extensionEncoder.getIntegratedSensorPosition();
-  }
-
-  public double getExtension1Position(){
-    return extension1Encoder.getIntegratedSensorPosition();
   }
 
   public double getRotationPosition(){
@@ -146,27 +141,14 @@ public class Arm extends SubsystemBase {
     shoulder1PIDController.setFF(shoulder1kFF);
     shoulder1PIDController.setSmartMotionMaxVelocity(500, 0);
     shoulder1PIDController.setSmartMotionMaxAccel(254, 0);
-    shoulder1PIDController.setOutputRange(-1, 1);
+    shoulder1PIDController.setOutputRange(-1, 0.75);
     shoulder1.setInverted(true);
     shoulder1.setIdleMode(IdleMode.kBrake);
   }
 
   private void configShoulder2(){
     shoulder2.restoreFactoryDefaults();
-    shoulder2Encoder = shoulder2.getEncoder();
-    shoulder2PIDController = shoulder2.getPIDController();
-    shoulder2PIDController.setFeedbackDevice(shoulder2Encoder);
-    shoulder2Encoder.setPosition(0);
-
-    shoulder2PIDController.setP(shoulder2kP);
-    shoulder2PIDController.setI(shoulder2kI);
-    shoulder2PIDController.setD(shoulder2kD);
-    shoulder2PIDController.setFF(shoulder2kFF);
-    shoulder2PIDController.setSmartMotionMaxVelocity(500, 0);
-    shoulder2PIDController.setSmartMotionMaxAccel(254, 0);
-    shoulder2PIDController.setOutputRange(-1, 1);
     shoulder2.setIdleMode(IdleMode.kBrake);
-
     shoulder2.follow(shoulder1);
   }
 
@@ -191,11 +173,9 @@ public class Arm extends SubsystemBase {
     extension.configFactoryDefault();
     extension1.configFactoryDefault();
     extensionEncoder = extension.getSensorCollection();
-    extension1Encoder = extension1.getSensorCollection();
     extension.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
     extension1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
     extensionEncoder.setIntegratedSensorPosition(0, 0);
-    extension1Encoder.setIntegratedSensorPosition(0, 0);
     extension.config_kP(0, extensionkP);
     extension.config_kI(0, extensionkI);
     extension.config_kD(0, extensionkD);
@@ -210,18 +190,14 @@ public class Arm extends SubsystemBase {
   }
 
   public void setValues(){
-    extensionkP = 0.6;
-    extensionkI = 0;
-    extensionkD = 0;
+    extensionkP = 0.75;
+    extensionkI = 0.0075;
+    extensionkD = 7.5;
     extensionkFF = 0.3;
     shoulder1kP = 6.5e-8;
     shoulder1kI = 0.5e-6;
     shoulder1kD = 0;
     shoulder1kFF = 0.0019;
-    shoulder2kP = 6.5e-8;
-    shoulder2kI = 0.5e-6;
-    shoulder2kD = 0;
-    shoulder2kFF = 0.00156;
     rotatekP = 4e-9;
     rotatekI = 0.1e-6;
     rotatekD = 0.3e-8;
@@ -237,7 +213,6 @@ public class Arm extends SubsystemBase {
     // This method will be called once per scheduler run
     shoulderEncoder.setDouble(getShoulder1Position());
     extensionEncoderEntry.setDouble(getExtensionPosition());
-    extension1EncoderEntry.setDouble(getExtension1Position());
     rotationEncoder.setDouble(getRotationPosition());
     wrist.setDouble(getWrist());
   }

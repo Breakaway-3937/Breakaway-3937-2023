@@ -76,8 +76,10 @@ public class RobotContainer {
   public final RunIntake c_RunIntake = new RunIntake(s_Intake, xboxController);
   public final RunClimber c_RunClimber = new RunClimber(s_Climber, xboxController);
   public final RunArm c_RunArm = new RunArm(s_Arm, buttonGrid, s_Photon, xboxController);
+  
   /* Autos */
-  private final AutoChooser autoChooser = new AutoChooser(new AutoTrajectories(), s_DriveTrain);
+  public final AutoTrajectories autoTrajectories = new AutoTrajectories();
+  private final AutoChooser autoChooser = new AutoChooser(autoTrajectories, s_DriveTrain);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
