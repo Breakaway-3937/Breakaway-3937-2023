@@ -94,10 +94,10 @@ public class Arm extends SubsystemBase {
   public double getScoreLength(){
     if(s_Photon.closeEnough()){
       //return s_Photon.getArmStuff().getFirst() / Constants.Arm.METER_TO_FALCON;
-      return 10;
+      return -20;
     }
     else{
-      return 10;
+      return -20;
     }
   }
 
@@ -194,10 +194,10 @@ public class Arm extends SubsystemBase {
     extensionkI = 0.0075;
     extensionkD = 7.5;
     extensionkFF = 0.3;
-    shoulder1kP = 6.5e-8;
-    shoulder1kI = 0.5e-6;
+    shoulder1kP = 5e-8; //6.5e-8
+    shoulder1kI = 0; //0.5e-6
     shoulder1kD = 0;
-    shoulder1kFF = 0.0019;
+    shoulder1kFF = 0.001; //0.0019
     rotatekP = 4e-9;
     rotatekI = 0.1e-6;
     rotatekD = 0.3e-8;

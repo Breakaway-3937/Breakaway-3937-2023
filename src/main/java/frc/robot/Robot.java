@@ -7,8 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -28,8 +26,6 @@ public class Robot extends TimedRobot {
 
   private PowerDistribution powerDistribution;
 
-  private Field2d field;
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -43,10 +39,6 @@ public class Robot extends TimedRobot {
     powerDistribution = new PowerDistribution(25, ModuleType.kRev);
     powerDistribution.setSwitchableChannel(true);
     powerDistribution.clearStickyFaults();
-
-    field = new Field2d();
-    field.getObject("traj").setTrajectory(m_robotContainer.autoTrajectories.getScoreThreeCharge0Blue());
-    Shuffleboard.getTab("Auto").add(field).withPosition(1, 0).withSize(3, 3);
   }
 
   /**

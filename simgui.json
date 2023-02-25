@@ -7,6 +7,7 @@
       "/LiveWindow/Ungrouped/Talon SRX [6]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon SRX [7]": "Motor Controller",
       "/Shuffleboard/Auto/Chooser": "String Chooser",
+      "/Shuffleboard/Auto/Field": "Field2d",
       "/Shuffleboard/Auto/SendableChooser[0]": "String Chooser",
       "/SmartDashboard/Field": "Field2d"
     },
@@ -20,9 +21,6 @@
         "image": "C:\\Users\\breakaway3937\\Downloads\\allwpilib-main\\fieldImages\\src\\main\\native\\resources\\edu\\wpi\\first\\fields\\2023-field.png",
         "traj": {
           "arrowSize": 13
-        },
-        "window": {
-          "visible": true
         }
       }
     }

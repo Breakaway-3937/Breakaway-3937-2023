@@ -18,6 +18,7 @@ public class RunArm extends CommandBase {
   private int state;
   private boolean flag, flag1;
   /** Creates a new RunArm. */
+  //public RunArm(Arm s_Arm, Joystick joystick, PhotonVision s_Photon, XboxController xboxController){
   public RunArm(Arm s_Arm, Joystick joystick, PhotonVision s_Photon, XboxController xboxController){
     this.joystick = joystick;
     this.s_Arm = s_Arm;
@@ -92,7 +93,7 @@ public class RunArm extends CommandBase {
     }*/
     if(s_Photon.getSelectedScore().get(0) || s_Photon.getSelectedScore().get(1) || s_Photon.getSelectedScore().get(2)){
       shoulderPosition = -13;
-      extensionPosition = -57500;
+      extensionPosition = -46000; //57500
       wristPosition = 36;
       turretPosition = 0;
       state = 0;
