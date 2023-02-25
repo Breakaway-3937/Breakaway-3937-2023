@@ -12,6 +12,15 @@
     },
     "windows": {
       "/SmartDashboard/Field": {
+        "Robot": {
+          "arrowSize": 23,
+          "style": "Box/Image",
+          "weight": 0.20000000298023224
+        },
+        "image": "C:\\Users\\breakaway3937\\Downloads\\allwpilib-main\\fieldImages\\src\\main\\native\\resources\\edu\\wpi\\first\\fields\\2023-field.png",
+        "traj": {
+          "arrowSize": 13
+        },
         "window": {
           "visible": true
         }
@@ -39,5 +48,8 @@
         "open": true
       }
     }
+  },
+  "NetworkTables View": {
+    "visible": false
   }
 }

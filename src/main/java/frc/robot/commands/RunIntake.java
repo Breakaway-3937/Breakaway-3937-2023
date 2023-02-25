@@ -32,13 +32,13 @@ public class RunIntake extends CommandBase {
   @Override
   public void execute() {
     if(s_Intake.intakeFull()){
-      if(Intake.getConeCubeMode() && flag){
+      if(Intake.getConeCubeMode() && !flag){
         timer.reset();
-        flag = false;
+        flag = true;
       }
       if(timer.get() > 0.25){
         s_Intake.stopIntake();
-        flag = true;
+        flag = false;
       }
     }
     else if(xboxController.getRawButton(6)){
