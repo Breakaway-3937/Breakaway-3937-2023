@@ -60,7 +60,7 @@ public class Climber extends SubsystemBase {
 
     climber2.restoreFactoryDefaults();
     climber2.setIdleMode(IdleMode.kBrake);   
-    climber2.follow(climber1, true);
+    //climber2.follow(climber1, true);
   }
 
   public void setValues(){

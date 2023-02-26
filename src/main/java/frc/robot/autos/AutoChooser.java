@@ -63,27 +63,27 @@ public class AutoChooser {
     public Command getLeaveCommunity0() {
         var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getLeaveCommunity0Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCommunity0Blue().getInitialPose())),
-                swerveControllerCommand);
-    
-        return command;
-        }
-
+        
         SequentialCommandGroup command = new SequentialCommandGroup();
+        SwerveControllerCommand swerveControllerCommand =
+        new SwerveControllerCommand(
+            trajectories.getLeaveCommunity0Blue(),
+            s_Drivetrain::getPose,
+            Constants.DriveTrain.SWERVE_KINEMATICS,
+            new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
+            new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
+            thetaController,
+            s_Drivetrain::setModuleStates,
+            s_Drivetrain);
+
+        command.addCommands(
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCommunity0Blue().getInitialPose())),
+            swerveControllerCommand);
+
+        return command;
+        
+
+        /*SequentialCommandGroup command = new SequentialCommandGroup();
         SwerveControllerCommand swerveControllerCommand =
         new SwerveControllerCommand(
             trajectories.getLeaveCommunity0Red(),
@@ -96,10 +96,10 @@ public class AutoChooser {
             s_Drivetrain);
 
         command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCommunity0Red().getInitialPose())),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCommunity0R().getInitialPose())),
             swerveControllerCommand);
 
-        return command;
+        return command;*/
         
     }
 
