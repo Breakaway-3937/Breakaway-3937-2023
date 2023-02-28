@@ -29,9 +29,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
@@ -50,16 +48,13 @@ public class PhotonVision extends SubsystemBase{
     private final PhotonCamera photonCamera;
     private final PhotonPoseEstimator photonPoseEstimator;
     private AprilTagFieldLayout atfl;
-    private GenericEntry distanceBoard, angleBoard;
-    private double x, y, d, a;
+    private double x, y;
     private double rY, rX, rR, dP, pR, theta, pX, pY, cos, angle;
-    private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridMid, hybridRight = false;
+    private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridMid, hybridRight, auto = false;
     private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
 
     public PhotonVision(LED s_LED) {
         this.s_LED = s_LED;
-        distanceBoard = Shuffleboard.getTab("SyrupTag").add("Distance", d).withPosition(0, 0).getEntry();
-        angleBoard = Shuffleboard.getTab("SyrupTag").add("Angle", a).withPosition(1, 0).getEntry();                
         try {
             atfl = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
         } catch (IOException e) {}
@@ -260,6 +255,15 @@ public class PhotonVision extends SubsystemBase{
         return array;
     }
 
+    public void setAuto(){
+        if(!auto){
+            auto = true;
+        }
+        else{
+            auto = false;
+        }
+    }
+
     public boolean closeEnough(){
         if(dP < Constants.VisionConstants.MAX_EXTEND_LENGTH + 0.54){
             return true;
@@ -295,24 +299,22 @@ public class PhotonVision extends SubsystemBase{
 
     @Override
     public void periodic(){
-        d = getArmStuff().getFirst();
-        a = getArmStuff().getSecond();
-        distanceBoard.setDouble(d);
-        angleBoard.setDouble(a);
         if(!photonCamera.isConnected()){
             s_LED.bad();
         }
         else if(photonCamera.isConnected()){
             s_LED.notBad();
         }
-        if(closeEnough()){
-            s_LED.green();
-        }
-        else if(photonCamera.getLatestResult().getBestTarget() != null){
-            s_LED.white();
-        }
-        else if(photonCamera.getLatestResult().getBestTarget() == null){
-            s_LED.red();
+        if(auto){
+            if(closeEnough()){
+                s_LED.green();
+            }
+            else if(photonCamera.getLatestResult().getBestTarget() != null){
+                s_LED.white();
+            }
+            else if(photonCamera.getLatestResult().getBestTarget() == null){
+                s_LED.red();
+            }
         }
     }
 }

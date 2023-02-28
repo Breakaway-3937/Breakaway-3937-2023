@@ -139,7 +139,7 @@ public final class Constants {
 
         /* Neutral Modes */
         public static final NeutralMode ANGLE_NEUTRAL_MODE = NeutralMode.Brake;
-        public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Coast;
+        public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
 
         /* Motor Inverts */
         public static final boolean DRIVE_MOTOR_INVERT = false;

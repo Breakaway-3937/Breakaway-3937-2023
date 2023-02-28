@@ -6,21 +6,30 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
+import frc.robot.commands.RunArmAuto;
+import frc.robot.commands.RunIntakeAuto;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
 
 public class AutoChooser {
     private final AutoTrajectories trajectories;
 
     private final DriveTrain s_Drivetrain;
+    private final Arm s_Arm;
+    private final Intake s_Intake;
 
     private final SendableChooser<AutonomousMode> autonomousModeChooser = new SendableChooser<>();
 
-    public AutoChooser(AutoTrajectories trajectories, DriveTrain s_Drivetrain) {
+    public AutoChooser(AutoTrajectories trajectories, DriveTrain s_Drivetrain, Arm s_Arm, Intake s_Intake) {
         this.s_Drivetrain = s_Drivetrain;
         this.trajectories = trajectories;
+        this.s_Arm = s_Arm;
+        this.s_Intake = s_Intake;
         autonomousModeChooser.setDefaultOption("Do Nothing", AutonomousMode.DO_NOTHING);
         autonomousModeChooser.addOption("Leave Community 0", AutonomousMode.LEAVE_COMMUNITY_0);
         autonomousModeChooser.addOption("Leave Community 1", AutonomousMode.LEAVE_COMMUNITY_1);
@@ -280,8 +289,11 @@ public class AutoChooser {
                 s_Drivetrain);
     
             command.addCommands(
+                new InstantCommand(() -> s_Intake.setCube()),
+                new RunArmAuto(s_Arm, 2),
+                new RunIntakeAuto(s_Intake, -1),
                 new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave2Blue().getInitialPose())),
-                swerveControllerCommand);
+                new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveControllerCommand));
             return command;
         }
 

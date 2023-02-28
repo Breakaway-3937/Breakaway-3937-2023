@@ -75,11 +75,11 @@ public class RobotContainer {
   /* Commands */
   public final RunIntake c_RunIntake = new RunIntake(s_Intake, xboxController);
   public final RunClimber c_RunClimber = new RunClimber(s_Climber, xboxController);
-  public final RunArm c_RunArm = new RunArm(s_Arm, buttonGrid, s_Photon, xboxController);
+  public final RunArm c_RunArm = new RunArm(s_Arm, s_Photon, xboxController);
   
   /* Autos */
   public final AutoTrajectories autoTrajectories = new AutoTrajectories();
-  private final AutoChooser autoChooser = new AutoChooser(autoTrajectories, s_DriveTrain);
+  private final AutoChooser autoChooser = new AutoChooser(autoTrajectories, s_DriveTrain, s_Arm, s_Intake);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -120,6 +120,7 @@ public class RobotContainer {
     new POVButton(xboxController, 0).onTrue(new InstantCommand(() -> s_LED.cone()).alongWith(new InstantCommand(() -> s_Intake.setCone())));
     new POVButton(xboxController, 90).onTrue(new InstantCommand(() -> s_LED.cube()).alongWith(new InstantCommand(() -> s_Intake.setCube())));
     new POVButton(xboxController, 180).onTrue(new InstantCommand(() -> s_LED.cone()).alongWith(new InstantCommand(() -> s_Intake.setDeadCone())));
+    new POVButton(xboxController, 270).onTrue(new InstantCommand(() -> s_Photon.setAuto()));
   } 
 
   public DriveTrain getDrivetrain(){

@@ -4,14 +4,12 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
 public class RunArm extends CommandBase {
   private final Arm s_Arm;
-  private final Joystick joystick;
   private final PhotonVision s_Photon;
   private final XboxController xboxController;
   private double shoulderPosition, turretPosition, extensionPosition, wristPosition;
@@ -19,8 +17,7 @@ public class RunArm extends CommandBase {
   private boolean flag, flag1;
   /** Creates a new RunArm. */
   //public RunArm(Arm s_Arm, Joystick joystick, PhotonVision s_Photon, XboxController xboxController){
-  public RunArm(Arm s_Arm, Joystick joystick, PhotonVision s_Photon, XboxController xboxController){
-    this.joystick = joystick;
+  public RunArm(Arm s_Arm, PhotonVision s_Photon, XboxController xboxController){
     this.s_Arm = s_Arm;
     this.s_Photon = s_Photon;
     this.xboxController = xboxController;
@@ -93,7 +90,7 @@ public class RunArm extends CommandBase {
     }*/
     if(s_Photon.getSelectedScore().get(0) || s_Photon.getSelectedScore().get(1) || s_Photon.getSelectedScore().get(2)){
       shoulderPosition = -13;
-      extensionPosition = -46000; //57500
+      extensionPosition = -46000;
       wristPosition = 36;
       turretPosition = 0;
       state = 0;
@@ -132,7 +129,7 @@ public class RunArm extends CommandBase {
           state = 1;
         }
         extensionPosition = -13000;
-        wristPosition = 8.5;
+        wristPosition = 6.5;
         turretPosition = 0;
         flag = false;
       }
@@ -230,7 +227,7 @@ public class RunArm extends CommandBase {
       wristPosition = 0;
     }
 
-    if(shoulderPosition == -0.2 && s_Arm.getShoulder1Position() < shoulderPosition + 1 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
+    if((shoulderPosition == -0.5 || shoulderPosition == 0) && s_Arm.getShoulder1Position() < shoulderPosition + 1 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
       s_Arm.stopShoulder();
       flag1 = true;
     }
