@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.AutoChooser;
 import frc.robot.autos.AutoTrajectories;
+import frc.robot.commands.AutoBalance;
 import frc.robot.commands.RunArm;
 import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunIntake;
@@ -53,6 +54,7 @@ public class RobotContainer {
 
   /* Driver Buttons */
   private final JoystickButton translationButton = new JoystickButton(translationController, Constants.Controllers.TRANSLATION_BUTTON);
+  private final JoystickButton rotationButton = new JoystickButton(rotationController, Constants.Controllers.ROTATION_BUTTON);
   private final JoystickButton highLeft = new JoystickButton(buttonGrid, 1);
   private final JoystickButton highMid = new JoystickButton(buttonGrid, 2);
   private final JoystickButton highRight = new JoystickButton(buttonGrid, 3);
@@ -92,7 +94,6 @@ public class RobotContainer {
 
     s_DriveTrain.setDefaultCommand(new TeleopSwerve(s_DriveTrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop));
     s_Intake.setDefaultCommand(c_RunIntake);
-    s_Arm.setDefaultCommand(c_RunArm);
     s_Climber.setDefaultCommand(c_RunClimber);
     Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
     // Configure the button bindings
@@ -108,6 +109,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* Driver Buttons */
     translationButton.onTrue(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
+    rotationButton.whileTrue(new AutoBalance(s_DriveTrain));
     highLeft.onTrue(new InstantCommand(() -> s_Photon.setHighLeft()));
     highRight.onTrue(new InstantCommand(() -> s_Photon.setHighRight()));
     highMid.onTrue(new InstantCommand(() -> s_Photon.setHighMid()));

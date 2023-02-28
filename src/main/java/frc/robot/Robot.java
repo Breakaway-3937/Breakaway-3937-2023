@@ -87,6 +87,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    m_robotContainer.s_Arm.setDefaultCommand(m_robotContainer.c_RunArm);
   }
 
   /** This function is called periodically during operator control. */

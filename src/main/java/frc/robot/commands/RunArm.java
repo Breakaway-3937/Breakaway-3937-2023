@@ -97,13 +97,13 @@ public class RunArm extends CommandBase {
     }
     else if(s_Photon.getSelectedScore().get(3) || s_Photon.getSelectedScore().get(4) || s_Photon.getSelectedScore().get(5)){
       shoulderPosition = -12.75;
-      if(extensionPosition > -29500){
+      if(extensionPosition > -24500){
         state = 0;
       }
       else{
         state = 1;
       }
-      extensionPosition = -29500;
+      extensionPosition = -24500;
       wristPosition = 43.8;
       turretPosition = 0;
     }

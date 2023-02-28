@@ -20,7 +20,7 @@ public class DriveTrain extends SubsystemBase {
     private final SwerveModule[] swerveMods;
     private final Pigeon2 gyro;
     private GenericEntry mod0Cancoder, mod1Cancoder, mod2Cancoder, mod3Cancoder;
-    private GenericEntry gyroHeading;
+    private GenericEntry gyroHeading, gyroHeading1;
 
     public DriveTrain() {
         gyro = new Pigeon2(Constants.DriveTrain.PIGEON_ID, "CANivore");
@@ -41,7 +41,8 @@ public class DriveTrain extends SubsystemBase {
         mod1Cancoder = Shuffleboard.getTab("Drive").add("Mod 1 Cancoder", swerveMods[1].getState().angle.getDegrees()).withPosition(1, 0).getEntry();
         mod2Cancoder = Shuffleboard.getTab("Drive").add("Mod 2 Cancoder", swerveMods[2].getState().angle.getDegrees()).withPosition(2, 0).getEntry();
         mod3Cancoder = Shuffleboard.getTab("Drive").add("Mod 3 Cancoder", swerveMods[3].getState().angle.getDegrees()).withPosition(3, 0).getEntry();
-        gyroHeading = Shuffleboard.getTab("Drive").add("Gyro", gyro.getYaw()).withPosition(0, 1).getEntry();
+        gyroHeading = Shuffleboard.getTab("Drive").add("Yaw", gyro.getYaw()).withPosition(0, 1).getEntry();
+        gyroHeading1 = Shuffleboard.getTab("Drive").add("Roll", gyro.getRoll()).withPosition(1, 1).getEntry();
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
@@ -78,13 +79,17 @@ public class DriveTrain extends SubsystemBase {
     }
 
     public void zeroGyro(){
-        gyro.setYaw(0);
+        gyro.setYaw(180);
     }
 
     public Rotation2d getYaw() {
         double[] ypr = new double[3];
         gyro.getYawPitchRoll(ypr);
         return (Constants.DriveTrain.INVERT_GYRO) ? Rotation2d.fromDegrees(360 - ypr[0]) : Rotation2d.fromDegrees(ypr[0]);
+    }
+
+    public double getRoll(){
+        return gyro.getRoll();
     }
 
     public void setModuleStates(SwerveModuleState[] desiredStates) {
@@ -109,5 +114,6 @@ public class DriveTrain extends SubsystemBase {
         mod3Cancoder.setDouble(swerveMods[3].getCanCoder().getDegrees());
         
         gyroHeading.setDouble(gyro.getYaw());
+        gyroHeading1.setDouble(gyro.getRoll());
     }   
 }
