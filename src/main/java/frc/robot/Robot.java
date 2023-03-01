@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -27,9 +25,6 @@ public class Robot extends TimedRobot {
   public static RobotContainer m_robotContainer;
 
   private PowerDistribution powerDistribution;
-
-  NetworkTableEntry m_xEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("X");
-  NetworkTableEntry m_yEntry = NetworkTableInstance.getDefault().getTable("troubleshooting").getEntry("Y");
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -60,8 +55,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    m_xEntry.setNumber(m_robotContainer.getDrivetrain().getPose().getX());
-    m_yEntry.setNumber(m_robotContainer.getDrivetrain().getPose().getY());
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
