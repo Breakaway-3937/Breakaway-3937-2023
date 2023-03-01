@@ -2,7 +2,11 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/Talon FX [16]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon FX [4]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon SRX [6]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon SRX [7]": "Motor Controller",
@@ -18,9 +22,11 @@
           "style": "Box/Image",
           "weight": 0.20000000298023224
         },
-        "image": "C:\\Users\\breakaway3937\\Downloads\\allwpilib-main\\fieldImages\\src\\main\\native\\resources\\edu\\wpi\\first\\fields\\2023-field.png",
         "traj": {
           "arrowSize": 13
+        },
+        "window": {
+          "visible": true
         }
       }
     }

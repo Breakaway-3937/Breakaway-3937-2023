@@ -34,7 +34,7 @@ public class DriveTrain extends SubsystemBase {
             new SwerveModule(3, Constants.DriveTrain.Mod3.CONSTANTS)
         };
 
-        swerveOdometry = new SwerveDriveOdometry(Constants.DriveTrain.SWERVE_KINEMATICS, getYaw(), getStates());
+        swerveOdometry = new SwerveDriveOdometry(Constants.DriveTrain.SWERVE_KINEMATICS, getYaw(), getPositions());
         
        
         mod0Cancoder = Shuffleboard.getTab("Drive").add("Mod 0 Cancoder", swerveMods[0].getState().angle.getDegrees()).withPosition(0, 0).getEntry();
@@ -70,12 +70,20 @@ public class DriveTrain extends SubsystemBase {
         return swerveOdometry.getPoseMeters();
     }
 
-    public SwerveModulePosition[] getStates(){
-        SwerveModulePosition[] states = new SwerveModulePosition[4];
+    public SwerveModuleState[] getStates(){
+        SwerveModuleState[] states = new SwerveModuleState[4];
         for(SwerveModule mod : swerveMods){
             states[mod.moduleNumber] = mod.getState();
         }
         return states;
+    }
+
+    public SwerveModulePosition[] getPositions(){
+        SwerveModulePosition[] positions = new SwerveModulePosition[4];
+        for(SwerveModule mod : swerveMods){
+            positions[mod.moduleNumber] = mod.getPosition();
+        }
+        return positions;
     }
 
     public void zeroGyro(){
@@ -101,12 +109,12 @@ public class DriveTrain extends SubsystemBase {
     } 
 
     public void resetOdometry(Pose2d pose) {
-        swerveOdometry.resetPosition(getYaw(), getStates(), pose);
+        swerveOdometry.resetPosition(getYaw(), getPositions(), pose);
     }
 
     @Override
     public void periodic(){
-        swerveOdometry.update(getYaw(), getStates());  
+        swerveOdometry.update(getYaw(), getPositions());  
         
         mod0Cancoder.setDouble(swerveMods[0].getCanCoder().getDegrees());
         mod1Cancoder.setDouble(swerveMods[1].getCanCoder().getDegrees());

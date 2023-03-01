@@ -1,566 +1,148 @@
 package frc.robot.autos;
 
-import java.util.List;
-
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.PathPoint;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import frc.robot.Constants;
 
 public class AutoTrajectories {
 
-    private Trajectory leaveCommunity0Blue, leaveCommunity1Blue, leaveCommunity2Blue,
-                             scoreLeave0Blue, scoreLeave1Blue, scoreLeave2Blue,
-                             scoreTwice0Blue, scoreTwice1Blue, scoreTwice2Blue,
-                             scoreThree0Blue, scoreThree1Blue, scoreThree2Blue,
-                             leaveCharge0Blue, leaveCharge1Blue, leaveCharge2Blue,
-                             scoreCharge0Blue, scoreCharge1Blue, scoreCharge2Blue,
-                             scoreTwiceCharge0Blue, scoreTwiceCharge1Blue, scoreTwiceCharge2Blue,
-                             scoreThreeCharge0Blue, scoreThreeCharge1Blue, scoreThreeCharge2Blue;
+    private PathPlannerTrajectory leaveCommunity0, leaveCommunity1, leaveCommunity2,
+                             scoreLeave0, scoreLeave1, scoreLeave2,
+                             scoreTwice0, scoreTwice1, scoreTwice2,
+                             scoreThree0, scoreThree1, scoreThree2,
+                             leaveCharge0, leaveCharge1, leaveCharge2,
+                             scoreCharge0, scoreCharge1, scoreCharge2,
+                             scoreTwiceCharge0, scoreTwiceCharge1, scoreTwiceCharge2,
+                             scoreThreeCharge0, scoreThreeCharge1, scoreThreeCharge2;
 
-    private Trajectory leaveCommunity0Red, leaveCommunity1Red, leaveCommunity2Red,
-                             scoreLeave0Red, scoreLeave1Red, scoreLeave2Red,
-                             scoreTwice0Red, scoreTwice1Red, scoreTwice2Red,
-                             scoreThree0Red, scoreThree1Red, scoreThree2Red,
-                             leaveCharge0Red, leaveCharge1Red, leaveCharge2Red,
-                             scoreCharge0Red, scoreCharge1Red, scoreCharge2Red,
-                             scoreTwiceCharge0Red, scoreTwiceCharge1Red, scoreTwiceCharge2Red,
-                             scoreThreeCharge0Red, scoreThreeCharge1Red, scoreThreeCharge2Red;
 
-    private final TrajectoryConfig config;
+    private PathConstraints constraints, slowConstraints;
 
     public AutoTrajectories() {
-        config = new TrajectoryConfig(Constants.Auto.KMAX_SPEED_METERS_PER_SECOND, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED)
-                .setKinematics(Constants.DriveTrain.SWERVE_KINEMATICS);
+        constraints = new PathConstraints(Constants.Auto.KMAX_SPEED_METERS_PER_SECOND, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
+        slowConstraints = new PathConstraints(0.5, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
     }
 
-    public Trajectory getLeaveCommunity0Blue() {
-        leaveCommunity0Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.34, 0.74, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(5.95, 0.71, Rotation2d.fromDegrees(0))), 
-                config);
-        return leaveCommunity0Blue;
+    public PathPlannerTrajectory getLeaveCommunity0() {
+        leaveCommunity0 = PathPlanner.loadPath("LeaveCommunity0", constraints);
+        return leaveCommunity0;
     }
 
-    public Trajectory getLeaveCommunity1Blue() {
-        leaveCommunity1Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.12, 2.89, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(3.93, 2.88, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(5.87, 2.89, Rotation2d.fromDegrees(0.0))), 
-                config);
-        return leaveCommunity1Blue;
+    public PathPlannerTrajectory getLeaveCommunity1() {
+        leaveCommunity1 = PathPlanner.loadPath("LeaveCommunity1", slowConstraints);
+        return leaveCommunity1;
     }
 
-    public Trajectory getLeaveCommunity2Blue() {
-        leaveCommunity2Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.21, 4.62, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(5.70, 4.60, Rotation2d.fromDegrees(0.0))), 
-                config);
-        return leaveCommunity2Blue;
+    public PathPlannerTrajectory getLeaveCommunity2() {
+        leaveCommunity2 = PathPlanner.loadPath("LeaveCommunity2", constraints);
+        return leaveCommunity2;
     }
 
-    public Trajectory getScoreLeave0Blue() {
-        scoreLeave0Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.12, 1.05, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(6.11, 0.72, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreLeave0Blue;
+    public PathPlannerTrajectory getScoreLeave0() {
+        scoreLeave0 = PathPlanner.loadPath("ScoreLeave0", constraints);
+        return scoreLeave0;
     }
 
-    public Trajectory getScoreLeave1Blue(){
-        scoreLeave1Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.10, 2.76, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(3.89, 2.68, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(5.70, 2.64, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreLeave1Blue;
+    public PathPlannerTrajectory getScoreLeave1(){
+        scoreLeave1 = PathPlanner.loadPath("ScoreLeave1", slowConstraints);
+        return scoreLeave1;
     }
 
-    public Trajectory getScoreLeave2Blue(){
-        scoreLeave2Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.16, 4.43, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(4.52, 4.64, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreLeave2Blue;
+    public PathPlannerTrajectory getScoreLeave2(){
+        scoreLeave2 = PathPlanner.loadPath("ScoreLeave2", constraints);
+        return scoreLeave2;
     }
 
-    public Trajectory getScoreTwice0Blue(){
-        scoreTwice0Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.03, 1.08, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(6.25, 0.91, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(2.03, 1.08, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreTwice0Blue;
+    public PathPlannerTrajectory getScoreTwice0(){
+        scoreTwice0 = PathPlanner.loadPath("ScoreTwo0", constraints);
+        return scoreTwice0;
     }
 
-    public Trajectory getScoreTwice1Blue(){
-        scoreTwice1Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.13, 2.76, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(6.33, 3.32, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(2.13, 2.76, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreTwice1Blue;
+    public PathPlannerTrajectory getScoreTwice1(){
+        scoreTwice1 = PathPlanner.loadPath("ScoreTwo1", slowConstraints);
+        return scoreTwice1;
     }
 
-    public Trajectory getScoreTwice2Blue(){
-        scoreTwice2Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.13, 4.42, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(6.23, 4.55, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(2.13, 4.42, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreTwice2Blue;
+    public PathPlannerTrajectory getScoreTwice2(){
+        scoreTwice2 = PathPlanner.loadPath("ScoreTwo2", constraints);
+        return scoreTwice2;
     }
 
-    public Trajectory getScoreThree0Blue(){
-        scoreThree0Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.0, 1.02, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(4.68, 0.91, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(6.37, 0.91, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(4.68, 0.91, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(2.0, 1.02, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(4.68, 0.91, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(6.38, 2.11, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(4.68, 0.91, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(2.0, 1.02, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreThree0Blue;
+    public PathPlannerTrajectory getScoreThree0(){
+        scoreThree0 = PathPlanner.loadPath("ScoreThree0", constraints);
+        return scoreThree0;
     }
 
-    public Trajectory getScoreThree1Blue(){
-        scoreThree1Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.05, 2.76, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(3.93,2.73, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(6.25, 2.12, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(3.93, 2.73, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(2.05, 2.76, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(3.93, 2.73, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(6.29, 3.34, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(3.93, 2.73, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(2.05, 2.76, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreThree1Blue;
+    public PathPlannerTrajectory getScoreThree1(){
+        scoreThree1 = PathPlanner.loadPath("ScoreThree1", slowConstraints);
+        return scoreThree1;
     }
 
-    public Trajectory getScoreThree2Blue(){
-        scoreThree2Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.11, 4.43, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(4.15, 4.65, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(6.35,4.63, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(4.15, 4.65, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(2.11, 4.43, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(4.15, 4.65, Rotation2d.fromDegrees(0)),
-                new Pose2d(6.38, 3.44, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(4.15, 4.65, Rotation2d.fromDegrees(180))), 
-                config);
-        return scoreThree2Blue;
+    public PathPlannerTrajectory getScoreThree2(){
+        scoreThree2 = PathPlanner.loadPath("ScoreThree2", constraints);
+        return scoreThree2;
     }
 
-    public Trajectory getLeaveCharge0Blue(){
-        leaveCharge0Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.18, 0.75, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(7.1, 0.93, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(3.89, 2.41, Rotation2d.fromDegrees(0.0))), 
-                config);
-        return leaveCharge0Blue;
+    public PathPlannerTrajectory getLeaveCharge0(){
+        leaveCharge0 = PathPlanner.loadPath("LeaveCharge0", constraints);
+        return leaveCharge0;
     }
 
-    public Trajectory getLeaveCharge1Blue(){
-        leaveCharge1Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.02, 2.77, Rotation2d.fromDegrees(0.0)),
-                        new Pose2d(3.89, 2.81, Rotation2d.fromDegrees(0.0)),
-                        new Pose2d(5.81, 2.76, Rotation2d.fromDegrees(0.0)),
-                        new Pose2d(3.89, 2.81, Rotation2d.fromDegrees(0.0))), 
-                        config);
-        return leaveCharge1Blue;
+    public PathPlannerTrajectory getLeaveCharge1(){
+        leaveCharge1 = PathPlanner.loadPath("LeaveCharge1", slowConstraints);
+        return leaveCharge1;
     }
 
-    public Trajectory getLeaveCharge2Blue(){
-        leaveCharge2Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.08, 4.38, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(6.35, 4.61, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(3.93, 2.81, Rotation2d.fromDegrees(0.0))), 
-                config);
-        return leaveCharge2Blue;
+    public PathPlannerTrajectory getLeaveCharge2(){
+        leaveCharge2 = PathPlanner.loadPath("LeaveCharge2", constraints);
+        return leaveCharge2;
     }
 
-    public Trajectory getScoreCharge0Blue(){
-        scoreCharge0Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(1.93, 1.04, Rotation2d.fromDegrees(180)),
-                new Pose2d(6.36, 1.29, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(3.93, 2.33, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreCharge0Blue;
+    public PathPlannerTrajectory getScoreCharge0(){
+        scoreCharge0 = PathPlanner.loadPath("ScoreCharge0", constraints);
+        return scoreCharge0;
     }
 
-    public PathPlannerTrajectory getScoreCharge1Blue(){
-        int next = 0;
-        switch(next){
-            case 1:
-            scoreCharge1Blue = TrajectoryGenerator.generateTrajectory(
-                    List.of(new Pose2d(1.93, 2.74, Rotation2d.fromDegrees(180)),
-                    new Pose2d(6, 2.75, Rotation2d.fromDegrees(180.0))),
-                    config);
-            break;
-
-            case 2:
-            scoreCharge1Blue = TrajectoryGenerator.generateTrajectory(
-                    List.of(new Pose2d(6, 2.77, Rotation2d.fromDegrees(180.0)),
-                    new Pose2d(3.92, 2.76, Rotation2d.fromDegrees(180.0))),
-                    config);
-            break;
-        }
-
-
-        /*PathPlannerTrajectory traj = PathPlanner.generatePath(
-            new PathConstraints(Constants.Auto.KMAX_SPEED_METERS_PER_SECOND, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED),
-            new PathPoint(new Translation2d(1.93, 2.74), Rotation2d.fromDegrees(180.0)),
-            new PathPoint(new Translation2d(6, 2.75), Rotation2d.fromDegrees(180.0)),
-            new PathPoint(new Translation2d(3.92, 2.76), Rotation2d.fromDegrees(180.0)));*/
-
-        PathPlannerTrajectory traj = PathPlanner.loadPath("Test", new PathConstraints(0.5, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED));
-        return traj;
+    public PathPlannerTrajectory getScoreCharge1(){
+        scoreCharge1 = PathPlanner.loadPath("ScoreCharge1", slowConstraints);
+        return scoreCharge1;
     }
 
-    public Trajectory getScoreCharge2Blue(){
-        scoreCharge2Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(1.98, 4.37, Rotation2d.fromDegrees(180)),
-                new Pose2d(6.49, 4.06, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(3.90, 3.45, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreCharge2Blue;
+    public PathPlannerTrajectory getScoreCharge2(){
+        scoreCharge2 = PathPlanner.loadPath("ScoreCharge2", constraints);
+        return scoreCharge2;
     }
 
-    public Trajectory getScoreTwiceCharge0Blue(){
-        scoreTwiceCharge0Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(1.96, 1.06, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(7.06, 0.92, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(1.96, 1.06, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(7.06, 0.92, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(3.87, 2.19, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreTwiceCharge0Blue;
+    public PathPlannerTrajectory getScoreTwiceCharge0(){
+        scoreTwiceCharge0 = PathPlanner.loadPath("ScoreTwoCharge0", constraints);
+        return scoreTwiceCharge0;
     }
 
-    public Trajectory getScoreTwiceCharge1Blue(){
-        scoreTwiceCharge1Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(1.91, 2.75, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(3.89, 2.79, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(6.64, 2.23, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(3.89, 2.79, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(1.91, 2.72, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(3.89, 2.79, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreTwiceCharge1Blue;
+    public PathPlannerTrajectory getScoreTwiceCharge1(){
+        scoreTwiceCharge1 = PathPlanner.loadPath("ScoreTwoCharge1", slowConstraints);
+        return scoreTwiceCharge1;
     }
 
-    public Trajectory getScoreTwiceCharge2Blue(){
-        scoreTwiceCharge2Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(1.93, 4.40, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(6.50, 4.62, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(1.93, 4.40,  Rotation2d.fromDegrees(180.0)),
-                new Pose2d(6.50, 4.62, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(3.90, 3.31, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreTwiceCharge2Blue;
+    public PathPlannerTrajectory getScoreTwiceCharge2(){
+        scoreTwiceCharge2 = PathPlanner.loadPath("ScoreTwoCharge2", constraints);
+        return scoreTwiceCharge2;
     }
 
-    public Trajectory getScoreThreeCharge0Blue(){
-        scoreThreeCharge0Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(2.05, 1.03, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(6.58, 0.92, Rotation2d.fromDegrees(0)),
-                new Pose2d(2.05, 1.03, Rotation2d.fromDegrees(180)),
-                new Pose2d(6.64, 1.64, Rotation2d.fromDegrees(51.84)),
-                new Pose2d(2.05, 1.03, Rotation2d.fromDegrees(180)),
-                new Pose2d(3.88, 2.33, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreThreeCharge0Blue;
+    public PathPlannerTrajectory getScoreThreeCharge0(){
+        scoreThreeCharge0 = PathPlanner.loadPath("ScoreThreeCharge0", constraints);
+        return scoreThreeCharge0;
     }
 
-    public Trajectory getScoreThreeCharge1Blue(){
-        scoreThreeCharge1Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(1.95, 3.03, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(3.93, 2.86, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(6.62, 2.08, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(3.93, 2.86, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(1.95, 3.03, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(3.93, 2.86, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(6.45, 3.34, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(3.93, 2.86, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(1.95, 3.03, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(3.93, 2.86, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreThreeCharge1Blue;
+    public PathPlannerTrajectory getScoreThreeCharge1(){
+        scoreThreeCharge1 = PathPlanner.loadPath("ScoreThreeCharge1", slowConstraints);
+        return scoreThreeCharge1;
     }
 
-    public Trajectory getScoreThreeCharge2Blue(){
-        scoreThreeCharge2Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(1.95, 4.39, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(6.40, 4.63, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(1.95, 4.39, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(6.42, 3.82, Rotation2d.fromDegrees(-35.07)),
-                new Pose2d(1.95, 4.39, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(6.40, 4.63, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(3.91, 3.44, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreThreeCharge2Blue;
-    }
-
-    public Trajectory getLeaveCommunity0Red() {
-        leaveCommunity0Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.34, 0.74, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 5.95, 0.71, Rotation2d.fromDegrees(0))), 
-                config);
-        return leaveCommunity0Red;
-    }
-
-    public Trajectory getLeaveCommunity1Red() {
-        leaveCommunity1Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.12, 2.89, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 3.93, 2.88, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 5.87, 2.89, Rotation2d.fromDegrees(0.0))), 
-                config);
-        return leaveCommunity1Red;
-    }
-
-    public Trajectory getLeaveCommunity2Red() {
-        leaveCommunity2Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.21, 4.62, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 5.70, 4.60, Rotation2d.fromDegrees(0.0))), 
-                config);
-        return leaveCommunity2Red;
-    }
-
-    public Trajectory getScoreLeave0Red() {
-        scoreLeave0Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.12, 1.05, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 6.11, 0.72, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreLeave0Red;
-    }
-
-    public Trajectory getScoreLeave1Red(){
-        scoreLeave1Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.10, 2.76, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 3.89, 2.68, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 5.70, 2.64, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreLeave1Red;
-    }
-
-    public Trajectory getScoreLeave2Red(){
-        scoreLeave2Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.16, 4.43, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 4.52, 4.64, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreLeave2Red;
-    }
-
-    public Trajectory getScoreTwice0Red(){
-        scoreTwice0Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.03, 1.08, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 6.25, 0.91, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 2.03, 1.08, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreTwice0Red;
-    }
-
-    public Trajectory getScoreTwice1Red(){
-        scoreTwice1Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.13, 2.76, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 6.33, 3.32, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 2.13, 2.76, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreTwice1Red;
-    }
-
-    public Trajectory getScoreTwice2Red(){
-        scoreTwice2Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.13, 4.42, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 6.23, 4.55, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 2.13, 4.42, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreTwice2Red;
-    }
-
-    public Trajectory getScoreThree0Red(){
-        scoreThree0Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.0, 1.02, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 4.68, 0.91, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 6.37, 0.91, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 4.68, 0.91, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 2.0, 1.02, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 4.68, 0.91, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 6.38, 2.11, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 4.68, 0.91, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 2.0, 1.02, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreThree0Red;
-    }
-
-    public Trajectory getScoreThree1Red(){
-        scoreThree1Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.05, 2.76, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 3.93,2.73, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 6.25, 2.12, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 3.93, 2.73, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 2.05, 2.76, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 3.93, 2.73, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 6.29, 3.34, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 3.93, 2.73, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 2.05, 2.76, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreThree1Red;
-    }
-
-    public Trajectory getScoreThree2Red(){
-        scoreThree2Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.11, 4.43, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 4.15, 4.65, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 6.35,4.63, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 4.15, 4.65, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 2.11, 4.43, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 4.15, 4.65, Rotation2d.fromDegrees(0)),
-                new Pose2d(16.5 - 6.38, 3.44, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 4.15, 4.65, Rotation2d.fromDegrees(180))), 
-                config);
-        return scoreThree2Red;
-    }
-
-    public Trajectory getLeaveCharge0Red(){
-        leaveCharge0Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.18, 0.75, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 7.1, 0.93, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 3.89, 2.41, Rotation2d.fromDegrees(0.0))), 
-                config);
-        return leaveCharge0Red;
-    }
-
-    public Trajectory getLeaveCharge1Red(){
-        leaveCharge1Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.02, 2.77, Rotation2d.fromDegrees(0.0)),
-                        new Pose2d(16.5 - 3.89, 2.81, Rotation2d.fromDegrees(0.0)),
-                        new Pose2d(16.5 - 5.81, 2.76, Rotation2d.fromDegrees(0.0)),
-                        new Pose2d(16.5 - 3.89, 2.81, Rotation2d.fromDegrees(0.0))), 
-                        config);
-        return leaveCharge1Red;
-    }
-
-    public Trajectory getLeaveCharge2Red(){
-        leaveCharge2Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.08, 4.38, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 6.35, 4.61, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 3.93, 2.81, Rotation2d.fromDegrees(0.0))), 
-                config);
-        return leaveCharge2Red;
-    }
-
-    public Trajectory getScoreCharge0Red(){
-        scoreCharge0Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 1.93, 1.04, Rotation2d.fromDegrees(180)),
-                new Pose2d(16.5 - 6.36, 1.29, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 3.93, 2.33, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreCharge0Red;
-    }
-
-    public Trajectory getScoreCharge1Red(){
-        scoreCharge1Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 1.93, 2.74, Rotation2d.fromDegrees(180)),
-                new Pose2d(16.5 - 3.92, 2.75, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreCharge1Red;
-    }
-
-    public Trajectory getScoreCharge2Red(){
-        scoreCharge2Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 1.98, 4.37, Rotation2d.fromDegrees(180)),
-                new Pose2d(16.5 - 6.49, 4.06, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 3.90, 3.45, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreCharge2Red;
-    }
-
-    public Trajectory getScoreTwiceCharge0Red(){
-        scoreTwiceCharge0Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 1.96, 1.06, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 7.06, 0.92, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 1.96, 1.06, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 7.06, 0.92, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 3.87, 2.19, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreTwiceCharge0Red;
-    }
-
-    public Trajectory getScoreTwiceCharge1Red(){
-        scoreTwiceCharge1Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 1.91, 2.75, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 3.89, 2.79, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 6.64, 2.23, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 3.89, 2.79, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 1.91, 2.72, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 3.89, 2.79, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreTwiceCharge1Red;
-    }
-
-    public Trajectory getScoreTwiceCharge2Red(){
-        scoreTwiceCharge2Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 1.93, 4.40, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 6.50, 4.62, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 1.93, 4.40,  Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 6.50, 4.62, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 3.90, 3.31, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreTwiceCharge2Red;
-    }
-
-    public Trajectory getScoreThreeCharge0Red(){
-        scoreThreeCharge0Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 2.05, 1.03, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 6.58, 0.92, Rotation2d.fromDegrees(0)),
-                new Pose2d(16.5 - 2.05, 1.03, Rotation2d.fromDegrees(180)),
-                new Pose2d(16.5 - 6.64, 1.64, Rotation2d.fromDegrees(51.84)),
-                new Pose2d(16.5 - 2.05, 1.03, Rotation2d.fromDegrees(180)),
-                new Pose2d(16.5 - 3.88, 2.33, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreThreeCharge0Red;
-    }
-
-    public Trajectory getScoreThreeCharge1Red(){
-        scoreThreeCharge1Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 1.95, 3.03, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 3.93, 2.86, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 6.62, 2.08, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 3.93, 2.86, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 1.95, 3.03, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 3.93, 2.86, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 6.45, 3.34, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 3.93, 2.86, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(1.95, 3.03, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 3.93, 2.86, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreThreeCharge1Red;
-    }
-
-    public Trajectory getScoreThreeCharge2Red(){
-        scoreThreeCharge2Red = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(16.5 - 1.95, 4.39, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 6.40, 4.63, Rotation2d.fromDegrees(0.0)),
-                new Pose2d(16.5 - 1.95, 4.39, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 6.42, 3.82, Rotation2d.fromDegrees(-35.07)),
-                new Pose2d(16.5 - 1.95, 4.39, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 6.40, 4.63, Rotation2d.fromDegrees(180.0)),
-                new Pose2d(16.5 - 3.91, 3.44, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreThreeCharge2Red;
+    public PathPlannerTrajectory getScoreThreeCharge2(){
+        scoreThreeCharge2 = PathPlanner.loadPath("ScoreThreeCharge2", constraints);
+        return scoreThreeCharge2;
     }
 
 }

@@ -3,19 +3,14 @@ package frc.robot.autos;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
 import frc.robot.commands.AutoBalanceAuto;
 import frc.robot.commands.RunArmAuto;
-import frc.robot.commands.RunIntakeAuto;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
@@ -70,652 +65,360 @@ public class AutoChooser {
 
     public Command getDoNothing() {
         SequentialCommandGroup command = new SequentialCommandGroup();
+        command.addCommands(new RunArmAuto(s_Arm, 0));
         return command;
     }
 
     public Command getLeaveCommunity0() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        
+
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getLeaveCommunity0(), 
+            s_Drivetrain::getPose, 
+            Constants.DriveTrain.SWERVE_KINEMATICS,
+            new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
+            new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
+            thetaController,
+            s_Drivetrain::setModuleStates, 
+            true,
+            s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getLeaveCommunity0Blue(),
-            s_Drivetrain::getPose,
-            Constants.DriveTrain.SWERVE_KINEMATICS,
-            new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-            new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-            thetaController,
-            s_Drivetrain::setModuleStates,
-            s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCommunity0Blue().getInitialPose())),
-            swerveControllerCommand);
-
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCommunity0().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
-        
-
-        /*SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getLeaveCommunity0Red(),
-            s_Drivetrain::getPose,
-            Constants.DriveTrain.SWERVE_KINEMATICS,
-            new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-            new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-            thetaController,
-            s_Drivetrain::setModuleStates,
-            s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCommunity0R().getInitialPose())),
-            swerveControllerCommand);
-
-        return command;*/
         
     }
 
     public Command getLeaveCommunity1() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getLeaveCommunity1Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCommunity1Blue().getInitialPose())),
-                swerveControllerCommand);
-        return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getLeaveCommunity1Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getLeaveCommunity1(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCommunity1Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCommunity1().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getLeaveCommunity2() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getLeaveCommunity2Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCommunity2Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getLeaveCommunity2Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getLeaveCommunity2(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCommunity2Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCommunity2().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getScoreLeave0() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreLeave0Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave0Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreLeave0Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreLeave0(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave0Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave0().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getScoreLeave1() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreLeave1Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave1Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreLeave1Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreLeave1(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave1Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave1().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getScoreLeave2() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreLeave2Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Intake.setCube()),
-                new RunArmAuto(s_Arm, 2),
-                new RunIntakeAuto(s_Intake, -1),
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave2Blue().getInitialPose())),
-                new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveControllerCommand));
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreLeave2Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreLeave2(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave2Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave2().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getScoreTwice0() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreTwice0Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice0Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreTwice0Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreTwice0(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice0Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice0().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getScoreTwice1() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreTwice1Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice1Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreTwice1Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreTwice1(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice1Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice1().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getScoreTwice2() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreTwice2Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice2Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreTwice2Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreTwice2(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice2Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice2().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
     
     public Command getScoreThree0() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreThree0Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThree0Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreThree0Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreThree0(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThree0Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThree0().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getScoreThree1() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreThree1Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThree1Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreThree1Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreThree1(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThree1Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThree1().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getScoreThree2() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreThree2Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThree2Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreThree2Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreThree2(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThree2Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThree2().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getLeaveCharge0() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getLeaveCharge0Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge0Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getLeaveCharge0Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getLeaveCharge0(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge0Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge0().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getLeaveCharge1() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getLeaveCharge1Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge1Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getLeaveCharge1Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getLeaveCharge1(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge1Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge1().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getLeaveCharge2() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getLeaveCharge2Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge2Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getLeaveCharge2Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getLeaveCharge2(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge2Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge2().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getScoreCharge0() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreCharge0Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge0Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreCharge0Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreCharge0(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge0Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge0().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
@@ -724,348 +427,175 @@ public class AutoChooser {
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
-            trajectories.getScoreCharge1Blue(), 
+            trajectories.getScoreCharge1(), 
             s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            false,
+            true,
             s_Drivetrain);
-
-        /*if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreCharge1Blue(1),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-
-            SwerveControllerCommand swerveControllerCommand1 =
-                new SwerveControllerCommand(
-                    trajectories.getScoreCharge1Blue(2),
-                    s_Drivetrain::getPose,
-                    Constants.DriveTrain.SWERVE_KINEMATICS,
-                    new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                    new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                    thetaController,
-                    s_Drivetrain::setModuleStates,
-                    s_Drivetrain);*/
-    SequentialCommandGroup command = new SequentialCommandGroup();
+        SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new InstantCommand(() -> s_Intake.setCube()),
-            new RunArmAuto(s_Arm, 2),
-            new RunIntakeAuto(s_Intake, -1),
             new RunArmAuto(s_Arm, 0),
-            //new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge1Blue().getInitialHolonomicPose())),
-            //new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
-            //swerveCommand);
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge1().getInitialHolonomicPose())),
+            swerveCommand,
             new AutoBalanceAuto(s_Drivetrain));
         return command;
     }
-    /*}
-
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreCharge1Red(),
-            s_Drivetrain::getPose,
-            Constants.DriveTrain.SWERVE_KINEMATICS,
-            new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-            new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-            thetaController,
-            s_Drivetrain::setModuleStates,
-            s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge1Red().getInitialPose())),
-            swerveControllerCommand);
-        return command;*/
-    //}
 
     public Command getScoreCharge2() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreCharge2Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge2Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreCharge2Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreCharge2(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge2Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge2().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getScoreTwiceCharge0() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreTwiceCharge0Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwiceCharge0Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreTwiceCharge0Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreTwiceCharge0(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice0Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwiceCharge0().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getScoreTwiceCharge1() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreTwiceCharge1Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwiceCharge1Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreTwiceCharge1Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreTwiceCharge1(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice1Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwiceCharge1().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getScoreTwiceCharge2() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreTwiceCharge2Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwiceCharge2Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreTwiceCharge2Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreTwiceCharge2(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice2Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwiceCharge2().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getScoreThreeCharge0() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreThreeCharge0Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThreeCharge0Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreThreeCharge0Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreThreeCharge0(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThreeCharge0Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThreeCharge0().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
     public Command getScoreThreeCharge1() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreThreeCharge1Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThreeCharge1Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreThreeCharge1Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreThreeCharge1(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThreeCharge1Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThreeCharge1().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
     
     public Command getScoreThreeCharge2() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
-            SequentialCommandGroup command = new SequentialCommandGroup();
-            SwerveControllerCommand swerveControllerCommand =
-            new SwerveControllerCommand(
-                trajectories.getScoreThreeCharge2Blue(),
-                s_Drivetrain::getPose,
-                Constants.DriveTrain.SWERVE_KINEMATICS,
-                new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-                new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-                thetaController,
-                s_Drivetrain::setModuleStates,
-                s_Drivetrain);
-    
-            command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThreeCharge2Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
 
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            trajectories.getScoreThreeCharge2Red(),
-            s_Drivetrain::getPose,
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreThreeCharge2(), 
+            s_Drivetrain::getPose, 
             Constants.DriveTrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
-            s_Drivetrain::setModuleStates,
+            s_Drivetrain::setModuleStates, 
+            true,
             s_Drivetrain);
-
-        command.addCommands(
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThreeCharge2Red().getInitialPose())),
-            swerveControllerCommand);
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreThreeCharge2().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
