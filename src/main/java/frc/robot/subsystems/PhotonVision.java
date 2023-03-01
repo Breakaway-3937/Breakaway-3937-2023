@@ -50,7 +50,7 @@ public class PhotonVision extends SubsystemBase{
     private AprilTagFieldLayout atfl;
     private double x, y;
     private double rY, rX, rR, dP, pR, theta, pX, pY, cos, angle;
-    private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridMid, hybridRight, auto = false;
+    private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridMid, hybridRight, auto, flag = false;
     private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
 
     public PhotonVision(LED s_LED) {
@@ -299,11 +299,12 @@ public class PhotonVision extends SubsystemBase{
 
     @Override
     public void periodic(){
-        if(!photonCamera.isConnected()){
+        if(!flag && !photonCamera.isConnected()){
             s_LED.bad();
         }
-        else if(photonCamera.isConnected()){
+        else if(!flag && photonCamera.isConnected()){
             s_LED.notBad();
+            flag = true;
         }
         if(auto){
             if(closeEnough()){

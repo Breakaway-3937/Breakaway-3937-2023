@@ -11,6 +11,7 @@ import frc.robot.subsystems.Climber;
 public class RunClimber extends CommandBase {
   private final Climber s_Climber;
   private final XboxController xboxController;
+ 
   /** Creates a new RunClimber. */
   public RunClimber(Climber s_Climber, XboxController xboxController){
     this.xboxController = xboxController;
@@ -21,12 +22,13 @@ public class RunClimber extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(xboxController.getRawButton(5)){
+    if (xboxController.getRawButton(5)){
       s_Climber.setClimber(42);
     }
     else if(xboxController.getRawAxis(2) > 0.5){

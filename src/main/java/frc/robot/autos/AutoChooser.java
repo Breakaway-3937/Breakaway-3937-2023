@@ -1,7 +1,10 @@
 package frc.robot.autos;
 
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -10,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
+import frc.robot.commands.AutoBalanceAuto;
 import frc.robot.commands.RunArmAuto;
 import frc.robot.commands.RunIntakeAuto;
 import frc.robot.subsystems.Arm;
@@ -716,13 +720,25 @@ public class AutoChooser {
     }
 
     public Command getScoreCharge1() {
-        var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
-        if(DriverStation.getAlliance().name().equals("Blue")){
+
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreCharge1Blue(), 
+            s_Drivetrain::getPose, 
+            Constants.DriveTrain.SWERVE_KINEMATICS,
+            new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
+            new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
+            thetaController,
+            s_Drivetrain::setModuleStates, 
+            false,
+            s_Drivetrain);
+
+        /*if(DriverStation.getAlliance().name().equals("Blue")){
             SequentialCommandGroup command = new SequentialCommandGroup();
             SwerveControllerCommand swerveControllerCommand =
             new SwerveControllerCommand(
-                trajectories.getScoreCharge1Blue(),
+                trajectories.getScoreCharge1Blue(1),
                 s_Drivetrain::getPose,
                 Constants.DriveTrain.SWERVE_KINEMATICS,
                 new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
@@ -730,12 +746,30 @@ public class AutoChooser {
                 thetaController,
                 s_Drivetrain::setModuleStates,
                 s_Drivetrain);
-    
+
+            SwerveControllerCommand swerveControllerCommand1 =
+                new SwerveControllerCommand(
+                    trajectories.getScoreCharge1Blue(2),
+                    s_Drivetrain::getPose,
+                    Constants.DriveTrain.SWERVE_KINEMATICS,
+                    new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
+                    new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
+                    thetaController,
+                    s_Drivetrain::setModuleStates,
+                    s_Drivetrain);*/
+    SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-                new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge1Blue().getInitialPose())),
-                swerveControllerCommand);
-            return command;
-        }
+            new InstantCommand(() -> s_Intake.setCube()),
+            new RunArmAuto(s_Arm, 2),
+            new RunIntakeAuto(s_Intake, -1),
+            new RunArmAuto(s_Arm, 0),
+            //new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge1Blue().getInitialHolonomicPose())),
+            //new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
+            //swerveCommand);
+            new AutoBalanceAuto(s_Drivetrain));
+        return command;
+    }
+    /*}
 
         SequentialCommandGroup command = new SequentialCommandGroup();
         SwerveControllerCommand swerveControllerCommand =
@@ -752,8 +786,8 @@ public class AutoChooser {
         command.addCommands(
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge1Red().getInitialPose())),
             swerveControllerCommand);
-        return command;
-    }
+        return command;*/
+    //}
 
     public Command getScoreCharge2() {
         var thetaController = new ProfiledPIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0, Constants.Auto.KTHETA_CONTROLLER_CONSTRAINTS);

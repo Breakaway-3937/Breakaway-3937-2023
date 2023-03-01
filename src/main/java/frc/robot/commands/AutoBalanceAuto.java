@@ -8,12 +8,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
-public class AutoBalance extends CommandBase {
+public class AutoBalanceAuto extends CommandBase {
   private final DriveTrain s_Drivetrain;
   private double value = 0;
-  private double acceptable = 3;
-  /** Creates a new AutoBalance. */
-  public AutoBalance(DriveTrain s_Drivetrain) {
+  private double acceptable = 2;
+  private boolean flag = false;
+  /** Creates a new AutoBalanceAuto. */
+  public AutoBalanceAuto(DriveTrain s_Drivetrain) {
     this.s_Drivetrain = s_Drivetrain;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(s_Drivetrain);
@@ -23,12 +24,21 @@ public class AutoBalance extends CommandBase {
   @Override
   public void initialize() {
     value = 0;
+    flag = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    s_Drivetrain.drive(new Translation2d(value, 0), 0, true, false);
+    if(!flag){
+      s_Drivetrain.drive(new Translation2d(0.7, 0), 0, true, false);
+    }
+    if(Math.abs(s_Drivetrain.getRoll()) > 9){
+      flag = true;
+    }
+    if(flag){
+      s_Drivetrain.drive(new Translation2d(value, 0), 0, true, false);
+    }
     if((s_Drivetrain.getYaw().getDegrees() % 360 > 315 || s_Drivetrain.getYaw().getDegrees() % 360 < 45) && Math.abs(s_Drivetrain.getRoll()) > acceptable){
       if(s_Drivetrain.getRoll() < 0){
         value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * -0.02;
@@ -45,8 +55,8 @@ public class AutoBalance extends CommandBase {
         value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * 0.02;
       }
     }
-    else if(Math.abs(s_Drivetrain.getRoll()) < acceptable){
-      s_Drivetrain.drive(new Translation2d(0, 0), 0.3, true, false);
+    else if(Math.abs(s_Drivetrain.getRoll()) < acceptable && flag){
+      s_Drivetrain.drive(new Translation2d(-value, 0), 0.3, true, false);
       s_Drivetrain.drive(new Translation2d(0, 0), 0, true, false);
     }
   }

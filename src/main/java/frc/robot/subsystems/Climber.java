@@ -43,6 +43,7 @@ public class Climber extends SubsystemBase {
 
   private void configMotors(){
     climber1.restoreFactoryDefaults();
+    climber2.restoreFactoryDefaults();
     climber1Encoder = climber1.getEncoder();
     pid1 = climber1.getPIDController();
     pid1.setFeedbackDevice(climber1Encoder);
@@ -52,13 +53,12 @@ public class Climber extends SubsystemBase {
     climber1.setInverted(false);
     pid1.setSmartMotionMaxVelocity(500, 0);
     pid1.setSmartMotionMaxAccel(254, 0);
-
     pid1.setP(climber1kP);
     pid1.setI(climber1kI);
     pid1.setD(climber1kD);
     pid1.setFF(climber1kFF);
 
-    climber2.restoreFactoryDefaults();
+    
     climber2.setIdleMode(IdleMode.kBrake);   
     climber2.follow(climber1, true);
   }

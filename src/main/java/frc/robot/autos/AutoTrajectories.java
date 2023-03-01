@@ -2,8 +2,14 @@ package frc.robot.autos;
 
 import java.util.List;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPoint;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
@@ -194,12 +200,33 @@ public class AutoTrajectories {
         return scoreCharge0Blue;
     }
 
-    public Trajectory getScoreCharge1Blue(){
-        scoreCharge1Blue = TrajectoryGenerator.generateTrajectory(
-                List.of(new Pose2d(1.93, 2.74, Rotation2d.fromDegrees(180)),
-                new Pose2d(3.92, 2.75, Rotation2d.fromDegrees(180.0))), 
-                config);
-        return scoreCharge1Blue;
+    public PathPlannerTrajectory getScoreCharge1Blue(){
+        int next = 0;
+        switch(next){
+            case 1:
+            scoreCharge1Blue = TrajectoryGenerator.generateTrajectory(
+                    List.of(new Pose2d(1.93, 2.74, Rotation2d.fromDegrees(180)),
+                    new Pose2d(6, 2.75, Rotation2d.fromDegrees(180.0))),
+                    config);
+            break;
+
+            case 2:
+            scoreCharge1Blue = TrajectoryGenerator.generateTrajectory(
+                    List.of(new Pose2d(6, 2.77, Rotation2d.fromDegrees(180.0)),
+                    new Pose2d(3.92, 2.76, Rotation2d.fromDegrees(180.0))),
+                    config);
+            break;
+        }
+
+
+        /*PathPlannerTrajectory traj = PathPlanner.generatePath(
+            new PathConstraints(Constants.Auto.KMAX_SPEED_METERS_PER_SECOND, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED),
+            new PathPoint(new Translation2d(1.93, 2.74), Rotation2d.fromDegrees(180.0)),
+            new PathPoint(new Translation2d(6, 2.75), Rotation2d.fromDegrees(180.0)),
+            new PathPoint(new Translation2d(3.92, 2.76), Rotation2d.fromDegrees(180.0)));*/
+
+        PathPlannerTrajectory traj = PathPlanner.loadPath("Test", new PathConstraints(0.5, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED));
+        return traj;
     }
 
     public Trajectory getScoreCharge2Blue(){
