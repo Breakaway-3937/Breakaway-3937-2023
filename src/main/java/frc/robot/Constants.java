@@ -12,7 +12,6 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import frc.lib.util.SwerveModuleConstants;
@@ -205,11 +204,6 @@ public final class Constants {
         public static final double KP_X_CONTROLLER = 1;
         public static final double KP_Y_CONTROLLER = 1;
         public static final double KP_THETA_CONTROLLER = 5;
-    
-        // Constraint for the motion profilied robot angle controller
-        public static final TrapezoidProfile.Constraints KTHETA_CONTROLLER_CONSTRAINTS =
-            new TrapezoidProfile.Constraints(
-                KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND, KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED);
     }
 
     public static final class Intake{
