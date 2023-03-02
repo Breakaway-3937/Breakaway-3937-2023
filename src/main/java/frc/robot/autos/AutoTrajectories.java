@@ -22,7 +22,7 @@ public class AutoTrajectories {
 
     public AutoTrajectories() {
         constraints = new PathConstraints(Constants.Auto.KMAX_SPEED_METERS_PER_SECOND, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
-        slowConstraints = new PathConstraints(0.5, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
+        slowConstraints = new PathConstraints(1.5, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
     }
 
     public PathPlannerTrajectory getLeaveCommunity0() {
