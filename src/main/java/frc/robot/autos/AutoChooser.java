@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.AutoBalanceAuto;
 import frc.robot.commands.RunArmAuto;
+import frc.robot.commands.RunIntakeAuto;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
@@ -30,33 +31,33 @@ public class AutoChooser {
         this.s_Arm = s_Arm;
         this.s_Intake = s_Intake;
         autonomousModeChooser.setDefaultOption("Do Nothing", AutonomousMode.DO_NOTHING);
-        autonomousModeChooser.addOption("Leave Community 0", AutonomousMode.LEAVE_COMMUNITY_0);
-        autonomousModeChooser.addOption("Leave Community 1", AutonomousMode.LEAVE_COMMUNITY_1);
-        autonomousModeChooser.addOption("Leave Community 2", AutonomousMode.LEAVE_COMMUNITY_2);
-        autonomousModeChooser.addOption("Leave Charge 0", AutonomousMode.LEAVE_CHARGE_0);
-        autonomousModeChooser.addOption("Leave Charge 1", AutonomousMode.LEAVE_CHARGE_1);
-        autonomousModeChooser.addOption("Leave Charge 2", AutonomousMode.LEAVE_CHARGE_2);
-        autonomousModeChooser.addOption("Score Leave 0", AutonomousMode.SCORE_LEAVE_0);
-        autonomousModeChooser.addOption("Score Leave 1", AutonomousMode.SCORE_LEAVE_1);
-        autonomousModeChooser.addOption("Score Leave 2", AutonomousMode.SCORE_LEAVE_2);
-        autonomousModeChooser.addOption("Score Twice 0", AutonomousMode.SCORE_TWICE_0);
-        autonomousModeChooser.addOption("Score Twice 1", AutonomousMode.SCORE_TWICE_1);
-        autonomousModeChooser.addOption("Score Twice 2", AutonomousMode.SCORE_TWICE_2);
-        autonomousModeChooser.addOption("Score Three 0", AutonomousMode.SCORE_THREE_0);
-        autonomousModeChooser.addOption("Score Three 1", AutonomousMode.SCORE_THREE_1);
-        autonomousModeChooser.addOption("Score Three 2", AutonomousMode.SCORE_THREE_2);
-        autonomousModeChooser.addOption("Leave Charge 0", AutonomousMode.LEAVE_CHARGE_0);
-        autonomousModeChooser.addOption("Leave Charge 1", AutonomousMode.LEAVE_CHARGE_1);
-        autonomousModeChooser.addOption("Leave Charge 2", AutonomousMode.LEAVE_CHARGE_2);
-        autonomousModeChooser.addOption("Score Charge 0", AutonomousMode.SCORE_CHARGE_0);
-        autonomousModeChooser.addOption("Score Charge 1", AutonomousMode.SCORE_CHARGE_1);
-        autonomousModeChooser.addOption("Score Charge 2", AutonomousMode.SCORE_CHARGE_2);
-        autonomousModeChooser.addOption("Score Twice Charge 0", AutonomousMode.SCORE_TWICE_CHARGE_0);
-        autonomousModeChooser.addOption("Score Twice Charge 1", AutonomousMode.SCORE_TWICE_CHARGE_1);
-        autonomousModeChooser.addOption("Score Twice Charge 2", AutonomousMode.SCORE_TWICE_CHARGE_2);
-        autonomousModeChooser.addOption("Score Three Charge 0", AutonomousMode.SCORE_THREE_CHARGE_0);
-        autonomousModeChooser.addOption("Score Three Charge 1", AutonomousMode.SCORE_THREE_CHARGE_1);
-        autonomousModeChooser.addOption("Score Three Charge 2", AutonomousMode.SCORE_THREE_CHARGE_2);
+        autonomousModeChooser.addOption("Leave Community Right", AutonomousMode.LEAVE_COMMUNITY_0);
+        autonomousModeChooser.addOption("Leave Community Mid", AutonomousMode.LEAVE_COMMUNITY_1);
+        autonomousModeChooser.addOption("Leave Community Left", AutonomousMode.LEAVE_COMMUNITY_2);
+        autonomousModeChooser.addOption("Leave Charge Right", AutonomousMode.LEAVE_CHARGE_0);
+        autonomousModeChooser.addOption("Leave Charge Mid", AutonomousMode.LEAVE_CHARGE_1);
+        autonomousModeChooser.addOption("Leave Charge Left", AutonomousMode.LEAVE_CHARGE_2);
+        autonomousModeChooser.addOption("Score Leave Right", AutonomousMode.SCORE_LEAVE_0);
+        autonomousModeChooser.addOption("Score Leave Mid", AutonomousMode.SCORE_LEAVE_1);
+        autonomousModeChooser.addOption("Score Leave Left", AutonomousMode.SCORE_LEAVE_2);
+        autonomousModeChooser.addOption("Score Twice Right", AutonomousMode.SCORE_TWICE_0);
+        autonomousModeChooser.addOption("Score Twice Mid", AutonomousMode.SCORE_TWICE_1);
+        autonomousModeChooser.addOption("Score Twice Left", AutonomousMode.SCORE_TWICE_2);
+        autonomousModeChooser.addOption("Score Three Right", AutonomousMode.SCORE_THREE_0);
+        autonomousModeChooser.addOption("Score Three Mid", AutonomousMode.SCORE_THREE_1);
+        autonomousModeChooser.addOption("Score Three Left", AutonomousMode.SCORE_THREE_2);
+        autonomousModeChooser.addOption("Leave Charge Right", AutonomousMode.LEAVE_CHARGE_0);
+        autonomousModeChooser.addOption("Leave Charge Mid", AutonomousMode.LEAVE_CHARGE_1);
+        autonomousModeChooser.addOption("Leave Charge Left", AutonomousMode.LEAVE_CHARGE_2);
+        autonomousModeChooser.addOption("Score Charge Right", AutonomousMode.SCORE_CHARGE_0);
+        autonomousModeChooser.addOption("Score Charge Mid", AutonomousMode.SCORE_CHARGE_1);
+        autonomousModeChooser.addOption("Score Charge Left", AutonomousMode.SCORE_CHARGE_2);
+        autonomousModeChooser.addOption("Score Twice Charge Right", AutonomousMode.SCORE_TWICE_CHARGE_0);
+        autonomousModeChooser.addOption("Score Twice Charge Mid", AutonomousMode.SCORE_TWICE_CHARGE_1);
+        autonomousModeChooser.addOption("Score Twice Charge Left", AutonomousMode.SCORE_TWICE_CHARGE_2);
+        autonomousModeChooser.addOption("Score Three Charge Right", AutonomousMode.SCORE_THREE_CHARGE_0);
+        autonomousModeChooser.addOption("Score Three Charge Mid", AutonomousMode.SCORE_THREE_CHARGE_1);
+        autonomousModeChooser.addOption("Score Three Charge Left", AutonomousMode.SCORE_THREE_CHARGE_2);
     }
 
     public SendableChooser<AutonomousMode> getModeChooser() {
@@ -81,7 +82,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
@@ -104,7 +105,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
@@ -126,7 +127,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
@@ -148,11 +149,13 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Intake.setCube()),
+            new RunArmAuto(s_Arm, 2),
+            new RunIntakeAuto(s_Intake, -1),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave0().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
@@ -170,11 +173,13 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Intake.setCube()),
+            new RunArmAuto(s_Arm, 2),
+            new RunIntakeAuto(s_Intake, -1),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave1().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
@@ -192,11 +197,13 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Intake.setCube()),
+            new RunArmAuto(s_Arm, 2),
+            new RunIntakeAuto(s_Intake, -1),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave2().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
@@ -214,7 +221,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
@@ -236,7 +243,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
@@ -258,7 +265,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
@@ -280,7 +287,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
@@ -302,7 +309,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
@@ -324,7 +331,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
@@ -346,13 +353,14 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
             new RunArmAuto(s_Arm, 0),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge0().getInitialHolonomicPose())),
-            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
+            new AutoBalanceAuto(s_Drivetrain));
         return command;
     }
 
@@ -368,13 +376,14 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
             new RunArmAuto(s_Arm, 0),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge1().getInitialHolonomicPose())),
-            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
+            new AutoBalanceAuto(s_Drivetrain));
         return command;
     }
 
@@ -390,13 +399,14 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
             new RunArmAuto(s_Arm, 0),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge2().getInitialHolonomicPose())),
-            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
+            new AutoBalanceAuto(s_Drivetrain));
         return command;
     }
 
@@ -412,13 +422,16 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Intake.setCube()),
+            new RunArmAuto(s_Arm, 2),
+            new RunIntakeAuto(s_Intake, -1),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge0().getInitialHolonomicPose())),
-            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
+            new AutoBalanceAuto(s_Drivetrain));
         return command;
     }
 
@@ -434,13 +447,15 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Intake.setCube()),
+            new RunArmAuto(s_Arm, 2),
+            new RunIntakeAuto(s_Intake, -1),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge1().getInitialHolonomicPose())),
-            swerveCommand,
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
             new AutoBalanceAuto(s_Drivetrain));
         return command;
     }
@@ -457,13 +472,16 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Intake.setCube()),
+            new RunArmAuto(s_Arm, 2),
+            new RunIntakeAuto(s_Intake, -1),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge2().getInitialHolonomicPose())),
-            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
+            new AutoBalanceAuto(s_Drivetrain));
         return command;
     }
 
@@ -479,7 +497,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
@@ -501,7 +519,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
@@ -523,7 +541,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
@@ -545,7 +563,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
@@ -567,7 +585,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
@@ -589,7 +607,7 @@ public class AutoChooser {
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
             s_Drivetrain::setModuleStates, 
-            true,
+            false,
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(

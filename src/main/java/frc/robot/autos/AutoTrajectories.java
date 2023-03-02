@@ -18,16 +18,15 @@ public class AutoTrajectories {
                              scoreThreeCharge0, scoreThreeCharge1, scoreThreeCharge2;
 
 
-    private final PathConstraints constraints, slowConstraints, bumpConstraints;
+    private final PathConstraints constraints, slowConstraints;
 
     public AutoTrajectories() {
         constraints = new PathConstraints(Constants.Auto.KMAX_SPEED_METERS_PER_SECOND, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
         slowConstraints = new PathConstraints(0.5, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
-        bumpConstraints = new PathConstraints(1.5, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
     }
 
     public PathPlannerTrajectory getLeaveCommunity0() {
-        leaveCommunity0 = PathPlanner.loadPath("LeaveCommunity0", bumpConstraints);
+        leaveCommunity0 = PathPlanner.loadPath("LeaveCommunity0", constraints);
         return leaveCommunity0;
     }
 
@@ -42,7 +41,7 @@ public class AutoTrajectories {
     }
 
     public PathPlannerTrajectory getScoreLeave0() {
-        scoreLeave0 = PathPlanner.loadPath("ScoreLeave0", bumpConstraints);
+        scoreLeave0 = PathPlanner.loadPath("ScoreLeave0", constraints);
         return scoreLeave0;
     }
 
@@ -57,7 +56,7 @@ public class AutoTrajectories {
     }
 
     public PathPlannerTrajectory getScoreTwice0(){
-        scoreTwice0 = PathPlanner.loadPath("ScoreTwo0", bumpConstraints);
+        scoreTwice0 = PathPlanner.loadPath("ScoreTwo0", constraints);
         return scoreTwice0;
     }
 
@@ -72,7 +71,7 @@ public class AutoTrajectories {
     }
 
     public PathPlannerTrajectory getScoreThree0(){
-        scoreThree0 = PathPlanner.loadPath("ScoreThree0", bumpConstraints);
+        scoreThree0 = PathPlanner.loadPath("ScoreThree0", constraints);
         return scoreThree0;
     }
 
@@ -87,7 +86,7 @@ public class AutoTrajectories {
     }
 
     public PathPlannerTrajectory getLeaveCharge0(){
-        leaveCharge0 = PathPlanner.loadPath("LeaveCharge0", bumpConstraints);
+        leaveCharge0 = PathPlanner.loadPath("LeaveCharge0", constraints);
         return leaveCharge0;
     }
 
@@ -97,12 +96,12 @@ public class AutoTrajectories {
     }
 
     public PathPlannerTrajectory getLeaveCharge2(){
-        leaveCharge2 = PathPlanner.loadPath("LeaveCharge2", bumpConstraints);
+        leaveCharge2 = PathPlanner.loadPath("LeaveCharge2", constraints);
         return leaveCharge2;
     }
 
     public PathPlannerTrajectory getScoreCharge0(){
-        scoreCharge0 = PathPlanner.loadPath("ScoreCharge0", bumpConstraints);
+        scoreCharge0 = PathPlanner.loadPath("ScoreCharge0", constraints);
         return scoreCharge0;
     }
 
@@ -117,7 +116,7 @@ public class AutoTrajectories {
     }
 
     public PathPlannerTrajectory getScoreTwiceCharge0(){
-        scoreTwiceCharge0 = PathPlanner.loadPath("ScoreTwoCharge0", bumpConstraints);
+        scoreTwiceCharge0 = PathPlanner.loadPath("ScoreTwoCharge0", constraints);
         return scoreTwiceCharge0;
     }
 
@@ -132,7 +131,7 @@ public class AutoTrajectories {
     }
 
     public PathPlannerTrajectory getScoreThreeCharge0(){
-        scoreThreeCharge0 = PathPlanner.loadPath("ScoreThreeCharge0", bumpConstraints);
+        scoreThreeCharge0 = PathPlanner.loadPath("ScoreThreeCharge0", constraints);
         return scoreThreeCharge0;
     }
 
