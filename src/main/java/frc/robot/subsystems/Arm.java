@@ -26,7 +26,7 @@ import frc.robot.Constants;
 
 
 public class Arm extends SubsystemBase {
-  private final PhotonVision s_Photon;
+  //private final PhotonVision s_Photon;
   private final CANSparkMax shoulder1;
   private final CANSparkMax shoulder2;
   private final WPI_TalonFX extension, extension1;
@@ -39,8 +39,8 @@ public class Arm extends SubsystemBase {
   private final GenericEntry shoulderEncoder, extensionEncoderEntry, rotationEncoder, wrist;
 
   /** Creates a new Arm. */
-  public Arm(PhotonVision s_Photon) {
-    this.s_Photon = s_Photon;
+  public Arm() {
+    //this.s_Photon = s_Photon;
     shoulder1 = new CANSparkMax(Constants.Arm.SHOULDER_ID, MotorType.kBrushless);
     shoulder2 = new CANSparkMax(Constants.Arm.SHOULDER_2_ID, MotorType.kBrushless);
     extension = new WPI_TalonFX(Constants.Arm.EXTENSION_ID);
@@ -92,13 +92,14 @@ public class Arm extends SubsystemBase {
   }
 
   public double getScoreLength(){
-    if(s_Photon.closeEnough()){
+    /*if(s_Photon.closeEnough()){
       //return s_Photon.getArmStuff().getFirst() / Constants.Arm.METER_TO_FALCON;
       return -20;
     }
     else{
       return -20;
-    }
+    }*/
+    return -20;
   }
 
   public void setWrist(double position){

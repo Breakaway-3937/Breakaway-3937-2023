@@ -70,14 +70,14 @@ public class RobotContainer {
   public final DriveTrain s_DriveTrain = new DriveTrain();
   public final Intake s_Intake = new Intake();
   public final LED s_LED = new LED(s_Intake);
-  public final PhotonVision s_Photon = new PhotonVision(s_LED);
+  //public final PhotonVision s_Photon = new PhotonVision(s_LED);
   public final Climber s_Climber = new Climber();
-  public final Arm s_Arm = new Arm(s_Photon);
+  public final Arm s_Arm = new Arm();
   
   /* Commands */
   public final RunIntake c_RunIntake = new RunIntake(s_Intake, xboxController);
   public final RunClimber c_RunClimber = new RunClimber(s_Climber, xboxController);
-  public final RunArm c_RunArm = new RunArm(s_Arm, s_Photon, xboxController);
+  public final RunArm c_RunArm = new RunArm(s_Arm, buttonGrid, xboxController);
   
   /* Autos */
   public final AutoTrajectories autoTrajectories = new AutoTrajectories();
@@ -88,7 +88,7 @@ public class RobotContainer {
     CommandScheduler.getInstance().registerSubsystem(s_DriveTrain);
     CommandScheduler.getInstance().registerSubsystem(s_Intake);
     CommandScheduler.getInstance().registerSubsystem(s_LED);
-    CommandScheduler.getInstance().registerSubsystem(s_Photon);
+    //CommandScheduler.getInstance().registerSubsystem(s_Photon);
     CommandScheduler.getInstance().registerSubsystem(s_Climber);
     CommandScheduler.getInstance().registerSubsystem(s_Arm);
 
@@ -110,7 +110,7 @@ public class RobotContainer {
     /* Driver Buttons */
     translationButton.onTrue(new InstantCommand(() -> s_DriveTrain.zeroGyro()));
     rotationButton.whileTrue(new AutoBalance(s_DriveTrain));
-    highLeft.onTrue(new InstantCommand(() -> s_Photon.setHighLeft()));
+    /*highLeft.onTrue(new InstantCommand(() -> s_Photon.setHighLeft()));
     highRight.onTrue(new InstantCommand(() -> s_Photon.setHighRight()));
     highMid.onTrue(new InstantCommand(() -> s_Photon.setHighMid()));
     midLeft.onTrue(new InstantCommand(() -> s_Photon.setMidLeft()));
@@ -118,11 +118,11 @@ public class RobotContainer {
     midMid.onTrue(new InstantCommand(() -> s_Photon.setMidMid()));
     lowMid.onTrue(new InstantCommand(() -> s_Photon.setHybridMid()));
     lowRight.onTrue(new InstantCommand(() -> s_Photon.setHybridRight()));
-    lowLeft.onTrue(new InstantCommand(() -> s_Photon.setHybridLeft()));
+    lowLeft.onTrue(new InstantCommand(() -> s_Photon.setHybridLeft()));*/
     new POVButton(xboxController, 0).onTrue(new InstantCommand(() -> s_LED.cone()).alongWith(new InstantCommand(() -> s_Intake.setCone())));
     new POVButton(xboxController, 90).onTrue(new InstantCommand(() -> s_LED.cube()).alongWith(new InstantCommand(() -> s_Intake.setCube())));
     new POVButton(xboxController, 180).onTrue(new InstantCommand(() -> s_LED.cone()).alongWith(new InstantCommand(() -> s_Intake.setDeadCone())));
-    new POVButton(xboxController, 270).onTrue(new InstantCommand(() -> s_Photon.setAuto()));
+    //new POVButton(xboxController, 270).onTrue(new InstantCommand(() -> s_Photon.setAuto()));
   } 
 
   public DriveTrain getDrivetrain(){
