@@ -175,7 +175,7 @@ public class RunArm extends CommandBase {
           state = 1;
         }
         extensionPosition = -20;
-        wristPosition = 12.45;
+        wristPosition = 10;
         turretPosition = 0;
       }
       else if(!Intake.getConeCubeMode()){
