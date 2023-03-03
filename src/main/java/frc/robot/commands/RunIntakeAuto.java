@@ -12,13 +12,14 @@ import frc.robot.subsystems.Intake;
 public class RunIntakeAuto extends CommandBase {
   private final Intake s_Intake;
   private final int speed;
-  private boolean flag;
-  private final Timer timer;
+  private boolean flag, flag1;
+  private final Timer timer, timer1;
   /** Creates a new RunIntakeAuto. */
   public RunIntakeAuto(Intake s_Intake, int speed) {
     this.s_Intake = s_Intake;
     this.speed = speed;
     timer = new Timer();
+    timer1 = new Timer();
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(s_Intake);
   }
@@ -27,6 +28,7 @@ public class RunIntakeAuto extends CommandBase {
   @Override
   public void initialize() {
     flag = false;
+    flag1 = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,6 +53,11 @@ public class RunIntakeAuto extends CommandBase {
     else if(speed == 0){
       s_Intake.stopIntake();
     }
+    if(!s_Intake.intakeFull() && !flag1){
+      timer1.reset();
+      timer1.start();
+      flag1 = true;
+    }
   }
   
   // Called once the command ends or is interrupted.
@@ -62,7 +69,7 @@ public class RunIntakeAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(!s_Intake.intakeFull()){
+    if(!s_Intake.intakeFull() && timer1.get() > 0.5){
       return true;
     }
     else{
