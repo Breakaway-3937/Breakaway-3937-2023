@@ -158,7 +158,7 @@ public class AutoChooser {
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new InstantCommand(() -> s_Intake.setCube()),
+            new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
             new RunIntakeAuto(s_Intake, -1),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave0().getInitialHolonomicPose())),
@@ -182,7 +182,7 @@ public class AutoChooser {
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new InstantCommand(() -> s_Intake.setCube()),
+            new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
             new RunIntakeAuto(s_Intake, -1),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave1().getInitialHolonomicPose())),
@@ -206,7 +206,7 @@ public class AutoChooser {
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new InstantCommand(() -> s_Intake.setCube()),
+            new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
             new RunIntakeAuto(s_Intake, -1),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave2().getInitialHolonomicPose())),
@@ -470,7 +470,7 @@ public class AutoChooser {
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new InstantCommand(() -> s_Intake.setCube()),
+            new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
             new RunIntakeAuto(s_Intake, -1),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge0().getInitialHolonomicPose())),
@@ -495,7 +495,7 @@ public class AutoChooser {
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new InstantCommand(() -> s_Intake.setCube()),
+            new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
             new RunIntakeAuto(s_Intake, -1),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge1().getInitialHolonomicPose())),
@@ -520,7 +520,7 @@ public class AutoChooser {
             s_Drivetrain);
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new InstantCommand(() -> s_Intake.setCube()),
+            new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
             new RunIntakeAuto(s_Intake, -1),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge2().getInitialHolonomicPose())),
