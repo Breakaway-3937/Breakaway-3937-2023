@@ -155,14 +155,14 @@ public class RunArm extends CommandBase {
       //s_Photon.setAllFalse();
       if(Intake.getDeadCone()){
         shoulderPosition = 0;
-        if(extensionPosition > -13000){
+        if(extensionPosition > -9000){
           state = 0;
         }
         else{
           state = 1;
         }
-        extensionPosition = -13000;
-        wristPosition = 6.5;
+        extensionPosition = -9000;
+        wristPosition = 8;
         turretPosition = 0;
         flag = false;
       }
@@ -223,7 +223,7 @@ public class RunArm extends CommandBase {
     else if(xboxController.getRawButton(3)){
       //s_Photon.setAllFalse();
       shoulderPosition = -10;
-      if(extensionPosition == -20 || extensionPosition == -13000){
+      if(extensionPosition == -20 || extensionPosition == -9000){
         state = 0;
       }
       else{
