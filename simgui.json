@@ -16,6 +16,11 @@
       "/SmartDashboard/Field": "Field2d"
     },
     "windows": {
+      "/Shuffleboard/Auto/Chooser": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Field": {
         "Robot": {
           "arrowSize": 23,
@@ -24,9 +29,6 @@
         },
         "traj": {
           "arrowSize": 13
-        },
-        "window": {
-          "visible": true
         }
       }
     }

@@ -1,5 +1,8 @@
 package frc.robot.autos;
 
+import java.util.HashMap;
+
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -7,7 +10,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.AutoBalanceAuto;
 import frc.robot.commands.RunArmAuto;
@@ -223,11 +228,24 @@ public class AutoChooser {
             s_Drivetrain::setModuleStates, 
             false,
             s_Drivetrain);
+
+        HashMap<String, Command> eventMap = new HashMap<>();
+            eventMap.put("intake", new SequentialCommandGroup(new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(2), new RunIntakeAuto(s_Intake, 1)), new RunArmAuto(s_Arm, 0)));
+            
+        FollowPathWithEvents followCommand = new FollowPathWithEvents(
+            swerveCommand,
+            trajectories.getScoreTwice0().getMarkers(),
+            eventMap
+        );
+
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
             new RunArmAuto(s_Arm, 0),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice0().getInitialHolonomicPose())),
-            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
+            new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
+            new RunArmAuto(s_Arm, 2),
+            new RunIntakeAuto(s_Intake, -1),
+            new RunArmAuto(s_Arm, 0));
         return command;
     }
 
@@ -245,11 +263,24 @@ public class AutoChooser {
             s_Drivetrain::setModuleStates, 
             false,
             s_Drivetrain);
+
+        HashMap<String, Command> eventMap = new HashMap<>();
+            eventMap.put("intake", new SequentialCommandGroup(new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(2), new RunIntakeAuto(s_Intake, 1)), new RunArmAuto(s_Arm, 0)));
+            
+        FollowPathWithEvents followCommand = new FollowPathWithEvents(
+            swerveCommand,
+            trajectories.getScoreTwice1().getMarkers(),
+            eventMap
+        );
+
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
             new RunArmAuto(s_Arm, 0),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice1().getInitialHolonomicPose())),
-            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
+            new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
+            new RunArmAuto(s_Arm, 2),
+            new RunIntakeAuto(s_Intake, -1),
+            new RunArmAuto(s_Arm, 0));
         return command;
     }
 
@@ -267,11 +298,24 @@ public class AutoChooser {
             s_Drivetrain::setModuleStates, 
             false,
             s_Drivetrain);
+
+        HashMap<String, Command> eventMap = new HashMap<>();
+            eventMap.put("intake", new SequentialCommandGroup(new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(2), new RunIntakeAuto(s_Intake, 1)), new RunArmAuto(s_Arm, 0)));
+            
+        FollowPathWithEvents followCommand = new FollowPathWithEvents(
+            swerveCommand,
+            trajectories.getScoreTwice2().getMarkers(),
+            eventMap
+        );
+
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
             new RunArmAuto(s_Arm, 0),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice2().getInitialHolonomicPose())),
-            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
+            new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
+            new RunArmAuto(s_Arm, 2),
+            new RunIntakeAuto(s_Intake, -1),
+            new RunArmAuto(s_Arm, 0));
         return command;
     }
     
