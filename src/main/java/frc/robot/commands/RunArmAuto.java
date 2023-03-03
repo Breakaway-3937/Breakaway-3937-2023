@@ -146,7 +146,7 @@ public class RunArmAuto extends CommandBase {
         s_Arm.setWrist(wristPosition);
         flag = false;
       }
-      if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125){
+      if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125 && s_Arm.getWrist() < wristPosition + 1 && s_Arm.getWrist() > wristPosition - 1){
         done = true;
       }
       break;
