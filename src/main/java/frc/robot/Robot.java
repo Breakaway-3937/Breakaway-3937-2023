@@ -39,6 +39,7 @@ public class Robot extends TimedRobot {
     powerDistribution = new PowerDistribution(25, ModuleType.kRev);
     powerDistribution.setSwitchableChannel(true);
     powerDistribution.clearStickyFaults();
+    CommandScheduler.getInstance().setPeriod(0.025);
   }
 
   /**

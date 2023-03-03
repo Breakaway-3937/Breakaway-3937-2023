@@ -29,34 +29,7 @@ public class LED extends SubsystemBase {
         configAll.brightnessScalar = 0.1;
         configAll.vBatOutputMode = VBatOutputMode.Modulated;
         candle.configAllSettings(configAll, 100);
-        candle.setLEDs(0, 0, 0, 0, 0, 400);
-    }
-
-
-    /* Wrappers so we can access the CANdle from the subsystem */
-    public double getVbat(){
-        return candle.getBusVoltage(); 
-    }
-    public double get5V(){ 
-        return candle.get5VRailVoltage(); 
-    }
-    public double getCurrent(){ 
-        return candle.getCurrent(); 
-    }
-    public double getTemperature(){
-        return candle.getTemperature(); 
-    }
-    public void configBrightness(double percent){ 
-        candle.configBrightnessScalar(percent, 0); 
-    }
-    public void configLos(boolean disableWhenLos){ 
-        candle.configLOSBehavior(disableWhenLos, 0); 
-    }
-    public void configLedType(LEDStripType type){ 
-        candle.configLEDType(type, 0); 
-    }
-    public void configStatusLedBehavior(boolean offWhenActive){ 
-        candle.configStatusLedState(offWhenActive, 0); 
+        candle.setLEDs(0, 0, 0);
     }
 
     public void green(){

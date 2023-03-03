@@ -28,8 +28,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
@@ -48,8 +47,7 @@ public class PhotonVision extends SubsystemBase{
     private final PhotonCamera photonCamera;
     private final PhotonPoseEstimator photonPoseEstimator;
     private AprilTagFieldLayout atfl;
-    private double x, y;
-    private double rY, rX, rR, dP, pR, theta, pX, pY, cos, angle;
+    private double rY, rX, rR, dP, pR, theta, pX, pY, cos;
     private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridMid, hybridRight, auto, flag = false;
     private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
 
@@ -57,45 +55,30 @@ public class PhotonVision extends SubsystemBase{
         this.s_LED = s_LED;
         try {
             atfl = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
-        } catch (IOException e) {}
+        } 
+        catch (IOException e) {}
 
-        photonCamera =
-                new PhotonCamera(
-                        VisionConstants
-                                .CAMERA_NAME);
-
-        var camList = new ArrayList<Pair<PhotonCamera, Transform3d>>();
-        camList.add(new Pair<PhotonCamera, Transform3d>(photonCamera, VisionConstants.ROBOT_TO_CAM));
-        
+        photonCamera = new PhotonCamera(VisionConstants.CAMERA_NAME);        
         photonPoseEstimator =
-                new PhotonPoseEstimator(atfl, PoseStrategy.AVERAGE_BEST_TARGETS, photonCamera, camList.get(0).getSecond());
+                new PhotonPoseEstimator(atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCamera, Constants.VisionConstants.ROBOT_TO_CAM);
     }
 
-    /**
-     * @param estimatedRobotPose The current best guess at robot PoseX
-     * @return A pair of the fused camera observations to a single Pose2d on the field, and the time
-     *     of the observation. Assumes a planar field and the robot is always firmly on the ground
-     */
-    public Pair<Pose2d, Double> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+    public Pose2d getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
         photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
-
-        double currentTime = Timer.getFPGATimestamp();
         Optional<EstimatedRobotPose> result = photonPoseEstimator.update();
-        if (result.isPresent()) {
-            return new Pair<Pose2d, Double>(
-                    result.get().estimatedPose.toPose2d(), currentTime - result.get().timestampSeconds);
-        } else {
-            return new Pair<Pose2d, Double>(prevEstimatedRobotPose, 0.0);
+        if(result.isPresent()){
+            return result.get().estimatedPose.toPose2d();
+        } 
+        else{
+            return prevEstimatedRobotPose;
         }
     }
-
 
     public Pair<Double, Double> getArmStuff(){
         var result = photonCamera.getLatestResult();
         if(result.hasTargets()){
             rY = result.getBestTarget().getBestCameraToTarget().getY();
             rX = result.getBestTarget().getBestCameraToTarget().getX();
-            angle = result.getBestTarget().getBestCameraToTarget().getRotation().getAngle();
             rR = Math.sqrt(Math.pow(rX, 2) + Math.pow(rY, 2));
             dP = Math.sqrt(Math.pow((pX - rX), 2) + Math.pow((pY - rY), 2));
             cos = Math.abs((Math.pow(pR, 2) - Math.pow(rR, 2) - Math.pow(dP, 2)) / (2 * (rR * dP)));
@@ -265,24 +248,12 @@ public class PhotonVision extends SubsystemBase{
     }
 
     public boolean closeEnough(){
-        if(dP < Constants.VisionConstants.MAX_EXTEND_LENGTH + 0.54){
+        if(dP <= -46000){ //FIXME add meter to falcon conversion
             return true;
         }
         else{
             return false;
         }
-    }
-
-    public double getX(){
-        return x;
-    }
-
-    public double getY(){
-        return y;
-    }
-
-    public double getAngle(){
-        return angle;
     }
 
     public void setAllFalse(){
@@ -317,5 +288,6 @@ public class PhotonVision extends SubsystemBase{
                 s_LED.red();
             }
         }
+        SmartDashboard.putBoolean("AutoMode", auto);
     }
 }
