@@ -31,18 +31,18 @@ public class AutoBalanceAuto extends CommandBase {
     s_Drivetrain.drive(new Translation2d(value, 0), 0, true, false);
     if((s_Drivetrain.getYaw().getDegrees() % 360 > 315 || s_Drivetrain.getYaw().getDegrees() % 360 < 45) && Math.abs(s_Drivetrain.getRoll()) > acceptable){
       if(s_Drivetrain.getRoll() < 0){
-        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * -0.02;
+        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * -0.0175;
       }
       else{
-        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * 0.02;
+        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * 0.0175;
       }
     }
     else if((s_Drivetrain.getYaw().getDegrees() % 360 > 135 || s_Drivetrain.getYaw().getDegrees() % 360 < 225) && Math.abs(s_Drivetrain.getRoll()) > acceptable){
       if(s_Drivetrain.getRoll() > 0){
-        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * -0.02;
+        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * -0.0175;
       }
       else{
-        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * 0.02;
+        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * 0.0175;
       }
     }
     else if(Math.abs(s_Drivetrain.getRoll()) < acceptable){
