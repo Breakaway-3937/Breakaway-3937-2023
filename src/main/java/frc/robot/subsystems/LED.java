@@ -109,7 +109,7 @@ public class LED extends SubsystemBase {
                 }
             }
         }
-        else if(!s_Intake.intakeFull()){
+        if(!s_Intake.intakeFull()){
             if(cube){
                 purple();
             }
@@ -120,7 +120,10 @@ public class LED extends SubsystemBase {
                 blue();
             }
         }
-        else if(green){
+        if(s_Intake.intakeFull()){
+            green();
+        }
+        if(green){
             for(int i = 0; i < 350; i++){
                 if(timer.get() > 0.25 && i % 2 != 0 && !flag){
                     candle.setLEDs(0, 255, 0);
