@@ -32,7 +32,7 @@ public class RunIntake extends CommandBase {
   @Override
   public void execute() {
     if(s_Intake.intakeFull()){
-      if(Intake.getConeCubeMode() && !flag){
+      if((Intake.getConeCubeMode() || Intake.getDeadCone()) && !flag){
         timer.reset();
         flag = true;
       }
@@ -42,12 +42,12 @@ public class RunIntake extends CommandBase {
       }
     }
     else if(xboxController.getRawButton(6)){
-      s_Intake.runIntake(0.8);
+      s_Intake.runIntake();
     }
-    if(xboxController.getRawAxis(3) > 0.3){
+    if(xboxController.getRawAxis(3) > 0.5){
       s_Intake.spit();
     }
-    else if(!xboxController.getRawButton(6) && xboxController.getRawAxis(3) < 0.3){
+    else if(!xboxController.getRawButton(6) && xboxController.getRawAxis(3) < 0.5){
       s_Intake.stopIntake();
     }
   }

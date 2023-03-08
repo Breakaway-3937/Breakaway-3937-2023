@@ -28,9 +28,9 @@ public class RunArmAuto extends CommandBase {
     flag = false;
     flag1 = false;
     flag2 = false;
-    shoulderPosition = 0;
+    shoulderPosition = -10;
     turretPosition = 0; 
-    extensionPosition = 0;
+    extensionPosition = -20;
     wristPosition = 0;
   }
 
@@ -83,7 +83,7 @@ public class RunArmAuto extends CommandBase {
         turretPosition = 0;
         flag2 = true;
       }
-      else if(Intake.getConeCubeMode() && !Intake.getDeadCone()){
+      else if(Intake.getConeCubeMode()){
         shoulderPosition = -0.5;
         if(extensionPosition > -20){
           state = 0;
@@ -141,7 +141,7 @@ public class RunArmAuto extends CommandBase {
         //s_Arm.setRotation(turretPosition);
         flag = true;
       }
-      if(s_Arm.getRotationPosition() < turretPosition + 0.5 && s_Arm.getRotationPosition() > turretPosition - 0.5 && flag){
+      if(s_Arm.getTurretPosition() < turretPosition + 0.5 && s_Arm.getTurretPosition() > turretPosition - 0.5 && flag){
         s_Arm.setExtension(extensionPosition);
         s_Arm.setWrist(wristPosition);
         flag = false;
@@ -157,7 +157,7 @@ public class RunArmAuto extends CommandBase {
         //s_Arm.setRotation(turretPosition);
         flag = true;
       }
-      if(s_Arm.getRotationPosition() < turretPosition + 0.5 && s_Arm.getRotationPosition() > turretPosition - 0.5 && flag){
+      if(s_Arm.getTurretPosition() < turretPosition + 0.5 && s_Arm.getTurretPosition() > turretPosition - 0.5 && flag){
         s_Arm.setShoulder(shoulderPosition);
         flag = false;
       }
@@ -175,11 +175,6 @@ public class RunArmAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(done){
-      return true;
-    }
-    else{
-      return false;
-    }
+    return done;
   }
 }
