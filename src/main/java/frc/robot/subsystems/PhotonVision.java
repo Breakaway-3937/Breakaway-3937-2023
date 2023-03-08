@@ -28,7 +28,6 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
@@ -53,14 +52,14 @@ public class PhotonVision extends SubsystemBase{
 
     public PhotonVision(LED s_LED) {
         this.s_LED = s_LED;
-        try {
+        try{
             atfl = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
         } 
         catch (IOException e) {}
 
         photonCamera = new PhotonCamera(VisionConstants.CAMERA_NAME);        
         photonPoseEstimator =
-                new PhotonPoseEstimator(atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCamera, Constants.VisionConstants.ROBOT_TO_CAM);
+            new PhotonPoseEstimator(atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCamera, Constants.VisionConstants.ROBOT_TO_CAM);
     }
 
     public Pose2d getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
@@ -183,7 +182,7 @@ public class PhotonVision extends SubsystemBase{
     public void setHybridMid(){
         pX = Constants.VisionConstants.MID_HYBRID_X;
         pY = Constants.VisionConstants.MID_HYBRID_Y;
-        pR = Constants.VisionConstants.MID_HYBRID_DISTANCE;
+        pR = Constants.VisionConstants.HYBRID_MID_DISTANCE;
         highLeft = false;
         highMid = false;
         highRight = false;
@@ -288,6 +287,5 @@ public class PhotonVision extends SubsystemBase{
                 s_LED.red();
             }
         }
-        SmartDashboard.putBoolean("AutoMode", auto);
     }
 }
