@@ -26,80 +26,75 @@ import frc.robot.Constants;
 
 
 public class Arm extends SubsystemBase {
-  //private final PhotonVision s_Photon;
-  private final CANSparkMax shoulder1;
-  private final CANSparkMax shoulder2;
-  private final WPI_TalonFX extension, extension1;
-  private final CANSparkMax rotation;
+  private final PhotonVision s_Photon;
+  private final CANSparkMax leadShoulder;
+  private final CANSparkMax followerShoulder;
+  private final WPI_TalonFX leadExtension, followerExtension;
+  private final CANSparkMax turret;
   private final CANSparkMax wristMotor;
   private TalonFXSensorCollection extensionEncoder;
-  private double shoulder1kP, shoulder1kI, shoulder1kD, shoulder1kFF, extensionkP, extensionkI, extensionkD, extensionkFF, rotatekP, rotatekI, rotatekD, rotatekFF, wristkP, wristkI, wristkD, wristkFF;
-  private RelativeEncoder shoulder1Encoder, rotateEncoder, wristEncoder;
-  private SparkMaxPIDController shoulder1PIDController, rotatePIDController, wristPIDController;
-  private final GenericEntry shoulderEncoder, extensionEncoderEntry, rotationEncoder, wrist;
+  private double shoulderkP, shoulderkI, shoulderkD, shoulderkFF, extensionkP, extensionkI, extensionkD, extensionkFF, turretkP, turretkI, turretkD, turretkFF, wristkP, wristkI, wristkD, wristkFF;
+  private RelativeEncoder shoulderEncoder, turretEncoder, wristEncoder;
+  private SparkMaxPIDController shoulderPIDController, turretPIDController, wristPIDController;
+  private final GenericEntry shoulderEncoderEntry, extensionEncoderEntry, turretEncoderEntry, wristEncoderEntry;
 
   /** Creates a new Arm. */
-  public Arm() {
-    //this.s_Photon = s_Photon;
-    shoulder1 = new CANSparkMax(Constants.Arm.SHOULDER_ID, MotorType.kBrushless);
-    shoulder2 = new CANSparkMax(Constants.Arm.SHOULDER_2_ID, MotorType.kBrushless);
-    extension = new WPI_TalonFX(Constants.Arm.EXTENSION_ID);
-    extension1 = new WPI_TalonFX(Constants.Arm.EXTENSION_ID_1);
-    rotation = new CANSparkMax(Constants.Arm.ROTATION_ID, MotorType.kBrushless);
+  public Arm(PhotonVision s_Photon) {
+    this.s_Photon = s_Photon;
+    leadShoulder = new CANSparkMax(Constants.Arm.LEAD_SHOULDER_ID, MotorType.kBrushless);
+    followerShoulder = new CANSparkMax(Constants.Arm.FOLLOWER_SHOULDER_ID, MotorType.kBrushless);
+    leadExtension = new WPI_TalonFX(Constants.Arm.LEAD_EXTENSION_ID);
+    followerExtension = new WPI_TalonFX(Constants.Arm.FOLLOWER_EXTENSION_ID);
+    turret = new CANSparkMax(Constants.Arm.TURRET_ID, MotorType.kBrushless);
     wristMotor = new CANSparkMax(Constants.Intake.WRIST_MOTOR_ID, MotorType.kBrushless);
     setValues();
     configWristMotor();
     configExtention();
-    configRotation();
-    configShoulder1();
-    configShoulder2();
-    shoulderEncoder = Shuffleboard.getTab("Arm").add("Shoulder", getShoulder1Position()).withPosition(0, 0).getEntry();
+    configTurret();
+    configLeadShoulder();
+    configFollowerShoulder();
+    shoulderEncoderEntry = Shuffleboard.getTab("Arm").add("Shoulder", getShoulder1Position()).withPosition(0, 0).getEntry();
     extensionEncoderEntry = Shuffleboard.getTab("Arm").add("Extension", getExtensionPosition()).withPosition(1, 0).getEntry();
-    rotationEncoder = Shuffleboard.getTab("Arm").add("Rotation", getRotationPosition()).withPosition(2, 0).getEntry();
-    wrist = Shuffleboard.getTab("Arm").add("Wrist", getWrist()).withPosition(3, 0).getEntry();
+    turretEncoderEntry = Shuffleboard.getTab("Arm").add("Rotation", getTurretPosition()).withPosition(2, 0).getEntry();
+    wristEncoderEntry = Shuffleboard.getTab("Arm").add("Wrist", getWrist()).withPosition(3, 0).getEntry();
   }
 
   public void setShoulder(double position){
-    shoulder1PIDController.setReference(position, ControlType.kSmartMotion);
+    shoulderPIDController.setReference(position, ControlType.kSmartMotion);
   }
 
   public void stopShoulder(){
-    shoulder1.set(0);
+    leadShoulder.stopMotor();
   }
 
   public void setExtension(double position){
-    extension.set(ControlMode.MotionMagic, position);
+    leadExtension.set(ControlMode.MotionMagic, position);
   }
 
-  public void stopExtension(){
-    extension.stopMotor();
-  }
-
-  public void setRotation(double position){
-    rotatePIDController.setReference(position, ControlType.kSmartMotion);
+  public void setTurret(double position){
+    turretPIDController.setReference(position, ControlType.kSmartMotion);
   }
   
   public double getShoulder1Position(){
-    return shoulder1Encoder.getPosition();
+    return shoulderEncoder.getPosition();
   }
 
   public double getExtensionPosition(){
     return extensionEncoder.getIntegratedSensorPosition();
   }
 
-  public double getRotationPosition(){
-    return rotateEncoder.getPosition();
+  public double getTurretPosition(){
+    return turretEncoder.getPosition();
   }
 
-  public double getScoreLength(){
-    /*if(s_Photon.closeEnough()){
+  public double getLengthToTarget(){
+    if(s_Photon.closeEnough()){
       //return s_Photon.getArmStuff().getFirst() / Constants.Arm.METER_TO_FALCON;
       return -20;
     }
     else{
       return -20;
-    }*/
-    return -20;
+    }
   }
 
   public void setWrist(double position){
@@ -128,66 +123,65 @@ public class Arm extends SubsystemBase {
     wristPIDController.setFF(wristkFF);
   }
 
-  private void configShoulder1(){
-    shoulder1.restoreFactoryDefaults();
+  private void configLeadShoulder(){
+    leadShoulder.restoreFactoryDefaults();
     //shoulder1Encoder = shoulder1.getAlternateEncoder(Constants.Arm.ALT_ENC_TYPE, Constants.Arm.CPR);
-    shoulder1Encoder = shoulder1.getEncoder();
-    shoulder1PIDController = shoulder1.getPIDController();
-    shoulder1PIDController.setFeedbackDevice(shoulder1Encoder);
-    shoulder1Encoder.setPosition(0);
+    shoulderEncoder = leadShoulder.getEncoder();
+    shoulderPIDController = leadShoulder.getPIDController();
+    shoulderPIDController.setFeedbackDevice(shoulderEncoder);
+    shoulderEncoder.setPosition(0);
 
-    shoulder1PIDController.setP(shoulder1kP);
-    shoulder1PIDController.setI(shoulder1kI);
-    shoulder1PIDController.setD(shoulder1kD);
-    shoulder1PIDController.setFF(shoulder1kFF);
-    shoulder1PIDController.setSmartMotionMaxVelocity(500, 0);
-    shoulder1PIDController.setSmartMotionMaxAccel(254, 0);
-    shoulder1PIDController.setOutputRange(-1, 0.75);
-    shoulder1.setInverted(true);
-    shoulder1.setIdleMode(IdleMode.kBrake);
+    shoulderPIDController.setP(shoulderkP);
+    shoulderPIDController.setI(shoulderkI);
+    shoulderPIDController.setD(shoulderkD);
+    shoulderPIDController.setFF(shoulderkFF);
+    shoulderPIDController.setSmartMotionMaxVelocity(500, 0);
+    shoulderPIDController.setSmartMotionMaxAccel(254, 0);
+    shoulderPIDController.setOutputRange(-1, 0.75);
+    leadShoulder.setInverted(true);
+    leadShoulder.setIdleMode(IdleMode.kBrake);
   }
 
-  private void configShoulder2(){
-    shoulder2.restoreFactoryDefaults();
-    shoulder2.setIdleMode(IdleMode.kBrake);
-    shoulder2.follow(shoulder1);
+  private void configFollowerShoulder(){
+    followerShoulder.restoreFactoryDefaults();
+    followerShoulder.setIdleMode(IdleMode.kBrake);
+    followerShoulder.follow(leadShoulder);
   }
 
-  private void configRotation(){
-    rotation.restoreFactoryDefaults();
-    rotateEncoder = rotation.getEncoder();
-    rotatePIDController = rotation.getPIDController();
-    rotatePIDController.setFeedbackDevice(rotateEncoder);
-    rotateEncoder.setPosition(0);
+  private void configTurret(){
+    turret.restoreFactoryDefaults();
+    turretEncoder = turret.getEncoder();
+    turretPIDController = turret.getPIDController();
+    turretPIDController.setFeedbackDevice(turretEncoder);
+    turretEncoder.setPosition(0);
 
-    rotatePIDController.setP(rotatekP);
-    rotatePIDController.setI(rotatekI);
-    rotatePIDController.setD(rotatekD);
-    rotatePIDController.setFF(rotatekFF);
-    rotatePIDController.setSmartMotionMaxVelocity(500, 0);
-    rotatePIDController.setSmartMotionMaxAccel(250, 0);
-    rotatePIDController.setOutputRange(-1, 1);
-    rotation.setIdleMode(IdleMode.kBrake);
+    turretPIDController.setP(turretkP);
+    turretPIDController.setI(turretkI);
+    turretPIDController.setD(turretkD);
+    turretPIDController.setFF(turretkFF);
+    turretPIDController.setSmartMotionMaxVelocity(500, 0);
+    turretPIDController.setSmartMotionMaxAccel(250, 0);
+    turretPIDController.setOutputRange(-1, 1);
+    turret.setIdleMode(IdleMode.kBrake);
   }
 
   private void configExtention(){
-    extension.configFactoryDefault();
-    extension1.configFactoryDefault();
-    extensionEncoder = extension.getSensorCollection();
-    extension.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-    extension1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+    leadExtension.configFactoryDefault();
+    followerExtension.configFactoryDefault();
+    extensionEncoder = leadExtension.getSensorCollection();
+    leadExtension.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
     extensionEncoder.setIntegratedSensorPosition(0, 0);
-    extension.config_kP(0, extensionkP);
-    extension.config_kI(0, extensionkI);
-    extension.config_kD(0, extensionkD);
-    extension.config_kF(0, extensionkFF);
-    extension.configPeakOutputForward(0.9);
-    extension.configPeakOutputReverse(-0.9);
-    extension.configMotionCruiseVelocity(15000);
-    extension.configMotionAcceleration(12500);
-    extension.setNeutralMode(NeutralMode.Brake);
-    extension1.setNeutralMode(NeutralMode.Brake);
-    extension1.follow(extension);
+    leadExtension.config_kP(0, extensionkP);
+    leadExtension.config_kI(0, extensionkI);
+    leadExtension.config_kD(0, extensionkD);
+    leadExtension.config_kF(0, extensionkFF);
+    leadExtension.configPeakOutputForward(0.9);
+    leadExtension.configPeakOutputReverse(-0.9);
+    leadExtension.configMotionCruiseVelocity(15000);
+    leadExtension.configMotionAcceleration(12500);
+    leadExtension.setNeutralMode(NeutralMode.Brake);
+    followerExtension.setNeutralMode(NeutralMode.Brake);
+    followerExtension.follow(leadExtension);
   }
 
   public void setValues(){
@@ -195,14 +189,14 @@ public class Arm extends SubsystemBase {
     extensionkI = 0.0075;
     extensionkD = 7.5;
     extensionkFF = 0.3;
-    shoulder1kP = 5e-8; //6.5e-8
-    shoulder1kI = 0; //0.5e-6
-    shoulder1kD = 0;
-    shoulder1kFF = 0.001; //0.0019
-    rotatekP = 4e-9;
-    rotatekI = 0.1e-6;
-    rotatekD = 0.3e-8;
-    rotatekFF = 0.008;
+    shoulderkP = 5e-8; //6.5e-8
+    shoulderkI = 0; //0.5e-6
+    shoulderkD = 0;
+    shoulderkFF = 0.001; //0.0019
+    turretkP = 4e-9;
+    turretkI = 0.1e-6;
+    turretkD = 0.3e-8;
+    turretkFF = 0.008;
     wristkP = 9e-6;
     wristkI = 0.1e-6;
     wristkD = 0;
@@ -212,10 +206,10 @@ public class Arm extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    shoulderEncoder.setDouble(getShoulder1Position());
+    shoulderEncoderEntry.setDouble(getShoulder1Position());
     extensionEncoderEntry.setDouble(getExtensionPosition());
-    rotationEncoder.setDouble(getRotationPosition());
-    wrist.setDouble(getWrist());
+    turretEncoderEntry.setDouble(getTurretPosition());
+    wristEncoderEntry.setDouble(getWrist());
   }
 }
 

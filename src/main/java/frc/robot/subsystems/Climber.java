@@ -26,8 +26,8 @@ public class Climber extends SubsystemBase {
 
   /** Creates a new Climber. */
   public Climber() {
-    climber1 = new CANSparkMax(Constants.Climber.ID_1, MotorType.kBrushless);
-    climber2 = new CANSparkMax(Constants.Climber.ID_2, MotorType.kBrushless);
+    climber1 = new CANSparkMax(Constants.Climber.LEAD_ID, MotorType.kBrushless);
+    climber2 = new CANSparkMax(Constants.Climber.FOLLOWER_ID, MotorType.kBrushless);
     setValues();
     configMotors();
     climber = Shuffleboard.getTab("Climber").add("Climber", getClimber()).withPosition(0, 0).getEntry();
