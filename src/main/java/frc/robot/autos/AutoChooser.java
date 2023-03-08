@@ -1,8 +1,5 @@
 package frc.robot.autos;
 
-import java.util.HashMap;
-
-import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -10,27 +7,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
-import frc.robot.commands.AutoBalanceAuto;
+import frc.robot.commands.AutoBalance;
 import frc.robot.commands.RunArmAuto;
-import frc.robot.commands.RunIntakeAuto;
+import frc.robot.commands.SpitIntakeAuto;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 
 public class AutoChooser {
     private final AutoTrajectories trajectories;
 
-    private final DriveTrain s_Drivetrain;
+    private final Drivetrain s_Drivetrain;
     private final Arm s_Arm;
     private final Intake s_Intake;
 
     private final SendableChooser<AutonomousMode> autonomousModeChooser = new SendableChooser<>();
 
-    public AutoChooser(AutoTrajectories trajectories, DriveTrain s_Drivetrain, Arm s_Arm, Intake s_Intake) {
+    public AutoChooser(AutoTrajectories trajectories, Drivetrain s_Drivetrain, Arm s_Arm, Intake s_Intake) {
         this.s_Drivetrain = s_Drivetrain;
         this.trajectories = trajectories;
         this.s_Arm = s_Arm;
@@ -82,7 +77,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getLeaveCommunity0(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -105,7 +100,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getLeaveCommunity1(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -127,7 +122,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getLeaveCommunity2(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -149,7 +144,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreLeave0(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -160,7 +155,7 @@ public class AutoChooser {
             command.addCommands(
             new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
-            new RunIntakeAuto(s_Intake, -1),
+            new SpitIntakeAuto(s_Intake),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave0().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
@@ -173,7 +168,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreLeave1(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -184,7 +179,7 @@ public class AutoChooser {
             command.addCommands(
             new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
-            new RunIntakeAuto(s_Intake, -1),
+            new SpitIntakeAuto(s_Intake),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave1().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
@@ -197,7 +192,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreLeave2(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -208,7 +203,7 @@ public class AutoChooser {
             command.addCommands(
             new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
-            new RunIntakeAuto(s_Intake, -1),
+            new SpitIntakeAuto(s_Intake),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave2().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
@@ -221,7 +216,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreTwice0(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -229,23 +224,13 @@ public class AutoChooser {
             false,
             s_Drivetrain);
 
-        HashMap<String, Command> eventMap = new HashMap<>();
-            eventMap.put("intake", new SequentialCommandGroup(new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(2), new RunIntakeAuto(s_Intake, 1)), new RunArmAuto(s_Arm, 0)));
-            
-        FollowPathWithEvents followCommand = new FollowPathWithEvents(
-            swerveCommand,
-            trajectories.getScoreTwice0().getMarkers(),
-            eventMap
-        );
-
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new RunArmAuto(s_Arm, 0),
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice0().getInitialHolonomicPose())),
-            new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
+            new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
-            new RunIntakeAuto(s_Intake, -1),
-            new RunArmAuto(s_Arm, 0));
+            new SpitIntakeAuto(s_Intake),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice0().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
@@ -256,7 +241,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreTwice1(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -264,23 +249,13 @@ public class AutoChooser {
             false,
             s_Drivetrain);
 
-        HashMap<String, Command> eventMap = new HashMap<>();
-            eventMap.put("intake", new SequentialCommandGroup(new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(2), new RunIntakeAuto(s_Intake, 1)), new RunArmAuto(s_Arm, 0)));
-            
-        FollowPathWithEvents followCommand = new FollowPathWithEvents(
-            swerveCommand,
-            trajectories.getScoreTwice1().getMarkers(),
-            eventMap
-        );
-
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new RunArmAuto(s_Arm, 0),
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice1().getInitialHolonomicPose())),
-            new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
+            new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
-            new RunIntakeAuto(s_Intake, -1),
-            new RunArmAuto(s_Arm, 0));
+            new SpitIntakeAuto(s_Intake),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice1().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
 
@@ -291,7 +266,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreTwice2(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -299,23 +274,13 @@ public class AutoChooser {
             false,
             s_Drivetrain);
 
-        HashMap<String, Command> eventMap = new HashMap<>();
-            eventMap.put("intake", new SequentialCommandGroup(new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(2), new RunIntakeAuto(s_Intake, 1)), new RunArmAuto(s_Arm, 0)));
-            
-        FollowPathWithEvents followCommand = new FollowPathWithEvents(
-            swerveCommand,
-            trajectories.getScoreTwice2().getMarkers(),
-            eventMap
-        );
-
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
-            new RunArmAuto(s_Arm, 0),
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice2().getInitialHolonomicPose())),
-            new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
+            new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
-            new RunIntakeAuto(s_Intake, -1),
-            new RunArmAuto(s_Arm, 0));
+            new SpitIntakeAuto(s_Intake),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice2().getInitialHolonomicPose())),
+            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
         return command;
     }
     
@@ -326,7 +291,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreThree0(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -348,7 +313,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreThree1(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -370,7 +335,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreThree2(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -392,7 +357,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getLeaveCharge0(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -404,7 +369,7 @@ public class AutoChooser {
             new RunArmAuto(s_Arm, 0),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge0().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
-            new AutoBalanceAuto(s_Drivetrain));
+            new AutoBalance(s_Drivetrain));
         return command;
     }
 
@@ -415,7 +380,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getLeaveCharge1(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -427,7 +392,7 @@ public class AutoChooser {
             new RunArmAuto(s_Arm, 0),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge1().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
-            new AutoBalanceAuto(s_Drivetrain));
+            new AutoBalance(s_Drivetrain));
         return command;
     }
 
@@ -438,7 +403,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getLeaveCharge2(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -450,7 +415,7 @@ public class AutoChooser {
             new RunArmAuto(s_Arm, 0),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getLeaveCharge2().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
-            new AutoBalanceAuto(s_Drivetrain));
+            new AutoBalance(s_Drivetrain));
         return command;
     }
 
@@ -461,7 +426,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreCharge0(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -472,10 +437,10 @@ public class AutoChooser {
             command.addCommands(
             new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
-            new RunIntakeAuto(s_Intake, -1),
+            new SpitIntakeAuto(s_Intake),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge0().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
-            new AutoBalanceAuto(s_Drivetrain));
+            new AutoBalance(s_Drivetrain));
         return command;
     }
 
@@ -486,7 +451,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreCharge1(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -497,10 +462,10 @@ public class AutoChooser {
             command.addCommands(
             new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
-            new RunIntakeAuto(s_Intake, -1),
+            new SpitIntakeAuto(s_Intake),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge1().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
-            new AutoBalanceAuto(s_Drivetrain));
+            new AutoBalance(s_Drivetrain));
         return command;
     }
 
@@ -511,7 +476,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreCharge2(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -522,10 +487,10 @@ public class AutoChooser {
             command.addCommands(
             new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
-            new RunIntakeAuto(s_Intake, -1),
+            new SpitIntakeAuto(s_Intake),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge2().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
-            new AutoBalanceAuto(s_Drivetrain));
+            new AutoBalance(s_Drivetrain));
         return command;
     }
 
@@ -536,7 +501,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreTwiceCharge0(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -558,7 +523,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreTwiceCharge1(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -580,7 +545,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreTwiceCharge2(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -602,7 +567,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreThreeCharge0(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -624,7 +589,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreThreeCharge1(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
@@ -646,7 +611,7 @@ public class AutoChooser {
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreThreeCharge2(), 
             s_Drivetrain::getPose, 
-            Constants.DriveTrain.SWERVE_KINEMATICS,
+            Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
             new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
             thetaController,
