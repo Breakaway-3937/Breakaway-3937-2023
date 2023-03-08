@@ -29,6 +29,9 @@
         },
         "traj": {
           "arrowSize": 13
+        },
+        "window": {
+          "visible": true
         }
       }
     }
