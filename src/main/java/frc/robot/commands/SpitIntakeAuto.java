@@ -9,12 +9,12 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
 
-public class RunIntakeAuto extends CommandBase {
+public class SpitIntakeAuto extends CommandBase {
   private final Intake s_Intake;
   private boolean flag;
   private final Timer timer;
-  /** Creates a new RunIntakeAuto. */
-  public RunIntakeAuto(Intake s_Intake) {
+  /** Creates a new SpitIntakeAuto. */
+  public SpitIntakeAuto(Intake s_Intake) {
     this.s_Intake = s_Intake;
     timer = new Timer();
     // Use addRequirements() here to declare subsystem dependencies.
@@ -25,13 +25,13 @@ public class RunIntakeAuto extends CommandBase {
   @Override
   public void initialize() {
     flag = false;
-    s_Intake.runIntake();
+    s_Intake.spit();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(s_Intake.intakeFull() && !flag){
+    if(!s_Intake.intakeFull() && !flag){
       timer.reset();
       timer.start();
       flag = true;
@@ -41,15 +41,13 @@ public class RunIntakeAuto extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(Intake.getConeCubeMode() || Intake.getDeadCone()){
-      s_Intake.stopIntake();
-    }
+    s_Intake.stopIntake();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(s_Intake.intakeFull() && timer.get() > 0.5){
+    if(!s_Intake.intakeFull() && timer.get() > 0.5){
       return true;
     }
     else{
