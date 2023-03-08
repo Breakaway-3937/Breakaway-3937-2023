@@ -6,7 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -15,20 +15,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  private final TalonFX intakeMotor;
-  private final AnalogInput uSSensor, lightSensor;
-  private final GenericEntry usDistance, lightDistance;
+  private final WPI_TalonFX intakeMotor;
+  private final AnalogInput uSSensor, bBSensor;
+  private final GenericEntry usDistance, bBDistance;
   private static boolean cone, deadCone;
 
   public Intake() {
-    intakeMotor = new TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
+    intakeMotor = new WPI_TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
     intakeMotor.setNeutralMode(NeutralMode.Brake);
     uSSensor = new AnalogInput(Constants.Intake.US_SENSOR_ID);
     uSSensor.resetAccumulator();
-    lightSensor = new AnalogInput(Constants.Intake.LIGHT_SENSOR_ID);
-    lightSensor.resetAccumulator();
+    bBSensor = new AnalogInput(Constants.Intake.BB_SENSOR_ID);
+    bBSensor.resetAccumulator();
     usDistance = Shuffleboard.getTab("Intake").add("US Sensor", 0).withPosition(0, 0).getEntry();
-    lightDistance = Shuffleboard.getTab("Intake").add("Light Sensor", 0).withPosition(1, 0).getEntry();
+    bBDistance = Shuffleboard.getTab("Intake").add("BB Sensor", 0).withPosition(1, 0).getEntry();
   }
   
   public void runIntake(double speed){
@@ -57,7 +57,7 @@ public class Intake extends SubsystemBase {
       }
     }
     else{
-      if(lightSensor.getValue() > 4000){
+      if(bBSensor.getValue() > 4000){
         return true;
       }
       else{
@@ -97,6 +97,6 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     usDistance.setDouble(getDistance());
-    lightDistance.setDouble(lightSensor.getValue());
+    bBDistance.setDouble(bBSensor.getValue());
   }
 }
