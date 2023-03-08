@@ -28,10 +28,7 @@ public final class Constants {
     
 
     public static class VisionConstants {
-        public static final Transform3d ROBOT_TO_CAM =
-                new Transform3d(
-                        new Translation3d(-0.15, -.10, 0.36),
-                        new Rotation3d(0, 0, 0));
+        public static final Transform3d ROBOT_TO_CAM = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0)); //FIXME add new values for translation
         public static final String CAMERA_NAME = "Global_Shutter_Camera";
         public static final double HIGH_LEFT_POST_X = -0.65;
         public static final double HIGH_LEFT_POST_Y = 0.560;
@@ -39,41 +36,56 @@ public final class Constants {
         public static final double HIGH_RIGHT_POST_Y = -0.560;
         public static final double HIGH_MID_X = -0.65;
         public static final double HIGH_MID_Y = 0.0;
-        public static final double MID_MID_X = -0.22;
-        public static final double MID_MID_Y = 0.0;
+        public static final double HIGH_DISTANCE = 0.85796;
+        public static final double HIGH_MID_DISTANCE = 0.65;
+
         public static final double MID_LEFT_POST_X = -0.220;
         public static final double MID_LEFT_POST_Y = 0.560;
         public static final double MID_RIGHT_POST_X = -0.220;
         public static final double MID_RIGHT_POST_Y = -0.560;
-        public static final double HIGH_DISTANCE = 0.85796;
+        public static final double MID_MID_X = -0.22;
+        public static final double MID_MID_Y = 0.0;
         public static final double MID_DISTANCE = 0.60166;
-        public static final double HIGH_MID_DISTANCE = 0.65;
         public static final double MID_MID_DISTANCE = 0.22;
-        public static final double MAX_EXTEND_LENGTH = 1.22;
+
         public static final double LEFT_HYBRID_X = 0.177673;
         public static final double LEFT_HYBRID_Y = 0.560;
         public static final double RIGHT_HYBRID_X = 0.177673;
         public static final double RIGHT_HYBRID_Y = -0.560;
-        public static final double HYBRID_DISTANCE = 0.58750974027;
         public static final double MID_HYBRID_X = 0.177673;
         public static final double MID_HYBRID_Y = 0.0;
-        public static final double MID_HYBRID_DISTANCE = 0.177673;
+        public static final double HYBRID_DISTANCE = 0.58750974027;
+        public static final double HYBRID_MID_DISTANCE = 0.177673;
     }
 
     public static final class Controllers{
         public static final GenericHID TRANSLATION_CONTROLLER = new GenericHID(0);
         public static final GenericHID ROTATION_CONTROLLER = new GenericHID(1);
         public static final GenericHID XBOX_CONTROLLER = new GenericHID(2);
-        public static final int XBOXCONTROLLER_A_BUTTON = 1;
-        public static final int XBOXCONTROLLER_B_BUTTON = 2;
-        public static final int XBOXCONTROLLER_X_BUTTON = 3;
-        public static final int XBOXCONTROLLER_Y_BUTTON = 4;
-        public static final int XBOXCONTROLLER_LB_BUTTON = 5;
-        public static final int XBOXCONTROLLER_RB_BUTTON = 6;
-        public static final int XBOXCONTROLLER_BACK_BUTTON = 7;
-        public static final int XBOXCONTROLLER_START_BUTTON = 8;
-        public static final int XBOXCONTROLLER_LEFT_SITCK_BUTTON = 9;
-        public static final int XBOXCONTROLLER_RIGHT_SITCK_BUTTON = 10;
+        public static final GenericHID BUTTON_GRID = new GenericHID(3);
+        public static final int XBOX_CONTROLLER_A_BUTTON = 1;
+        public static final int XBOX_CONTROLLER_B_BUTTON = 2;
+        public static final int XBOX_CONTROLLER_X_BUTTON = 3;
+        public static final int XBOX_CONTROLLER_Y_BUTTON = 4;
+        public static final int XBOX_CONTROLLER_LB_BUTTON = 5;
+        public static final int XBOX_CONTROLLER_RB_BUTTON = 6;
+        public static final int XBOX_CONTROLLER_BACK_BUTTON = 7;
+        public static final int XBOX_CONTROLLER_START_BUTTON = 8;
+        public static final int XBOX_CONTROLLER_LEFT_SIICK_BUTTON = 9;
+        public static final int XBOX_CONTROLLER_RIGHT_STICK_BUTTON = 10;
+        public static final int UP = 0;
+        public static final int RIGHT = 90;
+        public static final int DOWN = 180;
+        public static final int LEFT = 270;
+        public static final int BUTTON_GRID_HIGH_LEFT = 1;
+        public static final int BUTTON_GRID_HIGH_MID = 2;
+        public static final int BUTTON_GRID_HIGH_RIGHT = 3;
+        public static final int BUTTON_GRID_MID_LEFT = 4;
+        public static final int BUTTON_GRID_MID_MID = 5;
+        public static final int BUTTON_GRID_MID_RIGHT = 6;
+        public static final int BUTTON_GRID_HYBRID_LEFT = 7;
+        public static final int BUTTON_GRID_HYBRID_MID = 8;
+        public static final int BUTTON_GRID_HYBRID_RIGHT = 9;
         public static final double STICK_DEADBAND = 0.1;
         public static final int TRANSLATION_BUTTON = 1;
         public static final int ROTATION_BUTTON = 1;
@@ -82,7 +94,7 @@ public final class Constants {
         public static final int ROTATION_AXIS = 0;
     }
 
-    public static final class DriveTrain {
+    public static final class Drivetrain {
         public static final int PIGEON_ID = 20;
         public static final boolean INVERT_GYRO = false;
 
@@ -148,6 +160,7 @@ public final class Constants {
         public static final boolean CANCODER_INVERT = false;
 
         /* Module Specific Constants */
+
         /* Front Left Module - Module 0 */
         public static final class Mod0 {
             public static final int DRIVE_MOTOR_ID = 0;
@@ -210,51 +223,45 @@ public final class Constants {
         public static final int INTAKE_MOTOR_ID = 6;
         public static final int WRIST_MOTOR_ID = 5; 
         public static final int US_SENSOR_ID = 0;
-        public static final int LIGHT_SENSOR_ID = 1;
+        public static final int BB_SENSOR_ID = 1;
     }
 
     public static final class Climber{
-        public static final int ID_1 = 12;
-        public static final int ID_2 = 13;
+        public static final int LEAD_ID = 12;
+        public static final int FOLLOWER_ID = 13;
     }
 
     public static final class Arm{
-        public static final int SHOULDER_ID = 3;
-        public static final int SHOULDER_2_ID = 2;
-        public static final int EXTENSION_ID = 4;
-        public static final int EXTENSION_ID_1 = 16;
-        public static final int ROTATION_ID = 14;
+        public static final int LEAD_SHOULDER_ID = 3;
+        public static final int FOLLOWER_SHOULDER_ID = 2;
+        public static final int LEAD_EXTENSION_ID = 4;
+        public static final int FOLLOWER_EXTENSION_ID = 16;
+        public static final int TURRET_ID = 14;
         public static final SparkMaxAlternateEncoder.Type ALT_ENC_TYPE = SparkMaxAlternateEncoder.Type.kQuadrature;
         public static final int CPR = 8192;
     }
 
     public static String getMACAddress() {
-        try {
+        try{
             Enumeration<NetworkInterface> nwInterface = NetworkInterface.getNetworkInterfaces();
             StringBuilder ret = new StringBuilder();
-            while (nwInterface.hasMoreElements()) {
+            while(nwInterface.hasMoreElements()){
                 NetworkInterface nis = nwInterface.nextElement();
-                System.out.println("NIS: " + nis.getDisplayName());
-                if (nis != null && "eth0".equals(nis.getDisplayName())) {
+                if(nis != null && "eth0".equals(nis.getDisplayName())){
                     byte[] mac = nis.getHardwareAddress();
-                    if (mac != null) {
-                        for (int i = 0; i < mac.length; i++) {
+                    if(mac != null){
+                        for(int i = 0; i < mac.length; i++){
                             ret.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? ":" : ""));
                         }
                         String addr = ret.toString();
-                        System.out.println("NIS " + nis.getDisplayName() + " addr: " + addr);
                         return addr;
-                    } else {
-                        System.out.println("Address doesn't exist or is not accessible");
                     }
-                } else {
-                    System.out.println("Skipping adaptor: " + nis.getDisplayName());
-                }
+                    else {}
+                } 
+                else {}
             }
-        } catch (SocketException | NullPointerException e) {
-            e.printStackTrace();
-        }
-
+        } 
+        catch (SocketException | NullPointerException e) {}
         return "";
     }
 
