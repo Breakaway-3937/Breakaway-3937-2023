@@ -6,14 +6,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Drivetrain;
 
 public class AutoBalance extends CommandBase {
-  private final DriveTrain s_Drivetrain;
+  private final Drivetrain s_Drivetrain;
   private double value = 0;
-  private double acceptable = 3;
+  private double acceptable = 2;
   /** Creates a new AutoBalance. */
-  public AutoBalance(DriveTrain s_Drivetrain) {
+  public AutoBalance(Drivetrain s_Drivetrain) {
     this.s_Drivetrain = s_Drivetrain;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(s_Drivetrain);
@@ -28,26 +28,26 @@ public class AutoBalance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    s_Drivetrain.drive(new Translation2d(value, 0), 0, true, false);
+    s_Drivetrain.drive(new Translation2d(value, 0), 0, true, true);
     if((s_Drivetrain.getYaw().getDegrees() % 360 > 315 || s_Drivetrain.getYaw().getDegrees() % 360 < 45) && Math.abs(s_Drivetrain.getRoll()) > acceptable){
       if(s_Drivetrain.getRoll() < 0){
-        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * -0.02;
+        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * -0.013;
       }
       else{
-        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * 0.02;
+        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * 0.013;
       }
     }
     else if((s_Drivetrain.getYaw().getDegrees() % 360 > 135 || s_Drivetrain.getYaw().getDegrees() % 360 < 225) && Math.abs(s_Drivetrain.getRoll()) > acceptable){
       if(s_Drivetrain.getRoll() > 0){
-        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * -0.02;
+        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * -0.013;
       }
       else{
-        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * 0.02;
+        value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * 0.013;
       }
     }
     else if(Math.abs(s_Drivetrain.getRoll()) < acceptable){
-      s_Drivetrain.drive(new Translation2d(0, 0), 0.3, true, false);
-      s_Drivetrain.drive(new Translation2d(0, 0), 0, true, false);
+      s_Drivetrain.drive(new Translation2d(-value, 0), 0.3, true, true);
+      s_Drivetrain.drive(new Translation2d(0, 0), 0, true, true);
     }
   }
 
