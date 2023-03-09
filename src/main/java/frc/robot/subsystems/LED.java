@@ -120,9 +120,6 @@ public class LED extends SubsystemBase {
                 blue();
             }
         }
-        if(s_Intake.intakeFull()){
-            green();
-        }
         if(green){
             for(int i = 0; i < 350; i++){
                 if(timer.get() > 0.25 && i % 2 != 0 && !flag){
