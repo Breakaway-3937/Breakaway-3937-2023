@@ -28,6 +28,9 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.VisionConstants;
@@ -47,8 +50,11 @@ public class PhotonVision extends SubsystemBase{
     private final PhotonPoseEstimator photonPoseEstimator;
     private AprilTagFieldLayout atfl;
     private double rY, rX, rR, dP, pR, theta, pX, pY, cos;
-    private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridMid, hybridRight, auto, flag = false;
+    private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridMid, hybridRight, auto = false;
     private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
+    private GenericEntry poseX, poseY, distanceBoard, angleBoard, id;
+    private double x, y, d, a, idNum;
+    private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));
 
     public PhotonVision(LED s_LED) {
         this.s_LED = s_LED;
@@ -60,6 +66,12 @@ public class PhotonVision extends SubsystemBase{
         photonCamera = new PhotonCamera(VisionConstants.CAMERA_NAME);        
         photonPoseEstimator =
             new PhotonPoseEstimator(atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCamera, Constants.VisionConstants.ROBOT_TO_CAM);
+
+        poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
+        poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", y).withPosition(1, 0).getEntry();
+        distanceBoard = Shuffleboard.getTab("SyrupTag").add("Distance", d).withPosition(2, 0).getEntry();
+        angleBoard = Shuffleboard.getTab("SyrupTag").add("Angle", a).withPosition(3, 0).getEntry();
+        id = Shuffleboard.getTab("SyrupTag").add("ID", idNum).withPosition(4, 0).getEntry();
     }
 
     public Pose2d getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
@@ -225,6 +237,7 @@ public class PhotonVision extends SubsystemBase{
     }
 
     public ArrayList<Boolean> getSelectedScore(){
+        array.clear();
         array.add(0, highLeft); 
         array.add(1, highMid);
         array.add(2, highRight);
@@ -269,23 +282,31 @@ public class PhotonVision extends SubsystemBase{
 
     @Override
     public void periodic(){
-        if(!flag && !photonCamera.isConnected()){
+        pose2d = getEstimatedGlobalPose(pose2d);
+        x = pose2d.getX();
+        y = pose2d.getY();
+        d = getArmStuff().getFirst();
+        a = getArmStuff().getSecond();
+        poseX.setDouble(x);
+        poseY.setDouble(y);
+        distanceBoard.setDouble(d);
+        angleBoard.setDouble(a);
+        id.setDouble(idNum);
+        if(!photonCamera.isConnected()){
             s_LED.bad();
         }
-        else if(!flag && photonCamera.isConnected()){
+        else if(photonCamera.isConnected()){
             s_LED.notBad();
-            flag = true;
         }
-        if(auto){
-            if(closeEnough()){
-                s_LED.green();
-            }
-            else if(photonCamera.getLatestResult().getBestTarget() != null){
-                s_LED.white();
-            }
-            else if(photonCamera.getLatestResult().getBestTarget() == null){
-                s_LED.red();
-            }
+        if(closeEnough()){
+            s_LED.green();
+        }
+        else if(photonCamera.getLatestResult().getBestTarget() != null){
+            s_LED.white();
+            idNum = photonCamera.getLatestResult().getBestTarget().getFiducialId();
+        }
+        else if(photonCamera.getLatestResult().getBestTarget() == null){
+            s_LED.red();
         }
     }
 }
