@@ -39,9 +39,9 @@ import frc.robot.subsystems.PhotonVision;
 public class RobotContainer {
   /* Controllers */
   private final Joystick translationController = new Joystick(Constants.Controllers.TRANSLATION_CONTROLLER.getPort());
-  private final Joystick rotationController = new Joystick(1);
-  public final XboxController xboxController = new XboxController(2);
-  public final Joystick buttonGrid = new Joystick(3);
+  private final Joystick rotationController = new Joystick(Constants.Controllers.ROTATION_CONTROLLER.getPort());
+  public final XboxController xboxController = new XboxController(Constants.Controllers.XBOX_CONTROLLER.getPort());
+  public final Joystick buttonGrid = new Joystick(Constants.Controllers.BUTTON_GRID.getPort());
 
   /* Drive Controls */
   private final int translationAxis = Constants.Controllers.TRANSLATION_AXIS;
