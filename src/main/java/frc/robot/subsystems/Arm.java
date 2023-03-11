@@ -19,7 +19,9 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -73,6 +75,20 @@ public class Arm extends SubsystemBase {
 
   public void setTurret(double position){
     turretPIDController.setReference(position, ControlType.kSmartMotion);
+  }
+
+  public void runTurret(){
+    double tx = -NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+    if(getTurretPosition() > 4 && tx > 0){
+      turret.set(0);
+    }
+    else if(getTurretPosition() < -4 && tx < 0){
+      turret.set(0);
+    }
+    else{
+      turret.set(tx * 0.035);
+    }
+    SmartDashboard.putNumber("Speed", tx * 0.035);
   }
   
   public double getShoulder1Position(){

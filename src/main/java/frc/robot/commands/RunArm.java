@@ -4,7 +4,9 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
@@ -14,7 +16,7 @@ public class RunArm extends CommandBase {
   private final XboxController xboxController;
   private double shoulderPosition, turretPosition, extensionPosition, wristPosition;
   private int state;
-  private boolean flag, flag1;
+  private boolean flag, flag1, track;
   /** Creates a new RunArm. */
   //public RunArm(Arm s_Arm, Joystick joystick, PhotonVision s_Photon, XboxController xboxController){
   public RunArm(Arm s_Arm, XboxController xboxController, PhotonVision s_Photon){
@@ -33,6 +35,7 @@ public class RunArm extends CommandBase {
     extensionPosition = -20;
     wristPosition = 0;
     turretPosition = 0;
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -44,6 +47,7 @@ public class RunArm extends CommandBase {
       wristPosition = 36;
       turretPosition = 0;
       state = 0;
+      track = true;
     }
     else if(s_Photon.getSelectedScore().get(3) || s_Photon.getSelectedScore().get(4) || s_Photon.getSelectedScore().get(5)){
       shoulderPosition = -12.75;
@@ -56,6 +60,7 @@ public class RunArm extends CommandBase {
       extensionPosition = -24500;
       wristPosition = 43.8;
       turretPosition = 0;
+      track = true;
     }
     else if(s_Photon.getSelectedScore().get(6) || s_Photon.getSelectedScore().get(7) || s_Photon.getSelectedScore().get(8)){
       shoulderPosition = -5;
@@ -67,6 +72,7 @@ public class RunArm extends CommandBase {
       }
       extensionPosition = -307;
       wristPosition = 35;
+      track = false;
     }
     if(xboxController.getRawButton(1)){
       s_Photon.setAllFalse();
@@ -82,6 +88,7 @@ public class RunArm extends CommandBase {
         wristPosition = 8;
         turretPosition = 0;
         flag = false;
+        track = false;
       }
       else if(Intake.getConeCubeMode()){
         shoulderPosition = -0.5;
@@ -94,6 +101,7 @@ public class RunArm extends CommandBase {
         extensionPosition = -20;
         wristPosition = 10;
         turretPosition = 0;
+        track = false;
       }
       else if(!Intake.getConeCubeMode()){
         shoulderPosition = -0.5;
@@ -106,6 +114,7 @@ public class RunArm extends CommandBase {
         extensionPosition = -20;
         wristPosition = 19.85;
         turretPosition = 0;
+        track = false;
       }   
     }
     //Jack Arm
@@ -123,6 +132,7 @@ public class RunArm extends CommandBase {
         wristPosition = 47;
         turretPosition = 0;
         flag = false;
+        track = false;
       }
       else if(!Intake.getConeCubeMode()){
         shoulderPosition = -13.26;
@@ -135,6 +145,7 @@ public class RunArm extends CommandBase {
         extensionPosition = -30200;
         wristPosition = 44.76;
         turretPosition = 0;
+        track = false;
       }
     }
     else if(xboxController.getRawButton(3)){
@@ -149,6 +160,7 @@ public class RunArm extends CommandBase {
       extensionPosition = -20;
       wristPosition = 0;
       turretPosition = 0;
+      track = true;
     }
     else if(xboxController.getRawButton(2)){
       s_Photon.setAllFalse();
@@ -162,6 +174,7 @@ public class RunArm extends CommandBase {
       extensionPosition = -417;
       wristPosition = 0.2;
       turretPosition = 0;
+      track = false;
     }
     else if(xboxController.getRawButton(5)){
       s_Photon.setAllFalse();
@@ -175,6 +188,7 @@ public class RunArm extends CommandBase {
       extensionPosition = -20;
       turretPosition = 0;
       wristPosition = 0;
+      track = false;
     }
     if(RunClimber.dropArm){
       shoulderPosition = -0.5;
@@ -187,6 +201,7 @@ public class RunArm extends CommandBase {
       extensionPosition = -50;
       turretPosition = 0;
       wristPosition = 0;
+      track = false;
     }
 
     if((shoulderPosition == -0.5 || shoulderPosition == 0) && s_Arm.getShoulder1Position() < shoulderPosition + 1 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
@@ -203,10 +218,15 @@ public class RunArm extends CommandBase {
           s_Arm.setShoulder(shoulderPosition);
         }
         if(s_Arm.getShoulder1Position() < shoulderPosition + 0.5 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
-          s_Arm.setTurret(turretPosition);
+          if(s_Photon.getAuto() && track && NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1){
+            s_Arm.runTurret();
+          }
+          else{
+            s_Arm.setTurret(turretPosition);
+          }
           flag = true;
         }
-        if(s_Arm.getTurretPosition() < turretPosition + 0.5 && s_Arm.getTurretPosition() > turretPosition - 0.5 && flag){
+        if(flag){
           s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
           flag = false;
@@ -216,15 +236,22 @@ public class RunArm extends CommandBase {
         s_Arm.setWrist(wristPosition);
         s_Arm.setExtension(extensionPosition);
         if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125){
-          s_Arm.setTurret(turretPosition);
+          if(s_Photon.getAuto() && track && NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1){
+            s_Arm.runTurret();
+          }
+          else{
+            s_Arm.setTurret(turretPosition);
+          }
           flag = true;
         }
-        if(s_Arm.getTurretPosition() < turretPosition + 0.5 && s_Arm.getTurretPosition() > turretPosition - 0.5 && flag && !flag1){
+        if(flag && !flag1){
           s_Arm.setShoulder(shoulderPosition);
           flag = false;
         }
         break;
     }
+    SmartDashboard.putBoolean("Auto", s_Photon.getAuto());
+    SmartDashboard.putBoolean("Track", track);
   }
 
   // Called once the command ends or is interrupted.

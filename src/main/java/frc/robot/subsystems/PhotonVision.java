@@ -282,6 +282,10 @@ public class PhotonVision extends SubsystemBase{
         hybridRight = false;
     }
 
+    public boolean getAuto(){
+        return auto;
+    }
+
     @Override
     public void periodic(){
         try{

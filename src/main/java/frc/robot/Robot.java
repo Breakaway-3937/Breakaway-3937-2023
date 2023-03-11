@@ -90,8 +90,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    //m_robotContainer.s_Arm.setDefaultCommand(m_robotContainer.c_RunArm);
-    m_robotContainer.s_Arm.setDefaultCommand(m_robotContainer.c_TestTurret);
+    m_robotContainer.s_Arm.setDefaultCommand(m_robotContainer.c_RunArm);
     //Shuffleboard.selectTab("Drive");
   }
 
