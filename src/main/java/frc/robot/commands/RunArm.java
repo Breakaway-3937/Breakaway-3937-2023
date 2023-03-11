@@ -203,7 +203,7 @@ public class RunArm extends CommandBase {
           s_Arm.setShoulder(shoulderPosition);
         }
         if(s_Arm.getShoulder1Position() < shoulderPosition + 0.5 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
-          //s_Arm.setRotation(turretPosition);
+          s_Arm.setTurret(turretPosition);
           flag = true;
         }
         if(s_Arm.getTurretPosition() < turretPosition + 0.5 && s_Arm.getTurretPosition() > turretPosition - 0.5 && flag){
@@ -216,7 +216,7 @@ public class RunArm extends CommandBase {
         s_Arm.setWrist(wristPosition);
         s_Arm.setExtension(extensionPosition);
         if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125){
-          //s_Arm.setRotation(turretPosition);
+          s_Arm.setTurret(turretPosition);
           flag = true;
         }
         if(s_Arm.getTurretPosition() < turretPosition + 0.5 && s_Arm.getTurretPosition() > turretPosition - 0.5 && flag && !flag1){

@@ -43,6 +43,7 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVision extends SubsystemBase{
     private final LED s_LED;
@@ -55,6 +56,7 @@ public class PhotonVision extends SubsystemBase{
     private GenericEntry poseX, poseY, distanceBoard, angleBoard, id;
     private double x, y, d, a, idNum;
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));
+    private PhotonTrackedTarget result;
 
     public PhotonVision(LED s_LED) {
         this.s_LED = s_LED;
@@ -282,6 +284,10 @@ public class PhotonVision extends SubsystemBase{
 
     @Override
     public void periodic(){
+        try{
+            result = photonCamera.getLatestResult().getBestTarget();
+        }
+        catch(Exception e){}
         pose2d = getEstimatedGlobalPose(pose2d);
         x = pose2d.getX();
         y = pose2d.getY();
@@ -301,11 +307,11 @@ public class PhotonVision extends SubsystemBase{
         if(closeEnough()){
             s_LED.green();
         }
-        else if(photonCamera.getLatestResult().getBestTarget() != null){
+        else if(result != null){
             s_LED.white();
-            idNum = photonCamera.getLatestResult().getBestTarget().getFiducialId();
+            idNum = result.getFiducialId();
         }
-        else if(photonCamera.getLatestResult().getBestTarget() == null){
+        else if(result == null){
             s_LED.red();
         }
     }
