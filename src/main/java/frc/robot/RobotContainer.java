@@ -20,6 +20,7 @@ import frc.robot.commands.RunArm;
 import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.TestTurret;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -80,6 +81,7 @@ public class RobotContainer {
   public final RunIntake c_RunIntake = new RunIntake(s_Intake, xboxController);
   public final RunClimber c_RunClimber = new RunClimber(s_Climber, xboxController);
   public final RunArm c_RunArm = new RunArm(s_Arm, xboxController, s_Photon);
+  public final TestTurret c_TestTurret = new TestTurret(s_Arm, xboxController);
   
   /* Autos */
   public final AutoTrajectories autoTrajectories = new AutoTrajectories();
@@ -94,9 +96,9 @@ public class RobotContainer {
     CommandScheduler.getInstance().registerSubsystem(s_Climber);
     CommandScheduler.getInstance().registerSubsystem(s_Arm);
 
-    s_Drivetrain.setDefaultCommand(c_TeleopSwerve);
-    s_Intake.setDefaultCommand(c_RunIntake);
-    s_Climber.setDefaultCommand(c_RunClimber);
+    //s_Drivetrain.setDefaultCommand(c_TeleopSwerve);
+    //s_Intake.setDefaultCommand(c_RunIntake);
+    //s_Climber.setDefaultCommand(c_RunClimber);
     Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
     // Configure the button bindings
     configureButtonBindings();

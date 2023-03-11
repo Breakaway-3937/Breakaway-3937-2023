@@ -112,8 +112,8 @@ public class Arm extends SubsystemBase {
     wristPIDController.setFeedbackDevice(wristEncoder);
     wristEncoder.setPosition(0);
     wristMotor.setInverted(true);
-    wristPIDController.setSmartMotionMaxVelocity(550, 0);
-    wristPIDController.setSmartMotionMaxAccel(250, 0);
+    wristPIDController.setSmartMotionMaxVelocity(750, 0);
+    wristPIDController.setSmartMotionMaxAccel(500, 0);
     wristPIDController.setOutputRange(-1, 1);
     wristMotor.setIdleMode(IdleMode.kBrake);
 
@@ -135,8 +135,8 @@ public class Arm extends SubsystemBase {
     shoulderPIDController.setI(shoulderkI);
     shoulderPIDController.setD(shoulderkD);
     shoulderPIDController.setFF(shoulderkFF);
-    shoulderPIDController.setSmartMotionMaxVelocity(500, 0);
-    shoulderPIDController.setSmartMotionMaxAccel(254, 0);
+    shoulderPIDController.setSmartMotionMaxVelocity(750, 0);
+    shoulderPIDController.setSmartMotionMaxAccel(350, 0);
     shoulderPIDController.setOutputRange(-1, 0.75);
     leadShoulder.setInverted(true);
     leadShoulder.setIdleMode(IdleMode.kBrake);
@@ -189,18 +189,18 @@ public class Arm extends SubsystemBase {
     extensionkI = 0.0075;
     extensionkD = 7.5;
     extensionkFF = 0.3;
-    shoulderkP = 5e-8; //6.5e-8
+    shoulderkP = 4e-8; //6.5e-8
     shoulderkI = 0; //0.5e-6
     shoulderkD = 0;
     shoulderkFF = 0.001; //0.0019
     turretkP = 4e-9;
-    turretkI = 0.1e-6;
-    turretkD = 0.3e-8;
-    turretkFF = 0.008;
-    wristkP = 9e-6;
-    wristkI = 0.1e-6;
+    turretkI = 0;
+    turretkD = 0;
+    turretkFF = 0.0016;
+    wristkP = 7e-7;
+    wristkI = 0;
     wristkD = 0;
-    wristkFF = 0.0018;
+    wristkFF = 0.001;
   }
 
   @Override

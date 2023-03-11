@@ -41,7 +41,7 @@ public class Robot extends TimedRobot {
     powerDistribution.setSwitchableChannel(true);
     powerDistribution.clearStickyFaults();
     CommandScheduler.getInstance().setPeriod(0.025);
-    Shuffleboard.selectTab("Auto");
+    //Shuffleboard.selectTab("Auto");
   }
 
   /**
@@ -90,8 +90,9 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    m_robotContainer.s_Arm.setDefaultCommand(m_robotContainer.c_RunArm);
-    Shuffleboard.selectTab("Drive");
+    //m_robotContainer.s_Arm.setDefaultCommand(m_robotContainer.c_RunArm);
+    m_robotContainer.s_Arm.setDefaultCommand(m_robotContainer.c_TestTurret);
+    //Shuffleboard.selectTab("Drive");
   }
 
   /** This function is called periodically during operator control. */
