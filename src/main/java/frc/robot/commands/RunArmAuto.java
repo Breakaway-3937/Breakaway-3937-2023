@@ -39,7 +39,7 @@ public class RunArmAuto extends CommandBase {
   public void execute() {
     if(level == 3 && !flag2){
       shoulderPosition = -13;
-      extensionPosition = -46000;
+      extensionPosition = -46500;
       wristPosition = 36;
       turretPosition = 0;
       state = 0;
