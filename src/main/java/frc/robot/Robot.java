@@ -7,7 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -41,7 +40,6 @@ public class Robot extends TimedRobot {
     powerDistribution.setSwitchableChannel(true);
     powerDistribution.clearStickyFaults();
     CommandScheduler.getInstance().setPeriod(0.025);
-    //Shuffleboard.selectTab("Auto");
   }
 
   /**
@@ -91,7 +89,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     m_robotContainer.s_Arm.setDefaultCommand(m_robotContainer.c_RunArm);
-    //Shuffleboard.selectTab("Drive");
   }
 
   /** This function is called periodically during operator control. */
