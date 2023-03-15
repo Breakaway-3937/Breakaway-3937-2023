@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 
@@ -15,10 +14,14 @@ public class RunArm extends CommandBase {
   private final PhotonVision s_Photon;
   private final XboxController xboxController;
   private double shoulderPosition, turretPosition, extensionPosition, wristPosition;
+  double offsetGamepiece, angleOffset;
   private int state;
   private boolean flag, flag1, track;
+  double acceptableAngle = 0.5;
+  double maxRotation = 4.0;
+  double pValue = 0.035;
+  double tx = 0;
   /** Creates a new RunArm. */
-  //public RunArm(Arm s_Arm, Joystick joystick, PhotonVision s_Photon, XboxController xboxController){
   public RunArm(Arm s_Arm, XboxController xboxController, PhotonVision s_Photon){
     this.s_Arm = s_Arm;
     this.s_Photon = s_Photon;
@@ -35,7 +38,6 @@ public class RunArm extends CommandBase {
     extensionPosition = -20;
     wristPosition = 0;
     turretPosition = 0;
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,7 +45,7 @@ public class RunArm extends CommandBase {
   public void execute() {
     if(s_Photon.getSelectedScore().get(0) || s_Photon.getSelectedScore().get(1) || s_Photon.getSelectedScore().get(2)){
       shoulderPosition = -13;
-      extensionPosition = -46000;
+      extensionPosition = -46500;
       wristPosition = 36;
       turretPosition = 0;
       state = 0;
@@ -87,7 +89,6 @@ public class RunArm extends CommandBase {
         extensionPosition = -9000;
         wristPosition = 8;
         turretPosition = 0;
-        flag = false;
         track = false;
       }
       else if(Intake.getConeCubeMode()){
@@ -131,7 +132,6 @@ public class RunArm extends CommandBase {
         extensionPosition = -32000;
         wristPosition = 47;
         turretPosition = 0;
-        flag = false;
         track = false;
       }
       else if(!Intake.getConeCubeMode()){
@@ -160,7 +160,7 @@ public class RunArm extends CommandBase {
       extensionPosition = -20;
       wristPosition = 0;
       turretPosition = 0;
-      track = true;
+      track = false;
     }
     else if(xboxController.getRawButton(2)){
       s_Photon.setAllFalse();
@@ -219,9 +219,30 @@ public class RunArm extends CommandBase {
         }
         if(s_Arm.getShoulder1Position() < shoulderPosition + 0.5 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
           if(s_Photon.getAuto() && track && NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1){
-            s_Arm.runTurret();
+            tx = -NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+            if(Intake.getDistance() > 0.40){
+              angleOffset = 0;
+            }
+            else{
+              offsetGamepiece = (Intake.getDistance()+ 0.045) - 0.27; 
+              angleOffset = Math.toDegrees(Math.atan(offsetGamepiece/(Math.abs(extensionPosition * 0.00002) + 0.35)));
+            }
+            if(s_Arm.getTurretPosition() < maxRotation && s_Arm.getTurretPosition() > -maxRotation && Math.abs(tx - angleOffset) >= acceptableAngle){
+              s_Arm.runTurret((tx - angleOffset) * pValue);
+              if(tx > 0){
+                turretPosition = s_Arm.getTurretPosition() - (acceptableAngle/5.78);
+              }
+              else{
+                turretPosition = s_Arm.getTurretPosition() + (acceptableAngle/5.78);
+              }
+            }
+            else{
+              s_Arm.setTurret(turretPosition);
+            }
+
           }
           else{
+            turretPosition = 0;
             s_Arm.setTurret(turretPosition);
           }
           flag = true;
@@ -237,9 +258,29 @@ public class RunArm extends CommandBase {
         s_Arm.setExtension(extensionPosition);
         if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125){
           if(s_Photon.getAuto() && track && NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1){
-            s_Arm.runTurret();
+            tx = -NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+            if(Intake.getDistance() > 0.40){
+              angleOffset = 0;
+            }
+            else{
+              offsetGamepiece = (Intake.getDistance() + 0.045) - 0.27; 
+              angleOffset = Math.toDegrees(Math.atan(offsetGamepiece/(Math.abs(extensionPosition * 0.00002) + 0.35)));
+            }
+            if(s_Arm.getTurretPosition() < maxRotation && s_Arm.getTurretPosition() > -maxRotation && Math.abs(tx - angleOffset) >= acceptableAngle){
+              s_Arm.runTurret((tx - angleOffset) * pValue);
+              if(tx > 0){
+                turretPosition = s_Arm.getTurretPosition() - (acceptableAngle/5.78);
+              }
+              else{
+                turretPosition = s_Arm.getTurretPosition() + (acceptableAngle/5.78);
+              }
+            }
+            else{
+              s_Arm.setTurret(turretPosition);
+            }
           }
           else{
+            turretPosition = 0;
             s_Arm.setTurret(turretPosition);
           }
           flag = true;
@@ -250,8 +291,6 @@ public class RunArm extends CommandBase {
         }
         break;
     }
-    SmartDashboard.putBoolean("Auto", s_Photon.getAuto());
-    SmartDashboard.putBoolean("Track", track);
   }
 
   // Called once the command ends or is interrupted.
