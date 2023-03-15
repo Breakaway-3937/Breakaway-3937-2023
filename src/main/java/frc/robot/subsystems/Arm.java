@@ -77,18 +77,8 @@ public class Arm extends SubsystemBase {
     turretPIDController.setReference(position, ControlType.kSmartMotion);
   }
 
-  public void runTurret(){
-    double tx = -NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-    if(getTurretPosition() > 4 && tx > 0){
-      turret.set(0);
-    }
-    else if(getTurretPosition() < -4 && tx < 0){
-      turret.set(0);
-    }
-    else{
-      turret.set(tx * 0.035);
-    }
-    SmartDashboard.putNumber("Speed", tx * 0.035);
+  public void runTurret(double turretSpeed){
+    turret.set(turretSpeed);
   }
   
   public double getShoulder1Position(){
@@ -209,10 +199,10 @@ public class Arm extends SubsystemBase {
     shoulderkI = 0; //0.5e-6
     shoulderkD = 0;
     shoulderkFF = 0.001; //0.0019
-    turretkP = 4e-9;
+    turretkP = 5e-10;
     turretkI = 0;
     turretkD = 0;
-    turretkFF = 0.0016;
+    turretkFF = 0.0015;
     wristkP = 7e-7;
     wristkI = 0;
     wristkD = 0;
