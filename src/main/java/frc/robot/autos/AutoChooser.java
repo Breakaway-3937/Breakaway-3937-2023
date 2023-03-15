@@ -1,5 +1,8 @@
 package frc.robot.autos;
 
+import java.util.HashMap;
+
+import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -11,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.commands.AutoBalance;
 import frc.robot.commands.RunArmAuto;
+import frc.robot.commands.RunIntakeAuto;
 import frc.robot.commands.SpitIntakeAuto;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -274,13 +278,26 @@ public class AutoChooser {
             false,
             s_Drivetrain);
 
+        HashMap<String, Command> eventMap = new HashMap<>();
+            eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new RunIntakeAuto(s_Intake), new RunArmAuto(s_Arm, 0)));
+            
+
+        FollowPathWithEvents followCommand = new FollowPathWithEvents(
+            swerveCommand,
+            trajectories.getScoreTwice2().getMarkers(),
+            eventMap
+        );
+
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
             new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 2),
             new SpitIntakeAuto(s_Intake),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice2().getInitialHolonomicPose())),
-            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
+            new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
+            new RunArmAuto(s_Arm, 1),
+            new SpitIntakeAuto(s_Intake),
+            new RunArmAuto(s_Arm, 0));
         return command;
     }
     
