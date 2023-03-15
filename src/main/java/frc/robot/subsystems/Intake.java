@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,7 +17,7 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   private final WPI_TalonFX intakeMotor;
-  private final AnalogInput uSSensor, bBSensor;
+  private static AnalogInput uSSensor, bBSensor;
   private final GenericEntry usDistance, bBDistance;
   private static boolean cone, deadCone;
 
@@ -69,16 +70,19 @@ public class Intake extends SubsystemBase {
   public void setCone(){
     cone = true;
     deadCone = false;
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(2);
   }
 
   public void setCube(){
     cone = false;
     deadCone = false;
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
   }
 
   public void setDeadCone(){
     cone = false;
     deadCone = true;
+    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(2);
   }
 
   public static boolean getConeCubeMode(){
@@ -89,7 +93,7 @@ public class Intake extends SubsystemBase {
     return deadCone;
   }
 
-  public double getDistance(){
+  public static double getDistance(){
     return 0.342 - 0.291 * Math.log(uSSensor.getVoltage()) + 0.05;
   }
 
