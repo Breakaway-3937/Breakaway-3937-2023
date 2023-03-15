@@ -302,21 +302,23 @@ public class PhotonVision extends SubsystemBase{
         distanceBoard.setDouble(d);
         angleBoard.setDouble(a);
         id.setDouble(idNum);
-        if(!photonCamera.isConnected()){
+        /*if(!photonCamera.isConnected()){
             s_LED.bad();
         }
         else if(photonCamera.isConnected()){
             s_LED.notBad();
-        }
-        if(closeEnough()){
-            s_LED.green();
-        }
-        else if(result != null){
-            s_LED.white();
-            idNum = result.getFiducialId();
-        }
-        else if(result == null){
-            s_LED.red();
+        }*/
+        if(auto){
+            if(closeEnough()){
+                s_LED.green();
+            }
+            else if(result != null){
+                s_LED.white();
+                idNum = result.getFiducialId();
+            }
+            else if(result == null){
+                s_LED.red();
+            }
         }
     }
 }
