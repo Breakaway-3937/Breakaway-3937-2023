@@ -19,9 +19,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -91,16 +89,6 @@ public class Arm extends SubsystemBase {
 
   public double getTurretPosition(){
     return turretEncoder.getPosition();
-  }
-
-  public double getLengthToTarget(){
-    if(s_Photon.closeEnough()){
-      //return s_Photon.getArmStuff().getFirst() / Constants.Arm.METER_TO_FALCON;
-      return -20;
-    }
-    else{
-      return -20;
-    }
   }
 
   public void setWrist(double position){
