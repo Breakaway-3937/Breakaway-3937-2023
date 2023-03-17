@@ -29,9 +29,6 @@
         },
         "traj": {
           "arrowSize": 13
-        },
-        "window": {
-          "visible": true
         }
       }
     }
@@ -57,8 +54,5 @@
         "open": true
       }
     }
-  },
-  "NetworkTables View": {
-    "visible": false
   }
 }

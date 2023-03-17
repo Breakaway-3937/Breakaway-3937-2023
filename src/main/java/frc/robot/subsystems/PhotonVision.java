@@ -54,13 +54,15 @@ public class PhotonVision extends SubsystemBase{
     private AprilTagFieldLayout atfl;
     private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridMid, hybridRight, auto = false;
     private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
-    private GenericEntry poseX, poseY, distance, angle;
+    private final GenericEntry poseX, poseY, distance, angle;
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));
     private Pose2d pose2dDrivetrain = new Pose2d(0, 0, new Rotation2d(0));
     private PhotonTrackedTarget result;
     private double x, y, targetX, targetY, theta;
 
     public PhotonVision(LED s_LED) {
+        SmartDashboard.putNumber("X", 0);
+        SmartDashboard.putNumber("Y", 0);
         targetX = Constants.VisionConstants.HIGH_LEFT_POST_X;
         targetY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
         this.s_LED = s_LED;
@@ -262,18 +264,37 @@ public class PhotonVision extends SubsystemBase{
             pose2dDrivetrain = pose2d;
         }
         else{
-            pose2dDrivetrain = Robot.m_robotContainer.s_Drivetrain.getPose();
+            //pose2dDrivetrain = Robot.m_robotContainer.s_Drivetrain.getPose();
+            pose2dDrivetrain = new Pose2d(SmartDashboard.getNumber("X", 0), SmartDashboard.getNumber("Y", 0), Rotation2d.fromDegrees(0));
         }
         if(DriverStation.getAlliance().toString().equals("Blue")){
-            x = pose2dDrivetrain.getX() - targetX;
-            y = pose2dDrivetrain.getY() - targetY;
+            if(pose2dDrivetrain.getY() > -1 && pose2dDrivetrain.getY() < 1.75 && ((pose2dDrivetrain.getY() < 1.05 && pose2dDrivetrain.getY() - 0.15 > -1) || (pose2dDrivetrain.getY() > 1.05 && pose2dDrivetrain.getY() + 0.15 < 1.75))){
+                x = pose2dDrivetrain.getX() - targetX;
+                y = pose2dDrivetrain.getY() - targetY;
+            }
+            else if(pose2dDrivetrain.getY() > 1.75 && pose2dDrivetrain.getY() < 3.5 && ((pose2dDrivetrain.getY() < 1.05 + 1.7 && pose2dDrivetrain.getY() + 0.15 < 3.5) || (pose2dDrivetrain.getY() > 1.05 + 1.7 && pose2dDrivetrain.getY() + 0.15 < 3.5))){
+                x = pose2dDrivetrain.getX() - targetX;
+                y = pose2dDrivetrain.getY() - (targetY + 1.7);
+            }
+            else if(pose2dDrivetrain.getY() > 3.5 && pose2dDrivetrain.getY() < 6){
+                x = pose2dDrivetrain.getX() - targetX;
+                y = pose2dDrivetrain.getY() - (targetY + 1.7 + 1.7);
+            }
         }
         else{
-            x = pose2dDrivetrain.getX() - targetX - 16.5;
-            y = pose2dDrivetrain.getY() - targetY;
+            if(pose2dDrivetrain.getY() > -1 && pose2dDrivetrain.getY() < 1.75){
+                x = pose2dDrivetrain.getX() - 16.5 - targetX;
+                y = pose2dDrivetrain.getY() - targetY;
+            }
+            else if(pose2dDrivetrain.getY() > 1.75 && pose2dDrivetrain.getY() < 3.36){
+                x = pose2dDrivetrain.getX() - 16.5 - targetX;
+                y = pose2dDrivetrain.getY() - (targetY + 1.7);
+            }
+            else if(pose2dDrivetrain.getY() > 3.36 && pose2dDrivetrain.getY() < 6){
+                x = pose2dDrivetrain.getX() - 16.5 - targetX;
+                y = pose2dDrivetrain.getY() - (targetY + 1.7 + 1.7);
+            }
         }
-        SmartDashboard.putNumber("X", pose2dDrivetrain.getX());
-        SmartDashboard.putNumber("Y", pose2dDrivetrain.getY());
         return Math.sqrt(((x * x) + (y * y)));
     }
 
