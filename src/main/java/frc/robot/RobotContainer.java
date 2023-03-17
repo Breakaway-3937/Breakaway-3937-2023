@@ -126,10 +126,6 @@ public class RobotContainer {
     left.onTrue(new InstantCommand(() -> s_Photon.setAuto()));
   } 
 
-  public Drivetrain getDrivetrain(){
-    return s_Drivetrain;
-  }
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
