@@ -100,7 +100,7 @@ public class RunArm extends CommandBase {
           state = 1;
         }
         extensionPosition = -20;
-        wristPosition = 10;
+        wristPosition = 12;
         turretPosition = 0;
         track = false;
       }
@@ -190,18 +190,18 @@ public class RunArm extends CommandBase {
       wristPosition = 0;
       track = false;
     }
-    if(RunClimber.dropArm){
+    if(xboxController.getRawButton(5)){
       shoulderPosition = -0.5;
-      if(extensionPosition > -50){
-        state = 0;
-      }
-      else{
-        state = 1;
-      }
-      extensionPosition = -50;
-      turretPosition = 0;
-      wristPosition = 0;
-      track = false;
+        if(extensionPosition > -20){
+          state = 0;
+        }
+        else{
+          state = 1;
+        }
+        extensionPosition = -20;
+        wristPosition = 0;
+        turretPosition = 0;
+        track = false;
     }
 
     if((shoulderPosition == -0.5 || shoulderPosition == 0) && s_Arm.getShoulder1Position() < shoulderPosition + 1 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
