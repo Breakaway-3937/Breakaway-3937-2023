@@ -28,34 +28,28 @@ public final class Constants {
     
 
     public static class VisionConstants {
-        public static final Transform3d ROBOT_TO_CAM = new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0)); //FIXME add new values for translation
+        public static final Transform3d ROBOT_TO_CAM = new Transform3d(new Translation3d(0.3019665792, 0, 0.09500616), new Rotation3d(0.02509632679, 0, 0));
         public static final String CAMERA_NAME = "Global_Shutter_Camera";
-        public static final double HIGH_LEFT_POST_X = -0.65;
-        public static final double HIGH_LEFT_POST_Y = 0.560;
-        public static final double HIGH_RIGHT_POST_X = -0.65;
-        public static final double HIGH_RIGHT_POST_Y = -0.560;
-        public static final double HIGH_MID_X = -0.65;
-        public static final double HIGH_MID_Y = 0.0;
-        public static final double HIGH_DISTANCE = 0.85796;
-        public static final double HIGH_MID_DISTANCE = 0.65;
+        public static final double HIGH_LEFT_POST_X = 0.4;
+        public static final double HIGH_LEFT_POST_Y = 0.5;
+        public static final double HIGH_RIGHT_POST_X = 0.4;
+        public static final double HIGH_RIGHT_POST_Y = 1.6;
+        public static final double HIGH_MID_X = 0.4;
+        public static final double HIGH_MID_Y = 1.05;
 
-        public static final double MID_LEFT_POST_X = -0.220;
-        public static final double MID_LEFT_POST_Y = 0.560;
-        public static final double MID_RIGHT_POST_X = -0.220;
-        public static final double MID_RIGHT_POST_Y = -0.560;
-        public static final double MID_MID_X = -0.22;
-        public static final double MID_MID_Y = 0.0;
-        public static final double MID_DISTANCE = 0.60166;
-        public static final double MID_MID_DISTANCE = 0.22;
+        public static final double MID_LEFT_POST_X = 0.8;
+        public static final double MID_LEFT_POST_Y = 0.5;
+        public static final double MID_RIGHT_POST_X = 0.8;
+        public static final double MID_RIGHT_POST_Y = 1.6;
+        public static final double MID_MID_X = 0.8;
+        public static final double MID_MID_Y = 1.05;
 
-        public static final double LEFT_HYBRID_X = 0.177673;
-        public static final double LEFT_HYBRID_Y = 0.560;
-        public static final double RIGHT_HYBRID_X = 0.177673;
-        public static final double RIGHT_HYBRID_Y = -0.560;
-        public static final double MID_HYBRID_X = 0.177673;
-        public static final double MID_HYBRID_Y = 0.0;
-        public static final double HYBRID_DISTANCE = 0.58750974027;
-        public static final double HYBRID_MID_DISTANCE = 0.177673;
+        public static final double LEFT_HYBRID_X = 1.2;
+        public static final double LEFT_HYBRID_Y = 0.5;
+        public static final double RIGHT_HYBRID_X = 1.2;
+        public static final double RIGHT_HYBRID_Y = 1.6;
+        public static final double MID_HYBRID_X = 1.2;
+        public static final double MID_HYBRID_Y = 1.05;
     }
 
     public static final class Controllers{
