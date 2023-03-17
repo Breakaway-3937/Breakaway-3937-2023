@@ -26,13 +26,15 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Constants.VisionConstants;
 
 import java.io.IOException;
@@ -50,15 +52,17 @@ public class PhotonVision extends SubsystemBase{
     private final PhotonCamera photonCamera;
     private final PhotonPoseEstimator photonPoseEstimator;
     private AprilTagFieldLayout atfl;
-    private double rY, rX, rR, dP, pR, theta, pX, pY, cos;
     private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridMid, hybridRight, auto = false;
     private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
-    private GenericEntry poseX, poseY, distanceBoard, angleBoard, id;
-    private double x, y, d, a, idNum;
+    private GenericEntry poseX, poseY, distance, angle;
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));
+    private Pose2d pose2dDrivetrain = new Pose2d(0, 0, new Rotation2d(0));
     private PhotonTrackedTarget result;
+    private double x, y, targetX, targetY, theta;
 
     public PhotonVision(LED s_LED) {
+        targetX = Constants.VisionConstants.HIGH_LEFT_POST_X;
+        targetY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
         this.s_LED = s_LED;
         try{
             atfl = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
@@ -69,11 +73,10 @@ public class PhotonVision extends SubsystemBase{
         photonPoseEstimator =
             new PhotonPoseEstimator(atfl, PoseStrategy.CLOSEST_TO_REFERENCE_POSE, photonCamera, Constants.VisionConstants.ROBOT_TO_CAM);
 
-        poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", x).withPosition(0, 0).getEntry();
-        poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", y).withPosition(1, 0).getEntry();
-        distanceBoard = Shuffleboard.getTab("SyrupTag").add("Distance", d).withPosition(2, 0).getEntry();
-        angleBoard = Shuffleboard.getTab("SyrupTag").add("Angle", a).withPosition(3, 0).getEntry();
-        id = Shuffleboard.getTab("SyrupTag").add("ID", idNum).withPosition(4, 0).getEntry();
+        poseX = Shuffleboard.getTab("SyrupTag").add("Pose X", 0).withPosition(0, 0).getEntry();
+        poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", 0).withPosition(1, 0).getEntry();
+        distance = Shuffleboard.getTab("SyrupTag").add("Distance", 0).withPosition(2, 0).getEntry();
+        angle = Shuffleboard.getTab("SyrupTag").add("Angle", 0).withPosition(3, 0).getEntry();
     }
 
     public Pose2d getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
@@ -87,26 +90,7 @@ public class PhotonVision extends SubsystemBase{
         }
     }
 
-    public Pair<Double, Double> getArmStuff(){
-        var result = photonCamera.getLatestResult();
-        if(result.hasTargets()){
-            rY = result.getBestTarget().getBestCameraToTarget().getY();
-            rX = result.getBestTarget().getBestCameraToTarget().getX();
-            rR = Math.sqrt(Math.pow(rX, 2) + Math.pow(rY, 2));
-            dP = Math.sqrt(Math.pow((pX - rX), 2) + Math.pow((pY - rY), 2));
-            cos = Math.abs((Math.pow(pR, 2) - Math.pow(rR, 2) - Math.pow(dP, 2)) / (2 * (rR * dP)));
-            theta = Math.toDegrees(Math.acos(cos));
-            return new Pair<Double, Double>(dP, theta);
-        }
-        else{
-            return new Pair<Double,Double>(0.0, 0.0);
-        }
-    }
-
     public void setHighLeft(){
-        pX = Constants.VisionConstants.HIGH_LEFT_POST_X;
-        pY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
-        pR = Constants.VisionConstants.HIGH_DISTANCE;
         highLeft = true;
         highMid = false;
         highRight = false;
@@ -116,12 +100,11 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = false;
         hybridRight = false;
+        targetX = Constants.VisionConstants.HIGH_LEFT_POST_X;
+        targetY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
     }
     
     public void setHighRight(){
-        pX = Constants.VisionConstants.HIGH_RIGHT_POST_X;
-        pY = Constants.VisionConstants.HIGH_RIGHT_POST_Y;
-        pR = Constants.VisionConstants.HIGH_DISTANCE;
         highLeft = false;
         highMid = false;
         highRight = true;
@@ -131,12 +114,11 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = false;
         hybridRight = false;
+        targetX = Constants.VisionConstants.HIGH_RIGHT_POST_X;
+        targetY = Constants.VisionConstants.HIGH_RIGHT_POST_Y;
     }
 
     public void setHighMid(){
-        pX = Constants.VisionConstants.HIGH_MID_X;
-        pY = Constants.VisionConstants.HIGH_MID_Y;
-        pR = Constants.VisionConstants.HIGH_MID_DISTANCE;
         highLeft = false;
         highMid = true;
         highRight = false;
@@ -146,12 +128,11 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = false;
         hybridRight = false;
+        targetX = Constants.VisionConstants.HIGH_MID_X;
+        targetY = Constants.VisionConstants.HIGH_MID_Y;
     }
 
     public void setMidLeft(){
-        pX = Constants.VisionConstants.MID_LEFT_POST_X;
-        pY = Constants.VisionConstants.MID_LEFT_POST_Y;
-        pR = Constants.VisionConstants.MID_DISTANCE;
         highLeft = false;
         highMid = false;
         highRight = false;
@@ -161,12 +142,11 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = false;
         hybridRight = false;
+        targetX = Constants.VisionConstants.MID_LEFT_POST_X;
+        targetY = Constants.VisionConstants.MID_LEFT_POST_Y;
     }
 
     public void setMidRight(){
-        pX = Constants.VisionConstants.MID_RIGHT_POST_X;
-        pY = Constants.VisionConstants.MID_RIGHT_POST_Y;
-        pR = Constants.VisionConstants.MID_DISTANCE;
         highLeft = false;
         highMid = false;
         highRight = false;
@@ -176,12 +156,11 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = false;
         hybridRight = false;
+        targetX = Constants.VisionConstants.MID_RIGHT_POST_X;
+        targetY = Constants.VisionConstants.MID_RIGHT_POST_Y;
     }
 
     public void setMidMid(){
-        pX = Constants.VisionConstants.MID_MID_X;
-        pY = Constants.VisionConstants.MID_MID_Y;
-        pR = Constants.VisionConstants.MID_MID_DISTANCE;
         highLeft = false;
         highMid = false;
         highRight = false;
@@ -191,12 +170,11 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = false;
         hybridRight = false;
+        targetX = Constants.VisionConstants.MID_MID_X;
+        targetY = Constants.VisionConstants.MID_MID_Y;
     }
 
     public void setHybridMid(){
-        pX = Constants.VisionConstants.MID_HYBRID_X;
-        pY = Constants.VisionConstants.MID_HYBRID_Y;
-        pR = Constants.VisionConstants.HYBRID_MID_DISTANCE;
         highLeft = false;
         highMid = false;
         highRight = false;
@@ -206,12 +184,11 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = true;
         hybridRight = false;
+        targetX = Constants.VisionConstants.MID_HYBRID_X;
+        targetY = Constants.VisionConstants.MID_HYBRID_Y;
     }
 
     public void setHybridLeft(){
-        pX = Constants.VisionConstants.LEFT_HYBRID_X;
-        pY = Constants.VisionConstants.LEFT_HYBRID_Y;
-        pR = Constants.VisionConstants.HYBRID_DISTANCE;
         highLeft = false;
         highMid = false;
         highRight = false;
@@ -221,12 +198,11 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = true;
         hybridMid = false;
         hybridRight = false;
+        targetX = Constants.VisionConstants.LEFT_HYBRID_X;
+        targetY = Constants.VisionConstants.LEFT_HYBRID_Y;
     }
 
     public void setHybridRight(){
-        pX = Constants.VisionConstants.RIGHT_HYBRID_X;
-        pY = Constants.VisionConstants.RIGHT_HYBRID_Y;
-        pR = Constants.VisionConstants.HYBRID_DISTANCE;
         highLeft = false;
         highMid = false;
         highRight = false;
@@ -236,6 +212,8 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = false;
         hybridRight = true;
+        targetX = Constants.VisionConstants.RIGHT_HYBRID_X;
+        targetY = Constants.VisionConstants.RIGHT_HYBRID_Y;
     }
 
     public ArrayList<Boolean> getSelectedScore(){
@@ -261,15 +239,6 @@ public class PhotonVision extends SubsystemBase{
         }
     }
 
-    public boolean closeEnough(){
-        if(dP <= -46000){ //FIXME add meter to falcon conversion
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
     public void setAllFalse(){
         highLeft = false;
         highMid = false;
@@ -286,22 +255,45 @@ public class PhotonVision extends SubsystemBase{
         return auto;
     }
 
+    public double getAutoTrackDistance(){
+        pose2d = getEstimatedGlobalPose(pose2d);
+        if(!getEstimatedGlobalPose(pose2d).equals(Robot.m_robotContainer.s_Drivetrain.getPose()) && photonCamera.getLatestResult().getBestTarget() != null){
+            Robot.m_robotContainer.s_Drivetrain.resetOdometry(pose2d);
+            pose2dDrivetrain = pose2d;
+        }
+        else{
+            pose2dDrivetrain = Robot.m_robotContainer.s_Drivetrain.getPose();
+        }
+        if(DriverStation.getAlliance().toString().equals("Blue")){
+            x = pose2dDrivetrain.getX() - targetX;
+            y = pose2dDrivetrain.getY() - targetY;
+        }
+        else{
+            x = pose2dDrivetrain.getX() - targetX - 16.5;
+            y = pose2dDrivetrain.getY() - targetY;
+        }
+        SmartDashboard.putNumber("X", pose2dDrivetrain.getX());
+        SmartDashboard.putNumber("Y", pose2dDrivetrain.getY());
+        return Math.sqrt(((x * x) + (y * y)));
+    }
+
+    public double getAutoTrackAngle(){
+        theta = Math.atan(x/y);
+        theta = Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() - theta - Math.PI/2;
+        theta = Math.toDegrees(theta);
+        return theta;
+    }
+
     @Override
     public void periodic(){
         try{
             result = photonCamera.getLatestResult().getBestTarget();
         }
         catch(Exception e){}
-        pose2d = getEstimatedGlobalPose(pose2d);
-        x = pose2d.getX();
-        y = pose2d.getY();
-        d = getArmStuff().getFirst();
-        a = getArmStuff().getSecond();
-        poseX.setDouble(x);
-        poseY.setDouble(y);
-        distanceBoard.setDouble(d);
-        angleBoard.setDouble(a);
-        id.setDouble(idNum);
+        distance.setDouble(getAutoTrackDistance());
+        angle.setDouble(getAutoTrackAngle());
+        poseX.setDouble(pose2d.getX());
+        poseY.setDouble(pose2d.getY());
         /*if(!photonCamera.isConnected()){
             s_LED.bad();
         }
@@ -309,12 +301,11 @@ public class PhotonVision extends SubsystemBase{
             s_LED.notBad();
         }*/
         if(auto){
-            if(closeEnough()){
+            if(false){
                 s_LED.green();
             }
             else if(result != null){
                 s_LED.white();
-                idNum = result.getFiducialId();
             }
             else if(result == null){
                 s_LED.red();
