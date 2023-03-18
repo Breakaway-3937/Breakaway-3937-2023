@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -70,19 +69,16 @@ public class Intake extends SubsystemBase {
   public void setCone(){
     cone = true;
     deadCone = false;
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(2);
   }
 
   public void setCube(){
     cone = false;
     deadCone = false;
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(1);
   }
 
   public void setDeadCone(){
     cone = false;
     deadCone = true;
-    NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(2);
   }
 
   public static boolean getConeCubeMode(){
