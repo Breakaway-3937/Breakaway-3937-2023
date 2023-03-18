@@ -73,7 +73,7 @@ public class RobotContainer {
   public final LED s_LED = new LED(s_Intake);
   public final PhotonVision s_Photon = new PhotonVision(s_LED);
   public final Climber s_Climber = new Climber();
-  public final Arm s_Arm = new Arm(s_Photon);
+  public final Arm s_Arm = new Arm();
   
   /* Commands */
   public final TeleopSwerve c_TeleopSwerve = new TeleopSwerve(s_Drivetrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop);
@@ -82,7 +82,7 @@ public class RobotContainer {
   public final RunArm c_RunArm = new RunArm(s_Arm, xboxController, s_Photon);
   
   /* Autos */
-  public final AutoTrajectories autoTrajectories = new AutoTrajectories();
+  private final AutoTrajectories autoTrajectories = new AutoTrajectories();
   private final AutoChooser autoChooser = new AutoChooser(autoTrajectories, s_Drivetrain, s_Arm, s_Intake);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
