@@ -31,7 +31,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -45,24 +44,20 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVision extends SubsystemBase{
     private final LED s_LED;
     private final PhotonCamera photonCamera;
     private final PhotonPoseEstimator photonPoseEstimator;
+    private final GenericEntry poseX, poseY, distance, angle;
     private AprilTagFieldLayout atfl;
     private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridMid, hybridRight, auto = false;
     private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
-    private final GenericEntry poseX, poseY, distance, angle;
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));
     private Pose2d pose2dDrivetrain = new Pose2d(0, 0, new Rotation2d(0));
-    private PhotonTrackedTarget result;
     private double x, y, targetX, targetY, theta;
 
     public PhotonVision(LED s_LED) {
-        SmartDashboard.putNumber("X", 0);
-        SmartDashboard.putNumber("Y", 0);
         targetX = Constants.VisionConstants.HIGH_LEFT_POST_X;
         targetY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
         this.s_LED = s_LED;
@@ -258,79 +253,74 @@ public class PhotonVision extends SubsystemBase{
     }
 
     public double getAutoTrackDistance(){
-        pose2d = getEstimatedGlobalPose(pose2d);
+        pose2d = getEstimatedGlobalPose(pose2dDrivetrain);
         if(!getEstimatedGlobalPose(pose2d).equals(Robot.m_robotContainer.s_Drivetrain.getPose()) && photonCamera.getLatestResult().getBestTarget() != null){
             Robot.m_robotContainer.s_Drivetrain.resetOdometry(pose2d);
             pose2dDrivetrain = pose2d;
         }
         else{
-            //pose2dDrivetrain = Robot.m_robotContainer.s_Drivetrain.getPose();
-            pose2dDrivetrain = new Pose2d(SmartDashboard.getNumber("X", 0), SmartDashboard.getNumber("Y", 0), Rotation2d.fromDegrees(0));
+            pose2dDrivetrain = Robot.m_robotContainer.s_Drivetrain.getPose();
         }
         if(DriverStation.getAlliance().toString().equals("Blue")){
-            if(pose2dDrivetrain.getY() > -1 && pose2dDrivetrain.getY() < 1.75 && ((pose2dDrivetrain.getY() < 1.05 && pose2dDrivetrain.getY() - 0.15 > -1) || (pose2dDrivetrain.getY() > 1.05 && pose2dDrivetrain.getY() + 0.15 < 1.75))){
+            if(pose2dDrivetrain.getY() > -1 && pose2dDrivetrain.getY() < 1.9 && ((pose2dDrivetrain.getY() < 1.05 && pose2dDrivetrain.getY() - 0.15 > -1) || (pose2dDrivetrain.getY() > 1.05 && pose2dDrivetrain.getY() + 0.15 < 1.9))){
                 x = pose2dDrivetrain.getX() - targetX;
                 y = pose2dDrivetrain.getY() - targetY;
             }
-            else if(pose2dDrivetrain.getY() > 1.75 && pose2dDrivetrain.getY() < 3.5 && ((pose2dDrivetrain.getY() < 1.05 + 1.7 && pose2dDrivetrain.getY() + 0.15 < 3.5) || (pose2dDrivetrain.getY() > 1.05 + 1.7 && pose2dDrivetrain.getY() + 0.15 < 3.5))){
+            else if(pose2dDrivetrain.getY() > 1.9 && pose2dDrivetrain.getY() < 3.6 && ((pose2dDrivetrain.getY() < 1.05 + 1.7 && pose2dDrivetrain.getY() - 0.15 > 1.9) || (pose2dDrivetrain.getY() > 1.05 + 1.7 && pose2dDrivetrain.getY() + 0.15 < 3.6))){
                 x = pose2dDrivetrain.getX() - targetX;
                 y = pose2dDrivetrain.getY() - (targetY + 1.7);
             }
-            else if(pose2dDrivetrain.getY() > 3.5 && pose2dDrivetrain.getY() < 6){
+            else if(pose2dDrivetrain.getY() > 3.6 && pose2dDrivetrain.getY() < 6 && ((pose2dDrivetrain.getY() < 1.05 + 1.7 + 1.7 && pose2dDrivetrain.getY() - 0.15 > 3.6) || (pose2dDrivetrain.getY() > 1.05 + 1.7 + 1.7 && pose2dDrivetrain.getY() + 0.15 < 6))){
                 x = pose2dDrivetrain.getX() - targetX;
                 y = pose2dDrivetrain.getY() - (targetY + 1.7 + 1.7);
             }
         }
         else{
-            if(pose2dDrivetrain.getY() > -1 && pose2dDrivetrain.getY() < 1.75){
+            if(pose2dDrivetrain.getY() > -1 && pose2dDrivetrain.getY() < 1.9 && ((pose2dDrivetrain.getY() < 1.05 && pose2dDrivetrain.getY() - 0.15 > -1) || (pose2dDrivetrain.getY() > 1.05 && pose2dDrivetrain.getY() + 0.15 < 1.9))){
                 x = pose2dDrivetrain.getX() - 16.5 - targetX;
                 y = pose2dDrivetrain.getY() - targetY;
             }
-            else if(pose2dDrivetrain.getY() > 1.75 && pose2dDrivetrain.getY() < 3.36){
+            else if(pose2dDrivetrain.getY() > 1.9 && pose2dDrivetrain.getY() < 3.6 && ((pose2dDrivetrain.getY() < 1.05 + 1.7 && pose2dDrivetrain.getY() - 0.15 > 1.9) || (pose2dDrivetrain.getY() > 1.05 + 1.7 && pose2dDrivetrain.getY() + 0.15 < 3.6))){
                 x = pose2dDrivetrain.getX() - 16.5 - targetX;
                 y = pose2dDrivetrain.getY() - (targetY + 1.7);
             }
-            else if(pose2dDrivetrain.getY() > 3.36 && pose2dDrivetrain.getY() < 6){
+            else if(pose2dDrivetrain.getY() > 3.6 && pose2dDrivetrain.getY() < 6 && ((pose2dDrivetrain.getY() < 1.05 + 1.7 + 1.7 && pose2dDrivetrain.getY() - 0.15 > 3.6) || (pose2dDrivetrain.getY() > 1.05 + 1.7 + 1.7 && pose2dDrivetrain.getY() + 0.15 < 6))){
                 x = pose2dDrivetrain.getX() - 16.5 - targetX;
                 y = pose2dDrivetrain.getY() - (targetY + 1.7 + 1.7);
             }
         }
-        return Math.sqrt(((x * x) + (y * y)));
+        return (Math.sqrt(x * x + y * y) - 0.3) * -50000;
     }
 
     public double getAutoTrackAngle(){
-        theta = Math.atan(x/y);
-        theta = Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() - theta - Math.PI/2;
+        theta = Math.atan(x / y);
+        theta = Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() - theta - Math.PI / 2;
         theta = Math.toDegrees(theta);
-        return theta;
+        return theta / 5.78;
     }
 
     @Override
     public void periodic(){
-        try{
-            result = photonCamera.getLatestResult().getBestTarget();
-        }
-        catch(Exception e){}
         distance.setDouble(getAutoTrackDistance());
         angle.setDouble(getAutoTrackAngle());
-        poseX.setDouble(pose2d.getX());
-        poseY.setDouble(pose2d.getY());
-        /*if(!photonCamera.isConnected()){
-            s_LED.bad();
-        }
-        else if(photonCamera.isConnected()){
-            s_LED.notBad();
-        }*/
+        poseX.setDouble(pose2dDrivetrain.getX());
+        poseY.setDouble(pose2dDrivetrain.getY());
         if(auto){
-            if(false){
+            if(!photonCamera.isConnected()){
+                s_LED.bad();
+            }
+            else if(getAutoTrackDistance() >= -46500 && getAutoTrackAngle() >= -5 && getAutoTrackAngle() <= 5){
                 s_LED.green();
             }
-            else if(result != null){
+            else if(getAutoTrackDistance() < -46500 || getAutoTrackAngle() < -5 || getAutoTrackAngle() > 5){
                 s_LED.white();
             }
-            else if(result == null){
+            else if(pose2dDrivetrain.getX() > 4){
                 s_LED.red();
             }
+        }
+        else if(!auto){
+            s_LED.notBad();
         }
     }
 }
