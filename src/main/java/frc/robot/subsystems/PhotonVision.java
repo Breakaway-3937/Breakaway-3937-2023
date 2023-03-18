@@ -58,8 +58,6 @@ public class PhotonVision extends SubsystemBase{
     private double x, y, targetX, targetY, theta;
 
     public PhotonVision(LED s_LED) {
-        targetX = Constants.VisionConstants.HIGH_LEFT_POST_X;
-        targetY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
         this.s_LED = s_LED;
         try{
             atfl = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
@@ -97,8 +95,14 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = false;
         hybridRight = false;
-        targetX = Constants.VisionConstants.HIGH_LEFT_POST_X;
-        targetY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
+        if(DriverStation.getAlliance().toString().equals("Blue")){
+            targetX = Constants.VisionConstants.HIGH_LEFT_POST_X;
+            targetY = Constants.VisionConstants.HIGH_LEFT_POST_Y;
+        }
+        else{
+            targetX = Constants.VisionConstants.HIGH_LEFT_POST_X;
+            targetY = Constants.VisionConstants.HIGH_LEFT_POST_Y + 1.1;
+        }
     }
     
     public void setHighRight(){
@@ -111,8 +115,14 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = false;
         hybridRight = false;
-        targetX = Constants.VisionConstants.HIGH_RIGHT_POST_X;
-        targetY = Constants.VisionConstants.HIGH_RIGHT_POST_Y;
+        if(DriverStation.getAlliance().toString().equals("Blue")){
+            targetX = Constants.VisionConstants.HIGH_RIGHT_POST_X;
+            targetY = Constants.VisionConstants.HIGH_RIGHT_POST_Y;
+        }
+        else{
+            targetX = Constants.VisionConstants.HIGH_RIGHT_POST_X;
+            targetY = Constants.VisionConstants.HIGH_RIGHT_POST_Y - 1.1;
+        }
     }
 
     public void setHighMid(){
@@ -139,8 +149,14 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = false;
         hybridRight = false;
-        targetX = Constants.VisionConstants.MID_LEFT_POST_X;
-        targetY = Constants.VisionConstants.MID_LEFT_POST_Y;
+        if(DriverStation.getAlliance().toString().equals("Blue")){
+            targetX = Constants.VisionConstants.MID_LEFT_POST_X;
+            targetY = Constants.VisionConstants.MID_LEFT_POST_Y;
+        }
+        else{
+            targetX = Constants.VisionConstants.MID_LEFT_POST_X;
+            targetY = Constants.VisionConstants.MID_LEFT_POST_Y + 1.1;
+        }
     }
 
     public void setMidRight(){
@@ -153,8 +169,14 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = false;
         hybridRight = false;
-        targetX = Constants.VisionConstants.MID_RIGHT_POST_X;
-        targetY = Constants.VisionConstants.MID_RIGHT_POST_Y;
+        if(DriverStation.getAlliance().toString().equals("Blue")){
+            targetX = Constants.VisionConstants.MID_RIGHT_POST_X;
+            targetY = Constants.VisionConstants.MID_RIGHT_POST_Y;
+        }
+        else{
+            targetX = Constants.VisionConstants.MID_RIGHT_POST_X;
+            targetY = Constants.VisionConstants.MID_RIGHT_POST_Y - 1.1;
+        }
     }
 
     public void setMidMid(){
@@ -195,8 +217,14 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = true;
         hybridMid = false;
         hybridRight = false;
-        targetX = Constants.VisionConstants.LEFT_HYBRID_X;
-        targetY = Constants.VisionConstants.LEFT_HYBRID_Y;
+        if(DriverStation.getAlliance().toString().equals("Blue")){
+            targetX = Constants.VisionConstants.LEFT_HYBRID_X;
+            targetY = Constants.VisionConstants.LEFT_HYBRID_Y;
+        }
+        else{
+            targetX = Constants.VisionConstants.LEFT_HYBRID_X;
+            targetY = Constants.VisionConstants.LEFT_HYBRID_Y + 1.1;
+        }
     }
 
     public void setHybridRight(){
@@ -209,8 +237,14 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = false;
         hybridRight = true;
-        targetX = Constants.VisionConstants.RIGHT_HYBRID_X;
-        targetY = Constants.VisionConstants.RIGHT_HYBRID_Y;
+        if(DriverStation.getAlliance().toString().equals("Blue")){
+            targetX = Constants.VisionConstants.RIGHT_HYBRID_X;
+            targetY = Constants.VisionConstants.RIGHT_HYBRID_Y;
+        }
+        else{
+            targetX = Constants.VisionConstants.RIGHT_HYBRID_X;
+            targetY = Constants.VisionConstants.RIGHT_HYBRID_Y - 1.1;
+        }
     }
 
     public ArrayList<Boolean> getSelectedScore(){
@@ -277,26 +311,31 @@ public class PhotonVision extends SubsystemBase{
         }
         else{
             if(pose2dDrivetrain.getY() > -1 && pose2dDrivetrain.getY() < 1.9 && ((pose2dDrivetrain.getY() < 1.05 && pose2dDrivetrain.getY() - 0.15 > -1) || (pose2dDrivetrain.getY() > 1.05 && pose2dDrivetrain.getY() + 0.15 < 1.9))){
-                x = pose2dDrivetrain.getX() - 16.5 - targetX;
+                x = 16.5 - pose2dDrivetrain.getX() - targetX;
                 y = pose2dDrivetrain.getY() - targetY;
             }
             else if(pose2dDrivetrain.getY() > 1.9 && pose2dDrivetrain.getY() < 3.6 && ((pose2dDrivetrain.getY() < 1.05 + 1.7 && pose2dDrivetrain.getY() - 0.15 > 1.9) || (pose2dDrivetrain.getY() > 1.05 + 1.7 && pose2dDrivetrain.getY() + 0.15 < 3.6))){
-                x = pose2dDrivetrain.getX() - 16.5 - targetX;
+                x = 16.5 - pose2dDrivetrain.getX() - targetX;
                 y = pose2dDrivetrain.getY() - (targetY + 1.7);
             }
             else if(pose2dDrivetrain.getY() > 3.6 && pose2dDrivetrain.getY() < 6 && ((pose2dDrivetrain.getY() < 1.05 + 1.7 + 1.7 && pose2dDrivetrain.getY() - 0.15 > 3.6) || (pose2dDrivetrain.getY() > 1.05 + 1.7 + 1.7 && pose2dDrivetrain.getY() + 0.15 < 6))){
-                x = pose2dDrivetrain.getX() - 16.5 - targetX;
+                x = 16.5 - pose2dDrivetrain.getX() - targetX;
                 y = pose2dDrivetrain.getY() - (targetY + 1.7 + 1.7);
             }
         }
-        return (Math.sqrt(x * x + y * y) - 0.3) * -50000;
+        return (Math.sqrt(x * x + y * y) - 0.35) * -50000;
     }
 
     public double getAutoTrackAngle(){
-        theta = Math.atan(x / y);
-        theta = Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() - theta - Math.PI / 2;
-        theta = Math.toDegrees(theta);
-        return theta / 5.78;
+        if(y == 0){
+            return 0;
+        }
+        else{
+            theta = Math.atan(x / y);
+            theta = Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() - theta - Math.PI / 2;
+            theta = Math.toDegrees(theta);
+            return theta / 5.78;
+        }
     }
 
     @Override
