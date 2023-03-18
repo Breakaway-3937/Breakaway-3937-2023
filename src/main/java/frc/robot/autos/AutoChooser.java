@@ -245,7 +245,7 @@ public class AutoChooser {
             new SpitIntakeAuto(s_Intake),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice0().getInitialHolonomicPose())),
             new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
-            new RunArmAuto(s_Arm, 1),
+            new RunArmAuto(s_Arm, 2),
             new SpitIntakeAuto(s_Intake),
             new RunArmAuto(s_Arm, 0));
         return command;
@@ -283,7 +283,7 @@ public class AutoChooser {
             new SpitIntakeAuto(s_Intake),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice1().getInitialHolonomicPose())),
             new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
-            new RunArmAuto(s_Arm, 1),
+            new RunArmAuto(s_Arm, 2),
             new SpitIntakeAuto(s_Intake),
             new RunArmAuto(s_Arm, 0));
         return command;
@@ -321,7 +321,7 @@ public class AutoChooser {
             new SpitIntakeAuto(s_Intake),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice2().getInitialHolonomicPose())),
             new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
-            new RunArmAuto(s_Arm, 1),
+            new RunArmAuto(s_Arm, 2),
             new SpitIntakeAuto(s_Intake),
             new RunArmAuto(s_Arm, 0));
         return command;
@@ -345,6 +345,7 @@ public class AutoChooser {
         HashMap<String, Command> eventMap = new HashMap<>();
             eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new RunIntakeAuto(s_Intake), new RunArmAuto(s_Arm, 0)));
             eventMap.put("intake2",  new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new RunIntakeAuto(s_Intake), new RunArmAuto(s_Arm, 0)));
+            eventMap.put("place",  new SequentialCommandGroup(new RunArmAuto(s_Arm, 2), new SpitIntakeAuto(s_Intake), new RunArmAuto(s_Arm, 0)));
 
         FollowPathWithEvents followCommand = new FollowPathWithEvents(
             swerveCommand,
@@ -383,6 +384,7 @@ public class AutoChooser {
         HashMap<String, Command> eventMap = new HashMap<>();
             eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new RunIntakeAuto(s_Intake), new RunArmAuto(s_Arm, 0)));
             eventMap.put("intake2",  new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new RunIntakeAuto(s_Intake), new RunArmAuto(s_Arm, 0)));
+            eventMap.put("place",  new SequentialCommandGroup(new RunArmAuto(s_Arm, 2), new SpitIntakeAuto(s_Intake), new RunArmAuto(s_Arm, 0)));
 
         FollowPathWithEvents followCommand = new FollowPathWithEvents(
             swerveCommand,
@@ -421,6 +423,7 @@ public class AutoChooser {
         HashMap<String, Command> eventMap = new HashMap<>();
             eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new RunIntakeAuto(s_Intake), new RunArmAuto(s_Arm, 0)));
             eventMap.put("intake2",  new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new RunIntakeAuto(s_Intake), new RunArmAuto(s_Arm, 0)));
+            eventMap.put("place",  new SequentialCommandGroup(new RunArmAuto(s_Arm, 2), new SpitIntakeAuto(s_Intake), new RunArmAuto(s_Arm, 0)));
 
         FollowPathWithEvents followCommand = new FollowPathWithEvents(
             swerveCommand,
