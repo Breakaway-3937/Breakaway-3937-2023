@@ -26,7 +26,6 @@ import frc.robot.Constants;
 
 
 public class Arm extends SubsystemBase {
-  private final PhotonVision s_Photon;
   private final CANSparkMax leadShoulder;
   private final CANSparkMax followerShoulder;
   private final WPI_TalonFX leadExtension, followerExtension;
@@ -39,8 +38,7 @@ public class Arm extends SubsystemBase {
   private final GenericEntry shoulderEncoderEntry, extensionEncoderEntry, turretEncoderEntry, wristEncoderEntry;
 
   /** Creates a new Arm. */
-  public Arm(PhotonVision s_Photon) {
-    this.s_Photon = s_Photon;
+  public Arm() {
     leadShoulder = new CANSparkMax(Constants.Arm.LEAD_SHOULDER_ID, MotorType.kBrushless);
     followerShoulder = new CANSparkMax(Constants.Arm.FOLLOWER_SHOULDER_ID, MotorType.kBrushless);
     leadExtension = new WPI_TalonFX(Constants.Arm.LEAD_EXTENSION_ID);
@@ -119,7 +117,6 @@ public class Arm extends SubsystemBase {
 
   private void configLeadShoulder(){
     leadShoulder.restoreFactoryDefaults();
-    //shoulder1Encoder = shoulder1.getAlternateEncoder(Constants.Arm.ALT_ENC_TYPE, Constants.Arm.CPR);
     shoulderEncoder = leadShoulder.getEncoder();
     shoulderPIDController = leadShoulder.getPIDController();
     shoulderPIDController.setFeedbackDevice(shoulderEncoder);
@@ -183,10 +180,10 @@ public class Arm extends SubsystemBase {
     extensionkI = 0.0075;
     extensionkD = 7.5;
     extensionkFF = 0.3;
-    shoulderkP = 4e-8; //6.5e-8
-    shoulderkI = 0; //0.5e-6
+    shoulderkP = 4e-8;
+    shoulderkI = 0;
     shoulderkD = 0;
-    shoulderkFF = 0.001; //0.0019
+    shoulderkFF = 0.001;
     turretkP = 5e-10;
     turretkI = 0;
     turretkD = 0;
