@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -15,16 +16,19 @@ import com.ctre.phoenix.led.CANdle.VBatOutputMode;
 
 public class LED extends SubsystemBase {
     private final Intake s_Intake;
-    private final CANdle candle = new CANdle(Constants.CANDLE_ID, "CANivore");
-    private final Timer timer = new Timer();
-    private boolean green, red, white, flag, cube, cone, bad = false; 
+    private final CANdle candle;
+    private final Timer timer, timer1;
+    private boolean green, red, white, flag, flag1, flag2, flag3, flag4, flag5, flag6, cube, cone, bad = false; 
 
     public LED(Intake s_Intake) {
+        candle = new CANdle(Constants.CANDLE_ID, "CANivore");
+        timer = new Timer();
+        timer1 = new Timer();
         this.s_Intake = s_Intake;
         timer.start();
         CANdleConfiguration configAll = new CANdleConfiguration();
         configAll.statusLedOffWhenActive = false;
-        configAll.disableWhenLOS = false;
+        configAll.disableWhenLOS = true;
         configAll.stripType = LEDStripType.GRB;
         configAll.brightnessScalar = 0.1;
         configAll.vBatOutputMode = VBatOutputMode.Modulated;
@@ -36,18 +40,21 @@ public class LED extends SubsystemBase {
         red = false;
         white = false;
         green = true;
+        bad = false;
     }
 
     public void red(){
         red = true;
         white = false;
         green = false;
+        bad = false;
     }
 
     public void white(){
         red = false;
         white = true;
         green = false;
+        bad = false;
     }
 
     public void yellow(){
@@ -92,73 +99,199 @@ public class LED extends SubsystemBase {
         cube = true;
     }
     
+    public void setOthersFalse(String color){
+        if(color.equals("green")){
+            flag4 = false;
+            flag5 = false;
+            flag6 = false;
+        }
+        else if(color.equals("red")){
+            flag3 = false;
+            flag5 = false;
+            flag6 = false;
+        }
+        else if(color.equals("white")){
+            flag4 = false;
+            flag3 = false;
+            flag6 = false;
+        }
+        else if(color.equals("blue")){
+            flag4 = false;
+            flag3 = false;
+            flag5 = false;
+        }
+    }
+
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
         if(bad){
             for(int i = 0; i < 350; i++){
-                if(timer.get() > 0.10 && i % 2 != 0 && !flag){
+                if(timer.get() > 0.25 && i % 2 != 0 && !flag){
                     candle.setLEDs(12, 237, 54);
                     timer.reset();
                     flag = true;
                 }
-                else if(timer.get() > 0.10 && i % 2 == 0 && flag){
+                else if(timer.get() > 0.25 && i % 2 == 0 && flag){
                     candle.setLEDs(179, 83, 97);
                     timer.reset();
                     flag = false;
                 }
             }
         }
-        if(!s_Intake.intakeFull()){
+        else if(DriverStation.isDisabled()){
+            //FIXME add led pattern
+        }
+        else if(!s_Intake.intakeFull()){
             if(cube){
                 purple();
             }
             else if(cone){
                 yellow();
             }
-            else{
-                blue();
-            }
+            flag1 = false;
         }
-        if(green){
+        else if(s_Intake.intakeFull() && !flag1){
+            setOthersFalse("blue");
+            if(!flag6){
+                timer1.reset();
+                timer1.start();
+                flag2 = false;
+                flag6 = true;
+            }
+            else if(timer1.get() > 1){
+                flag2 = true;
+            }
             for(int i = 0; i < 350; i++){
-                if(timer.get() > 0.25 && i % 2 != 0 && !flag){
-                    candle.setLEDs(0, 255, 0);
-                    timer.reset();
-                    flag = true;
+                if(!flag2){
+                    if(timer.get() > 0.15 && i % 2 != 0 && !flag){
+                        candle.setLEDs(0, 0, 254);
+                        timer.reset();
+                        flag = true;
+                    }
+                    else if(timer.get() > 0.15 && i % 2 == 0 && flag){
+                        candle.setLEDs(0, 0, 0);
+                        timer.reset();
+                        flag = false;
+                    }
                 }
-                else if(timer.get() > 0.25 && i % 2 == 0 && flag){
-                    candle.setLEDs(0, 0, 0);
-                    timer.reset();
-                    flag = false;
+                else{
+                    blue();
+                }
+            }
+            flag1 = true;
+        }
+        else if(green){
+            setOthersFalse("green");
+            if(!flag3){
+                timer1.reset();
+                timer1.start();
+                flag2 = false;
+                flag3 = true;
+            }
+            else if(timer1.get() > 1){
+                flag2 = true;
+            }
+            for(int i = 0; i < 350; i++){
+                if(!flag2){
+                    if(timer.get() > 0.15 && i % 2 != 0 && !flag){
+                        candle.setLEDs(0, 255, 0);
+                        timer.reset();
+                        flag = true;
+                    }
+                    else if(timer.get() > 0.15 && i % 2 == 0 && flag){
+                        candle.setLEDs(0, 0, 0);
+                        timer.reset();
+                        flag = false;
+                    }
+                }
+                else{
+                    if(timer.get() > 0.25 && i % 2 != 0 && !flag){
+                        candle.setLEDs(0, 255, 0);
+                        timer.reset();
+                        flag = true;
+                    }
+                    else if(timer.get() > 0.25 && i % 2 == 0 && flag){
+                        candle.setLEDs(0, 0, 0);
+                        timer.reset();
+                        flag = false;
+                    }
                 }
             }
         }
         else if(red){
+            setOthersFalse("red");
+            if(!flag4){
+                timer1.reset();
+                timer1.start();
+                flag2 = false;
+                flag4 = true;
+            }
+            else if(timer1.get() > 1){
+                flag2 = true;
+            }
             for(int i = 0; i < 350; i++){
-                if(timer.get() > 0.25 && i % 2 != 0 && !flag){
-                    candle.setLEDs(255, 0, 0);
-                    timer.reset();
-                    flag = true;
+                if(!flag2){
+                    if(timer.get() > 0.15 && i % 2 != 0 && !flag){
+                        candle.setLEDs(255, 0, 0);
+                        timer.reset();
+                        flag = true;
+                    }
+                    else if(timer.get() > 0.15 && i % 2 == 0 && flag){
+                        candle.setLEDs(0, 0, 0);
+                        timer.reset();
+                        flag = false;
+                    }
                 }
-                else if(timer.get() > 0.25 && i % 2 == 0 && flag){
-                    candle.setLEDs(0, 0, 0);
-                    timer.reset();
-                    flag = false;
+                else{
+                    if(timer.get() > 0.25 && i % 2 != 0 && !flag){
+                        candle.setLEDs(255, 0, 0);
+                        timer.reset();
+                        flag = true;
+                    }
+                    else if(timer.get() > 0.25 && i % 2 == 0 && flag){
+                        candle.setLEDs(0, 0, 0);
+                        timer.reset();
+                        flag = false;
+                    }
                 }
             }
         }
         else if(white){
+            setOthersFalse("white");
+            if(!flag5){
+                timer1.reset();
+                timer1.start();
+                flag2 = false;
+                flag5 = true;
+            }
+            else if(timer1.get() > 1){
+                flag2 = true;
+            }
             for(int i = 0; i < 350; i++){
-                if(timer.get() > 0.25 && i % 2 != 0 && !flag){
-                    candle.setLEDs(200, 180, 180);
-                    timer.reset();
-                    flag = true;
+                if(!flag2){
+                    if(timer.get() > 0.15 && i % 2 != 0 && !flag){
+                        candle.setLEDs(200, 180, 180);
+                        timer.reset();
+                        flag = true;
+                    }
+                    else if(timer.get() > 0.15 && i % 2 == 0 && flag){
+                        candle.setLEDs(0, 0, 0);
+                        timer.reset();
+                        flag = false;
+                    }
                 }
-                else if(timer.get() > 0.25 && i % 2 == 0 && flag){
-                    candle.setLEDs(0, 0, 0);
-                    timer.reset();
-                    flag = false;
+                else{
+                    if(timer.get() > 0.25 && i % 2 != 0 && !flag){
+                        candle.setLEDs(200, 180, 180);
+                        timer.reset();
+                        flag = true;
+                    }
+                    else if(timer.get() > 0.25 && i % 2 == 0 && flag){
+                        candle.setLEDs(0, 0, 0);
+                        timer.reset();
+                        flag = false;
+                    }
                 }
             }
         }
