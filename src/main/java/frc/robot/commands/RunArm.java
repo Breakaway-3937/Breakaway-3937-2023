@@ -14,13 +14,12 @@ public class RunArm extends CommandBase {
   private final PhotonVision s_Photon;
   private final XboxController xboxController;
   private double shoulderPosition, turretPosition, extensionPosition, wristPosition;
-  double offsetGamepiece, angleOffset;
+  private double offsetGamepiece, angleOffset, tx;
   private int state;
   private boolean flag, flag1, track;
-  double acceptableAngle = 0.5;
-  double maxRotation = 4.0;
-  double pValue = 0.035;
-  double tx = 0;
+  private final double acceptableAngle = 0.5;
+  private final double maxRotation = 4.0;
+  private final double pValue = 0.035;
   /** Creates a new RunArm. */
   public RunArm(Arm s_Arm, XboxController xboxController, PhotonVision s_Photon){
     this.s_Arm = s_Arm;
