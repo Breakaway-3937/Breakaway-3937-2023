@@ -363,11 +363,14 @@ public class PhotonVision extends SubsystemBase{
             else if(getAutoTrackDistance() >= -46500 && getAutoTrackAngle() >= -5 && getAutoTrackAngle() <= 5){
                 s_LED.green();
             }
+            if(DriverStation.getAlliance().toString().equals("Blue") && pose2dDrivetrain.getX() > 4){
+                s_LED.red();
+            }
+            else if(DriverStation.getAlliance().toString().equals("Red") && 16.5 - pose2dDrivetrain.getX() > 4){
+                s_LED.red();
+            }
             else if(getAutoTrackDistance() < -46500 || getAutoTrackAngle() < -5 || getAutoTrackAngle() > 5){
                 s_LED.white();
-            }
-            else if(pose2dDrivetrain.getX() > 4){
-                s_LED.red();
             }
         }
         else if(!auto){
