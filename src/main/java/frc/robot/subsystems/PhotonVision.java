@@ -333,17 +333,18 @@ public class PhotonVision extends SubsystemBase{
             angleOffset = 0;
         }
         else{
-            angleOffset = Math.toDegrees(Math.atan(((s_Intake.getDistance() + 0.045) - 0.27)/(Math.abs((Math.sqrt(x * x + y * y) - 0.35) * -50000) + 0.35)));//FIXME get correct forward distance for extension
+            angleOffset = Math.toDegrees(Math.atan(((s_Intake.getDistance() + 0.045) - 0.27)/((Math.sqrt(x * x + y * y)) / -50000)));
         }
         if(y == 0 && s_Intake.getDistance() > 0.40){
             return 0;
         }
-        else{
-            theta = Math.atan(x / y);
-            theta = Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() - theta - Math.PI / 2;
-            theta = Math.toDegrees(theta);
-            return (theta + angleOffset) / 5.78;
+        else if(y == 0 && s_Intake.getDistance() < 0.4){
+            return angleOffset / 5.78;
         }
+        theta = Math.atan(x / y);
+        theta = Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() - theta - Math.PI / 2;
+        theta = Math.toDegrees(theta);
+        return (theta + angleOffset) / 5.78;
     }
 
     @Override
@@ -356,6 +357,9 @@ public class PhotonVision extends SubsystemBase{
             if(!photonCamera.isConnected()){
                 s_LED.bad();
             }
+            else if(photonCamera.isConnected()){
+                s_LED.notBad();
+            }
             else if(getAutoTrackDistance() >= -46500 && getAutoTrackAngle() >= -5 && getAutoTrackAngle() <= 5){
                 s_LED.green();
             }
@@ -367,7 +371,7 @@ public class PhotonVision extends SubsystemBase{
             }
         }
         else if(!auto){
-            s_LED.notBad();
+            s_LED.setTrackingLEDsOff();
         }
     }
 }
