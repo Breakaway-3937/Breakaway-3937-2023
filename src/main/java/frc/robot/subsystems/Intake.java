@@ -89,7 +89,7 @@ public class Intake extends SubsystemBase {
     return deadCone;
   }
 
-  public static double getDistance(){
+  public double getDistance(){
     return 0.342 - 0.291 * Math.log(uSSensor.getVoltage()) + 0.05;
   }
 

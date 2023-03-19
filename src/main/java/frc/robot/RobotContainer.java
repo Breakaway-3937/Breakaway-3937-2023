@@ -71,7 +71,7 @@ public class RobotContainer {
   public final Drivetrain s_Drivetrain = new Drivetrain();
   public final Intake s_Intake = new Intake();
   public final LED s_LED = new LED(s_Intake);
-  public final PhotonVision s_Photon = new PhotonVision(s_LED);
+  public final PhotonVision s_Photon = new PhotonVision(s_LED, s_Intake);
   public final Climber s_Climber = new Climber();
   public final Arm s_Arm = new Arm();
   
