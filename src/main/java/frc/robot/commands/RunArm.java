@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
@@ -14,12 +13,8 @@ public class RunArm extends CommandBase {
   private final PhotonVision s_Photon;
   private final XboxController xboxController;
   private double shoulderPosition, turretPosition, extensionPosition, wristPosition;
-  private double offsetGamepiece, angleOffset, tx;
   private int state;
-  private boolean flag, flag1, track;
-  private final double acceptableAngle = 0.5;
-  private final double maxRotation = 4.0;
-  private final double pValue = 0.035;
+  private boolean flag, track, ready;
   /** Creates a new RunArm. */
   public RunArm(Arm s_Arm, XboxController xboxController, PhotonVision s_Photon){
     this.s_Arm = s_Arm;
@@ -49,6 +44,7 @@ public class RunArm extends CommandBase {
       turretPosition = 0;
       state = 0;
       track = true;
+      ready = false;
     }
     else if(s_Photon.getSelectedScore().get(3) || s_Photon.getSelectedScore().get(4) || s_Photon.getSelectedScore().get(5)){
       shoulderPosition = -12.75;
@@ -62,6 +58,7 @@ public class RunArm extends CommandBase {
       wristPosition = 43.8;
       turretPosition = 0;
       track = true;
+      ready = false;
     }
     else if(s_Photon.getSelectedScore().get(6) || s_Photon.getSelectedScore().get(7) || s_Photon.getSelectedScore().get(8)){
       shoulderPosition = -5;
@@ -74,6 +71,7 @@ public class RunArm extends CommandBase {
       extensionPosition = -307;
       wristPosition = 35;
       track = false;
+      ready = false;
     }
     if(xboxController.getRawButton(1)){
       s_Photon.setAllFalse();
@@ -205,90 +203,59 @@ public class RunArm extends CommandBase {
 
     if((shoulderPosition == -0.5 || shoulderPosition == 0) && s_Arm.getShoulder1Position() < shoulderPosition + 1 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
       s_Arm.stopShoulder();
-      flag1 = true;
+      flag = true;
     }
     else{
-      flag1 = false;
+      flag = false;
+    }
+
+    if(xboxController.getRawButton(8)){
+      ready = true;
     }
 
     switch(state){
-      case 0: 
-        if(!flag1){
-          s_Arm.setShoulder(shoulderPosition);
-        }
-        if(s_Arm.getShoulder1Position() < shoulderPosition + 0.5 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
-          if(s_Photon.getAuto() && track && NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1){
-            tx = -NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-            if(Intake.getDistance() > 0.40){
-              angleOffset = 0;
-            }
-            else{
-              offsetGamepiece = (Intake.getDistance()+ 0.045) - 0.27; 
-              angleOffset = Math.toDegrees(Math.atan(offsetGamepiece/(Math.abs(extensionPosition * 0.00002) + 0.35)));
-            }
-            if(s_Arm.getTurretPosition() < maxRotation && s_Arm.getTurretPosition() > -maxRotation && Math.abs(tx - angleOffset) >= acceptableAngle){
-              s_Arm.runTurret((tx - angleOffset) * pValue);
-              if(tx > 0){
-                turretPosition = s_Arm.getTurretPosition() - (acceptableAngle/5.78);
-              }
-              else{
-                turretPosition = s_Arm.getTurretPosition() + (acceptableAngle/5.78);
-              }
-            }
-            else{
-              s_Arm.setTurret(turretPosition);
-            }
-
-          }
-          else{
-            turretPosition = 0;
+      case 0:
+      if(!flag){
+        s_Arm.setShoulder(shoulderPosition);
+      }
+      if(s_Arm.getShoulder1Position() < shoulderPosition + 0.5 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
+        if(s_Photon.getAuto() && track && ready){
+          turretPosition = s_Photon.getAutoTrackAngle();
+          extensionPosition = s_Photon.getAutoTrackDistance();
+          if(extensionPosition >= -46500 && extensionPosition <= -20 && turretPosition >= -5 && turretPosition <= 5){
             s_Arm.setTurret(turretPosition);
+            s_Arm.setExtension(extensionPosition);
+            s_Arm.setWrist(wristPosition);
           }
-          flag = true;
         }
-        if(flag){
+        else{
+          s_Arm.setTurret(turretPosition);
           s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
-          flag = false;
         }
-        break;
-      case 1: 
-        s_Arm.setWrist(wristPosition);
+      }
+      break;
+
+      case 1:
+      if(s_Photon.getAuto() && track && ready){
+        turretPosition = s_Photon.getAutoTrackAngle();
+        extensionPosition = s_Photon.getAutoTrackDistance();
+        if(extensionPosition >= -46500 && extensionPosition <= -20 && turretPosition >= -5 && turretPosition <= 5){
+          s_Arm.setTurret(turretPosition);
+          s_Arm.setExtension(extensionPosition);
+          s_Arm.setWrist(wristPosition);
+        }
+      }
+      else{
+        s_Arm.setTurret(turretPosition);
         s_Arm.setExtension(extensionPosition);
-        if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125){
-          if(s_Photon.getAuto() && track && NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0) == 1){
-            tx = -NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-            if(Intake.getDistance() > 0.40){
-              angleOffset = 0;
-            }
-            else{
-              offsetGamepiece = (Intake.getDistance() + 0.045) - 0.27; 
-              angleOffset = Math.toDegrees(Math.atan(offsetGamepiece/(Math.abs(extensionPosition * 0.00002) + 0.35)));
-            }
-            if(s_Arm.getTurretPosition() < maxRotation && s_Arm.getTurretPosition() > -maxRotation && Math.abs(tx - angleOffset) >= acceptableAngle){
-              s_Arm.runTurret((tx - angleOffset) * pValue);
-              if(tx > 0){
-                turretPosition = s_Arm.getTurretPosition() - (acceptableAngle/5.78);
-              }
-              else{
-                turretPosition = s_Arm.getTurretPosition() + (acceptableAngle/5.78);
-              }
-            }
-            else{
-              s_Arm.setTurret(turretPosition);
-            }
-          }
-          else{
-            turretPosition = 0;
-            s_Arm.setTurret(turretPosition);
-          }
-          flag = true;
-        }
-        if(flag && !flag1){
-          s_Arm.setShoulder(shoulderPosition);
-          flag = false;
-        }
-        break;
+        s_Arm.setWrist(wristPosition);
+      }
+      if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125 && !flag){
+        s_Arm.setShoulder(shoulderPosition);
+      }
+      break;
+      
     }
   }
 
