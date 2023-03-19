@@ -127,12 +127,12 @@ public class LED extends SubsystemBase {
         // This method will be called once per scheduler run
         if(bad){
             for(int i = 0; i < 350; i++){
-                if(timer.get() > 0.25 && i % 2 != 0 && !flag){
+                if(timer.get() > 0.2 && i % 2 != 0 && !flag){
                     candle.setLEDs(12, 237, 54);
                     timer.reset();
                     flag = true;
                 }
-                else if(timer.get() > 0.25 && i % 2 == 0 && flag){
+                else if(timer.get() > 0.2 && i % 2 == 0 && flag){
                     candle.setLEDs(179, 83, 97);
                     timer.reset();
                     flag = false;
@@ -164,12 +164,12 @@ public class LED extends SubsystemBase {
             }
             for(int i = 0; i < 350; i++){
                 if(!flag2){
-                    if(timer.get() > 0.15 && i % 2 != 0 && !flag){
+                    if(timer.get() > 0.1 && i % 2 != 0 && !flag){
                         candle.setLEDs(0, 0, 254);
                         timer.reset();
                         flag = true;
                     }
-                    else if(timer.get() > 0.15 && i % 2 == 0 && flag){
+                    else if(timer.get() > 0.1 && i % 2 == 0 && flag){
                         candle.setLEDs(0, 0, 0);
                         timer.reset();
                         flag = false;
@@ -194,24 +194,24 @@ public class LED extends SubsystemBase {
             }
             for(int i = 0; i < 350; i++){
                 if(!flag2){
-                    if(timer.get() > 0.15 && i % 2 != 0 && !flag){
+                    if(timer.get() > 0.1 && i % 2 != 0 && !flag){
                         candle.setLEDs(0, 255, 0);
                         timer.reset();
                         flag = true;
                     }
-                    else if(timer.get() > 0.15 && i % 2 == 0 && flag){
+                    else if(timer.get() > 0.1 && i % 2 == 0 && flag){
                         candle.setLEDs(0, 0, 0);
                         timer.reset();
                         flag = false;
                     }
                 }
                 else{
-                    if(timer.get() > 0.25 && i % 2 != 0 && !flag){
+                    if(timer.get() > 0.2 && i % 2 != 0 && !flag){
                         candle.setLEDs(0, 255, 0);
                         timer.reset();
                         flag = true;
                     }
-                    else if(timer.get() > 0.25 && i % 2 == 0 && flag){
+                    else if(timer.get() > 0.2 && i % 2 == 0 && flag){
                         candle.setLEDs(0, 0, 0);
                         timer.reset();
                         flag = false;
@@ -232,24 +232,24 @@ public class LED extends SubsystemBase {
             }
             for(int i = 0; i < 350; i++){
                 if(!flag2){
-                    if(timer.get() > 0.15 && i % 2 != 0 && !flag){
+                    if(timer.get() > 0.1 && i % 2 != 0 && !flag){
                         candle.setLEDs(255, 0, 0);
                         timer.reset();
                         flag = true;
                     }
-                    else if(timer.get() > 0.15 && i % 2 == 0 && flag){
+                    else if(timer.get() > 0.1 && i % 2 == 0 && flag){
                         candle.setLEDs(0, 0, 0);
                         timer.reset();
                         flag = false;
                     }
                 }
                 else{
-                    if(timer.get() > 0.25 && i % 2 != 0 && !flag){
+                    if(timer.get() > 0.2 && i % 2 != 0 && !flag){
                         candle.setLEDs(255, 0, 0);
                         timer.reset();
                         flag = true;
                     }
-                    else if(timer.get() > 0.25 && i % 2 == 0 && flag){
+                    else if(timer.get() > 0.2 && i % 2 == 0 && flag){
                         candle.setLEDs(0, 0, 0);
                         timer.reset();
                         flag = false;
@@ -270,24 +270,24 @@ public class LED extends SubsystemBase {
             }
             for(int i = 0; i < 350; i++){
                 if(!flag2){
-                    if(timer.get() > 0.15 && i % 2 != 0 && !flag){
+                    if(timer.get() > 0.1 && i % 2 != 0 && !flag){
                         candle.setLEDs(200, 180, 180);
                         timer.reset();
                         flag = true;
                     }
-                    else if(timer.get() > 0.15 && i % 2 == 0 && flag){
+                    else if(timer.get() > 0.1 && i % 2 == 0 && flag){
                         candle.setLEDs(0, 0, 0);
                         timer.reset();
                         flag = false;
                     }
                 }
                 else{
-                    if(timer.get() > 0.25 && i % 2 != 0 && !flag){
+                    if(timer.get() > 0.2 && i % 2 != 0 && !flag){
                         candle.setLEDs(200, 180, 180);
                         timer.reset();
                         flag = true;
                     }
-                    else if(timer.get() > 0.25 && i % 2 == 0 && flag){
+                    else if(timer.get() > 0.2 && i % 2 == 0 && flag){
                         candle.setLEDs(0, 0, 0);
                         timer.reset();
                         flag = false;
