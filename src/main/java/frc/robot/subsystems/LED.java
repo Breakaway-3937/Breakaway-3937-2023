@@ -89,6 +89,13 @@ public class LED extends SubsystemBase {
         bad = false;
     }
 
+    public void setTrackingLEDsOff(){
+        green = false;
+        red = false;
+        white = false;
+        bad = false;
+    }
+
     public void cone(){
         cube = false;
         cone = true;
