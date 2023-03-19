@@ -46,6 +46,7 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 
 public class PhotonVision extends SubsystemBase{
+    private final Intake s_Intake;
     private final LED s_LED;
     private final PhotonCamera photonCamera;
     private final PhotonPoseEstimator photonPoseEstimator;
@@ -55,10 +56,11 @@ public class PhotonVision extends SubsystemBase{
     private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));
     private Pose2d pose2dDrivetrain = new Pose2d(0, 0, new Rotation2d(0));
-    private double x, y, targetX, targetY, theta;
+    private double x, y, targetX, targetY, theta, angleOffset;
 
-    public PhotonVision(LED s_LED) {
+    public PhotonVision(LED s_LED, Intake s_Intake) {
         this.s_LED = s_LED;
+        this.s_Intake = s_Intake;
         try{
             atfl = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
         } 
@@ -323,18 +325,24 @@ public class PhotonVision extends SubsystemBase{
                 y = pose2dDrivetrain.getY() - (targetY + 1.7 + 1.7);
             }
         }
-        return (Math.sqrt(x * x + y * y) - 0.35) * -50000;
+        return (Math.sqrt(x * x + y * y) - 0.35) * -50000;//FIXME get correct forward distance for extension
     }
 
     public double getAutoTrackAngle(){
-        if(y == 0){
+        if(s_Intake.getDistance() > 0.40){
+            angleOffset = 0;
+        }
+        else{
+            angleOffset = Math.toDegrees(Math.atan(((s_Intake.getDistance() + 0.045) - 0.27)/(Math.abs((Math.sqrt(x * x + y * y) - 0.35) * -50000) + 0.35)));//FIXME get correct forward distance for extension
+        }
+        if(y == 0 && s_Intake.getDistance() > 0.40){
             return 0;
         }
         else{
             theta = Math.atan(x / y);
             theta = Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() - theta - Math.PI / 2;
             theta = Math.toDegrees(theta);
-            return theta / 5.78;
+            return (theta + angleOffset) / 5.78;
         }
     }
 
