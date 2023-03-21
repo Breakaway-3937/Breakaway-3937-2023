@@ -20,6 +20,7 @@ public class RunIntake extends CommandBase {
     this.s_Intake = s_Intake;
     this.xboxController = xboxController;
     timer = new Timer();
+    timer.start();
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(s_Intake);
   }
@@ -36,7 +37,7 @@ public class RunIntake extends CommandBase {
         timer.reset();
         flag = true;
       }
-      if(timer.get() > 0.25){
+      if(timer.get() > 2 && (Intake.getConeCubeMode() || Intake.getDeadCone())){
         s_Intake.stopIntake();
         flag = false;
       }

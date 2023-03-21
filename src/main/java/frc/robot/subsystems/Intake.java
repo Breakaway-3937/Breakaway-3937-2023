@@ -49,7 +49,7 @@ public class Intake extends SubsystemBase {
 
   public boolean intakeFull(){
     if(getConeCubeMode() || getDeadCone()){
-      if(getDistance() < 0.4){
+      if(getDistance() < 0.45){
         return true;
       }
       else{
