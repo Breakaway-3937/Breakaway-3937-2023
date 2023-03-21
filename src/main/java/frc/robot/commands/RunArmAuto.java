@@ -9,7 +9,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 
 public class RunArmAuto extends CommandBase {
-  private boolean flag, flag1, flag2, done = false;
+  private boolean flag, flag1, done = false;
   private int state, level;
   private final Arm s_Arm;
   private double shoulderPosition, turretPosition, extensionPosition, wristPosition = 0;
@@ -27,7 +27,6 @@ public class RunArmAuto extends CommandBase {
     done = false;
     flag = false;
     flag1 = false;
-    flag2 = false;
     shoulderPosition = -10;
     turretPosition = 0; 
     extensionPosition = -20;
@@ -37,14 +36,14 @@ public class RunArmAuto extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(level == 3 && !flag2){
+    if(level == 3 && !flag1){
       shoulderPosition = -13;
       extensionPosition = -46500;
       wristPosition = 36;
       turretPosition = 0;
       state = 0;
     }
-    else if(level == 2 && !flag2){
+    else if(level == 2 && !flag1){
       shoulderPosition = -12.75;
       if(extensionPosition > -24500){
         state = 0;
@@ -55,9 +54,9 @@ public class RunArmAuto extends CommandBase {
       extensionPosition = -24500;
       wristPosition = 43.8;
       turretPosition = 0;
-      flag2 = true;
+      flag1 = true;
     }
-    else if(level == 1 && !flag2){
+    else if(level == 1 && !flag1){
       shoulderPosition = -5;
       if(extensionPosition > -307){
         state = 0;
@@ -67,21 +66,22 @@ public class RunArmAuto extends CommandBase {
       }
       extensionPosition = -307;
       wristPosition = 35;
-      flag2 = true;
+      turretPosition = 0;
+      flag1 = true;
     }
-    if(level == -1 && !flag2){
+    if(level == -1 && !flag1){
       if(Intake.getDeadCone()){
         shoulderPosition = 0;
-        if(extensionPosition > -13000){
+        if(extensionPosition > -9000){
           state = 0;
         }
         else{
           state = 1;
         }
-        extensionPosition = -13000;
-        wristPosition = 6.5;
+        extensionPosition = -9000;
+        wristPosition = 8;
         turretPosition = 0;
-        flag2 = true;
+        flag1 = true;
       }
       else if(Intake.getConeCubeMode()){
         shoulderPosition = -0.5;
@@ -94,7 +94,7 @@ public class RunArmAuto extends CommandBase {
         extensionPosition = -20;
         wristPosition = 12;
         turretPosition = 0;
-        flag2 = true;
+        flag1 = true;
       }
       else if(!Intake.getConeCubeMode()){
         shoulderPosition = -0.5;
@@ -107,12 +107,12 @@ public class RunArmAuto extends CommandBase {
         extensionPosition = -20;
         wristPosition = 19.85;
         turretPosition = 0;
-        flag2 = true;
+        flag1 = true;
       }   
     }
-    else if(level == 0 && !flag2){
+    else if(level == 0 && !flag1){
       shoulderPosition = -10;
-      if(extensionPosition == -20 || extensionPosition == -13000){
+      if(extensionPosition == -20 || extensionPosition == -9000){
         state = 0;
       }
       else{
@@ -121,48 +121,35 @@ public class RunArmAuto extends CommandBase {
       extensionPosition = -20;
       wristPosition = 0;
       turretPosition = 0;
-      flag2 = true;
+      flag1 = true;
     }
 
   if((shoulderPosition == -0.5 || shoulderPosition == 0) && s_Arm.getShoulder1Position() < shoulderPosition + 1 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
     s_Arm.stopShoulder();
-    flag1 = true;
+    flag = true;
   }
   else{
-    flag1 = false;
+    flag = false;
   }
 
   switch(state){
-    case 0: 
-      if(!flag1){
+    case 0:
+      if(!flag){
         s_Arm.setShoulder(shoulderPosition);
       }
       if(s_Arm.getShoulder1Position() < shoulderPosition + 0.5 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
-        //s_Arm.setRotation(turretPosition);
-        flag = true;
-      }
-      if(s_Arm.getTurretPosition() < turretPosition + 0.5 && s_Arm.getTurretPosition() > turretPosition - 0.5 && flag){
-        s_Arm.setExtension(extensionPosition);
-        s_Arm.setWrist(wristPosition);
-        flag = false;
-      }
-      if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125 && s_Arm.getWrist() < wristPosition + 1 && s_Arm.getWrist() > wristPosition - 1){
-        done = true;
+          s_Arm.setTurret(turretPosition);
+          s_Arm.setExtension(extensionPosition);
+          s_Arm.setWrist(wristPosition);
       }
       break;
-    case 1: 
-      s_Arm.setWrist(wristPosition);
+
+      case 1:
+      s_Arm.setTurret(turretPosition);
       s_Arm.setExtension(extensionPosition);
-      if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125){
-        //s_Arm.setRotation(turretPosition);
-        flag = true;
-      }
-      if(s_Arm.getTurretPosition() < turretPosition + 0.5 && s_Arm.getTurretPosition() > turretPosition - 0.5 && flag){
+      s_Arm.setWrist(wristPosition);
+      if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125 && !flag){
         s_Arm.setShoulder(shoulderPosition);
-        flag = false;
-      }
-      if(s_Arm.getShoulder1Position() < shoulderPosition + 0.5 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
-        done = true;
       }
       break;
     }
