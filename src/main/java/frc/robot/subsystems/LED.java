@@ -28,7 +28,7 @@ public class LED extends SubsystemBase {
         timer.start();
         CANdleConfiguration configAll = new CANdleConfiguration();
         configAll.statusLedOffWhenActive = false;
-        configAll.disableWhenLOS = true;
+        configAll.disableWhenLOS = false;
         configAll.stripType = LEDStripType.GRB;
         configAll.brightnessScalar = 0.1;
         configAll.vBatOutputMode = VBatOutputMode.Modulated;
@@ -127,6 +127,12 @@ public class LED extends SubsystemBase {
             flag3 = false;
             flag5 = false;
         }
+        else if(color.equals("all")){
+            flag4 = false;
+            flag3 = false;
+            flag5 = false;
+            flag6 = false;
+        }
     }
 
     @Override
@@ -150,6 +156,7 @@ public class LED extends SubsystemBase {
             //FIXME add led pattern
         }
         else if(!s_Intake.intakeFull()){
+            setOthersFalse("all");
             if(cube){
                 purple();
             }

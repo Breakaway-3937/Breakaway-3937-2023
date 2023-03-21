@@ -357,10 +357,10 @@ public class PhotonVision extends SubsystemBase{
             if(!photonCamera.isConnected()){
                 s_LED.bad();
             }
-            else if(photonCamera.isConnected()){
+            if(photonCamera.isConnected()){
                 s_LED.notBad();
             }
-            else if(getAutoTrackDistance() >= -46500 && getAutoTrackAngle() >= -5 && getAutoTrackAngle() <= 5){
+            if(getAutoTrackDistance() >= -46500 && getAutoTrackAngle() >= -5 && getAutoTrackAngle() <= 5){
                 s_LED.green();
             }
             else if(DriverStation.getAlliance().toString().equals("Blue") && pose2dDrivetrain.getX() > 4){
