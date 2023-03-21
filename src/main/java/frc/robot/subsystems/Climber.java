@@ -51,8 +51,8 @@ public class Climber extends SubsystemBase {
     pid1.setOutputRange(-1, 1);
     climber1.setIdleMode(IdleMode.kBrake);   
     climber1.setInverted(false);
-    pid1.setSmartMotionMaxVelocity(500, 0);
-    pid1.setSmartMotionMaxAccel(254, 0);
+    pid1.setSmartMotionMaxVelocity(3000, 0);
+    pid1.setSmartMotionMaxAccel(1500, 0);
     pid1.setP(climber1kP);
     pid1.setI(climber1kI);
     pid1.setD(climber1kD);
@@ -63,11 +63,16 @@ public class Climber extends SubsystemBase {
     climber2.follow(climber1, true);
   }
 
+  public void setClimberSpeed(){
+    pid1.setSmartMotionMaxVelocity(1000, 0);
+    pid1.setSmartMotionMaxAccel(500, 0);
+  }
+
   public void setValues(){
-    climber1kP = 9e-7;
+    climber1kP = 9e-5;
     climber1kI = 0.5e-6;
     climber1kD = 0;
-    climber1kFF = 0.00156;
+    climber1kFF = 0.0017;
   }
 
   @Override
