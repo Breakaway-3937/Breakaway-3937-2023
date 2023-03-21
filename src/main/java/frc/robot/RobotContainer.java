@@ -98,6 +98,7 @@ public class RobotContainer {
     s_Intake.setDefaultCommand(c_RunIntake);
     s_Climber.setDefaultCommand(c_RunClimber);
     Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
+    new InstantCommand(() -> s_LED.cone()).alongWith(new InstantCommand(() -> s_Intake.setCone()));
     // Configure the button bindings
     configureButtonBindings();
   }
