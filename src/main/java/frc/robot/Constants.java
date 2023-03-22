@@ -205,8 +205,8 @@ public final class Constants {
     public static final class Auto {
         public static final double KMAX_SPEED_METERS_PER_SECOND = 3;
         public static final double KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 3;
-        public static final double KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
-        public static final double KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Math.PI;
+        public static final double KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI / 32.0;
+        public static final double KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Math.PI / 32.0;
     
         public static final double KP_X_CONTROLLER = 1;
         public static final double KP_Y_CONTROLLER = 1;

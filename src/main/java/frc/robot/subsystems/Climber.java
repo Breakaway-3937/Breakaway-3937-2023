@@ -23,6 +23,7 @@ public class Climber extends SubsystemBase {
   private SparkMaxPIDController pid1;
   private double climber1kP, climber1kI, climber1kD, climber1kFF;
   private final GenericEntry climber;
+  private boolean motion = false;
 
   /** Creates a new Climber. */
   public Climber() {
@@ -34,7 +35,12 @@ public class Climber extends SubsystemBase {
   }
 
   public void setClimber(double position){
-    pid1.setReference(position, ControlType.kSmartMotion);
+    if(motion){
+      pid1.setReference(position, ControlType.kSmartMotion);
+    }
+    else if(!motion){
+      pid1.setReference(position, ControlType.kPosition);
+    }
   }
 
   public double getClimber(){
@@ -66,13 +72,14 @@ public class Climber extends SubsystemBase {
   public void setClimberSpeed(){
     pid1.setSmartMotionMaxVelocity(1000, 0);
     pid1.setSmartMotionMaxAccel(500, 0);
+    motion = true;
   }
 
   public void setValues(){
     climber1kP = 9e-5;
     climber1kI = 0.5e-6;
     climber1kD = 0;
-    climber1kFF = 0.0017;
+    climber1kFF = 0.0034;
   }
 
   @Override

@@ -349,10 +349,12 @@ public class PhotonVision extends SubsystemBase{
 
     @Override
     public void periodic(){
-        distance.setDouble(getAutoTrackDistance());
-        angle.setDouble(getAutoTrackAngle());
-        poseX.setDouble(pose2dDrivetrain.getX());
-        poseY.setDouble(pose2dDrivetrain.getY());
+        if(DriverStation.isTeleopEnabled()){
+            distance.setDouble(getAutoTrackDistance());
+            angle.setDouble(getAutoTrackAngle());
+            poseX.setDouble(pose2dDrivetrain.getX());
+            poseY.setDouble(pose2dDrivetrain.getY());
+        }
         if(auto){
             if(!photonCamera.isConnected()){
                 s_LED.bad();

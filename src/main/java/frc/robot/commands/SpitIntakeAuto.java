@@ -47,7 +47,7 @@ public class SpitIntakeAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(!s_Intake.intakeFull() && timer.get() > 0.25){
+    if(!s_Intake.intakeFull() && timer.get() > 1.25){
       return true;
     }
     else{
