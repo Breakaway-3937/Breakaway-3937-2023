@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.AutoChooser;
 import frc.robot.autos.AutoTrajectories;
+import frc.robot.commands.Align;
 import frc.robot.commands.RunArm;
 import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunIntake;
@@ -53,6 +54,7 @@ public class RobotContainer {
 
   /* Driver Buttons */
   private final JoystickButton translationButton = new JoystickButton(translationController, Constants.Controllers.TRANSLATION_BUTTON);
+  private final JoystickButton rotationButton = new JoystickButton(rotationController, Constants.Controllers.ROTATION_BUTTON);
   private final JoystickButton highLeft = new JoystickButton(buttonGrid, Constants.Controllers.BUTTON_GRID_HIGH_LEFT);
   private final JoystickButton highMid = new JoystickButton(buttonGrid, Constants.Controllers.BUTTON_GRID_HIGH_MID);
   private final JoystickButton highRight = new JoystickButton(buttonGrid, Constants.Controllers.BUTTON_GRID_HIGH_RIGHT);
@@ -80,6 +82,7 @@ public class RobotContainer {
   public final RunIntake c_RunIntake = new RunIntake(s_Intake, xboxController);
   public final RunClimber c_RunClimber = new RunClimber(s_Climber, xboxController);
   public final RunArm c_RunArm = new RunArm(s_Arm, xboxController, s_Photon);
+  public final Align c_Align = new Align(s_Drivetrain);
   
   /* Autos */
   private final AutoTrajectories autoTrajectories = new AutoTrajectories();
@@ -112,6 +115,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* Driver Buttons */
     translationButton.onTrue(new InstantCommand(() -> s_Drivetrain.zeroGyro()));
+    rotationButton.whileTrue(c_Align);
     highLeft.onTrue(new InstantCommand(() -> s_Photon.setHighLeft()));
     highRight.onTrue(new InstantCommand(() -> s_Photon.setHighRight()));
     highMid.onTrue(new InstantCommand(() -> s_Photon.setHighMid()));
