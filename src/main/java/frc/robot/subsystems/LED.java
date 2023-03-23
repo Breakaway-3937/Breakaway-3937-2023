@@ -18,7 +18,7 @@ public class LED extends SubsystemBase {
     private final Intake s_Intake;
     private final CANdle candle;
     private final Timer timer, timer1;
-    private boolean green, red, white, flag, flag2, flag3, flag4, flag5, flag6, cube, cone, bad = false; 
+    private boolean green, red, white, flag, flag1, flag2, flag3, flag4, flag5, flag6, cube, cone, bad = false; 
 
     public LED(Intake s_Intake) {
         candle = new CANdle(Constants.CANDLE_ID, "CANivore");
@@ -163,8 +163,9 @@ public class LED extends SubsystemBase {
             else if(cone){
                 yellow();
             }
+            flag1 = false;
         }
-        else if(s_Intake.intakeFull()){
+        else if(s_Intake.intakeFull() && !flag1){
             setOthersFalse("blue");
             if(!flag6){
                 timer1.reset();
@@ -190,6 +191,7 @@ public class LED extends SubsystemBase {
                 }
                 else{
                     blue();
+                    flag1 = true;
                 }
             }
         }
