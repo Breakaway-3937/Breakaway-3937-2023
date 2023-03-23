@@ -3,6 +3,13 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/Shuffleboard/Auto/Chooser": "String Chooser"
+    },
+    "windows": {
+      "/Shuffleboard/Auto/Chooser": {
+        "window": {
+          "visible": true
+        }
+      }
     }
   }
 }
