@@ -10,10 +10,10 @@ public class AutoTrajectories {
 
     private PathPlannerTrajectory leaveCommunity0, leaveCommunity1, leaveCommunity2,
                              scoreLeave0, scoreLeave1, scoreLeave2,
-                             scoreTwice0, scoreTwice1, scoreTwice2,
+                             scoreTwice0, scoreTwice2,
                              leaveCharge0, leaveCharge1, leaveCharge2,
                              scoreCharge0, scoreCharge1, scoreCharge2,
-                             scoreTwiceCharge0, scoreTwiceCharge2;
+                             scoreGrabCharge0, scoreGrabCharge1, scoreGrabCharge2;
 
 
     private final PathConstraints constraints, slowConstraints;
@@ -55,17 +55,12 @@ public class AutoTrajectories {
     }
 
     public PathPlannerTrajectory getScoreTwice0(){
-        scoreTwice0 = PathPlanner.loadPath("ScoreTwo0", constraints);
+        scoreTwice0 = PathPlanner.loadPath("ScoreTwice0", constraints);
         return scoreTwice0;
     }
 
-    public PathPlannerTrajectory getScoreTwice1(){
-        scoreTwice1 = PathPlanner.loadPath("ScoreTwo1", slowConstraints);
-        return scoreTwice1;
-    }
-
     public PathPlannerTrajectory getScoreTwice2(){
-        scoreTwice2 = PathPlanner.loadPath("ScoreTwo2", constraints);
+        scoreTwice2 = PathPlanner.loadPath("ScoreTwice2", constraints);
         return scoreTwice2;
     }
 
@@ -99,18 +94,18 @@ public class AutoTrajectories {
         return scoreCharge2;
     }
 
-    public PathPlannerTrajectory getScoreTwiceCharge0(){
-        scoreTwiceCharge0 = PathPlanner.loadPath("ScoreTwoCharge0", constraints);
-        return scoreTwiceCharge0;
+    public PathPlannerTrajectory getScoreGrabCharge0(){
+        scoreGrabCharge0 = PathPlanner.loadPath("ScoreGrabCharge0", constraints);
+        return scoreGrabCharge0;
     }
 
-    public PathPlannerTrajectory getScoreTwiceCharge2(){
-        scoreTwiceCharge2 = PathPlanner.loadPath("ScoreTwoCharge2", constraints);
-        return scoreTwiceCharge2;
+    public PathPlannerTrajectory getScoreGrabCharge1(){
+        scoreGrabCharge1 = PathPlanner.loadPath("ScoreGrabCharge1", slowConstraints);
+        return scoreGrabCharge1;
     }
 
-    public PathPlannerTrajectory getScoreGrabCharge(){
-        scoreTwiceCharge2 = PathPlanner.loadPath("ScoreGrabCharge", slowConstraints);
-        return scoreTwiceCharge2;
+    public PathPlannerTrajectory getScoreGrabCharge2(){
+        scoreGrabCharge2 = PathPlanner.loadPath("ScoreGrabCharge2", constraints);
+        return scoreGrabCharge2;
     }
 }

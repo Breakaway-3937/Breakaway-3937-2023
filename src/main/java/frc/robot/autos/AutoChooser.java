@@ -47,7 +47,6 @@ public class AutoChooser {
         autonomousModeChooser.addOption("Score Leave Mid", AutonomousMode.SCORE_LEAVE_1);
         autonomousModeChooser.addOption("Score Leave Left", AutonomousMode.SCORE_LEAVE_2);
         autonomousModeChooser.addOption("Score Twice Right", AutonomousMode.SCORE_TWICE_0);
-        autonomousModeChooser.addOption("Score Twice Mid", AutonomousMode.SCORE_TWICE_1);
         autonomousModeChooser.addOption("Score Twice Left", AutonomousMode.SCORE_TWICE_2);
         autonomousModeChooser.addOption("Leave Charge Right", AutonomousMode.LEAVE_CHARGE_0);
         autonomousModeChooser.addOption("Leave Charge Mid", AutonomousMode.LEAVE_CHARGE_1);
@@ -55,9 +54,9 @@ public class AutoChooser {
         autonomousModeChooser.addOption("Score Charge Right", AutonomousMode.SCORE_CHARGE_0);
         autonomousModeChooser.addOption("Score Charge Mid", AutonomousMode.SCORE_CHARGE_1);
         autonomousModeChooser.addOption("Score Charge Left", AutonomousMode.SCORE_CHARGE_2);
-        autonomousModeChooser.addOption("Score Twice Charge Right", AutonomousMode.SCORE_TWICE_CHARGE_0);
-        autonomousModeChooser.addOption("Score Twice Charge Left", AutonomousMode.SCORE_TWICE_CHARGE_2);
-        autonomousModeChooser.addOption("Score Grab Charge", AutonomousMode.SCORE_GRAB_CHARGE);
+        autonomousModeChooser.addOption("Score Grab Charge Right", AutonomousMode.SCORE_GRAB_CHARGE_0);
+        autonomousModeChooser.addOption("Score Grab Charge Mid", AutonomousMode.SCORE_GRAB_CHARGE_1);
+        autonomousModeChooser.addOption("Score Grab Charge Left", AutonomousMode.SCORE_GRAB_CHARGE_2);
     }
 
     public SendableChooser<AutonomousMode> getModeChooser() {
@@ -247,44 +246,6 @@ public class AutoChooser {
         return command;
     }
 
-    public Command getScoreTwice1() {
-        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
-        thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
-            trajectories.getScoreTwice1(), 
-            s_Drivetrain::getPose, 
-            Constants.Drivetrain.SWERVE_KINEMATICS,
-            new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-            new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-            thetaController,
-            s_Drivetrain::setModuleStates, 
-            false,
-            s_Drivetrain);
-
-        HashMap<String, Command> eventMap = new HashMap<>();
-            eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new RunIntakeAuto(s_Intake), new RunArmAuto(s_Arm, 0)));
-            
-
-        FollowPathWithEvents followCommand = new FollowPathWithEvents(
-            swerveCommand,
-            trajectories.getScoreTwice1().getMarkers(),
-            eventMap
-        );
-
-        SequentialCommandGroup command = new SequentialCommandGroup();
-        command.addCommands(
-            new InstantCommand(() -> s_Intake.setCone()),
-            new RunArmAuto(s_Arm, 2),
-            new SpitIntakeAuto(s_Intake),
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice1().getInitialHolonomicPose())),
-            new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
-            new RunArmAuto(s_Arm, 2),
-            new SpitIntakeAuto(s_Intake),
-            new RunArmAuto(s_Arm, 0));
-        return command;
-    }
-
     public Command getScoreTwice2() {
         var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
@@ -467,56 +428,12 @@ public class AutoChooser {
         return command;
     }
 
-    public Command getScoreTwiceCharge0() {
+    public Command getScoreGrabCharge0() {
         var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
-            trajectories.getScoreTwiceCharge0(), 
-            s_Drivetrain::getPose, 
-            Constants.Drivetrain.SWERVE_KINEMATICS,
-            new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-            new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-            thetaController,
-            s_Drivetrain::setModuleStates, 
-            false,
-            s_Drivetrain);
-        SequentialCommandGroup command = new SequentialCommandGroup();
-            command.addCommands(
-            new RunArmAuto(s_Arm, 0),
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwiceCharge0().getInitialHolonomicPose())),
-            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
-        return command;
-    }
-
-    public Command getScoreTwiceCharge2() {
-        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
-        thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
-            trajectories.getScoreTwiceCharge2(), 
-            s_Drivetrain::getPose, 
-            Constants.Drivetrain.SWERVE_KINEMATICS,
-            new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
-            new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
-            thetaController,
-            s_Drivetrain::setModuleStates, 
-            false,
-            s_Drivetrain);
-        SequentialCommandGroup command = new SequentialCommandGroup();
-            command.addCommands(
-            new RunArmAuto(s_Arm, 0),
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwiceCharge2().getInitialHolonomicPose())),
-            new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
-        return command;
-    }
-
-    public Command getScoreGrabCharge() {
-        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
-        thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
-            trajectories.getScoreGrabCharge(), 
+            trajectories.getScoreGrabCharge0(), 
             s_Drivetrain::getPose, 
             Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
@@ -532,7 +449,7 @@ public class AutoChooser {
 
         FollowPathWithEvents followCommand = new FollowPathWithEvents(
             swerveCommand,
-            trajectories.getScoreGrabCharge().getMarkers(),
+            trajectories.getScoreGrabCharge2().getMarkers(),
             eventMap
         );
 
@@ -541,7 +458,79 @@ public class AutoChooser {
             new InstantCommand(() -> s_Intake.setCone()),
             new RunArmAuto(s_Arm, 3),
             new SpitIntakeAuto(s_Intake),
-            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreGrabCharge().getInitialHolonomicPose())),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreGrabCharge0().getInitialHolonomicPose())),
+            new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
+            new AutoBalance(s_Drivetrain));
+        return command;
+    }
+
+    public Command getScoreGrabCharge1() {
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreGrabCharge1(), 
+            s_Drivetrain::getPose, 
+            Constants.Drivetrain.SWERVE_KINEMATICS,
+            new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
+            new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
+            thetaController,
+            s_Drivetrain::setModuleStates, 
+            false,
+            s_Drivetrain);
+
+        HashMap<String, Command> eventMap = new HashMap<>();
+            eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(3), new RunIntakeAuto(s_Intake)), new RunArmAuto(s_Arm, 0)));
+            
+
+        FollowPathWithEvents followCommand = new FollowPathWithEvents(
+            swerveCommand,
+            trajectories.getScoreGrabCharge2().getMarkers(),
+            eventMap
+        );
+
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new InstantCommand(() -> s_Intake.setCone()),
+            new RunArmAuto(s_Arm, 3),
+            new SpitIntakeAuto(s_Intake),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreGrabCharge1().getInitialHolonomicPose())),
+            new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
+            new AutoBalance(s_Drivetrain));
+        return command;
+    }
+
+    public Command getScoreGrabCharge2() {
+        var thetaController = new PIDController(Constants.Auto.KP_THETA_CONTROLLER, 0, 0);
+        thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+        PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
+            trajectories.getScoreGrabCharge2(), 
+            s_Drivetrain::getPose, 
+            Constants.Drivetrain.SWERVE_KINEMATICS,
+            new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
+            new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
+            thetaController,
+            s_Drivetrain::setModuleStates, 
+            false,
+            s_Drivetrain);
+
+        HashMap<String, Command> eventMap = new HashMap<>();
+            eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(3), new RunIntakeAuto(s_Intake)), new RunArmAuto(s_Arm, 0)));
+            
+
+        FollowPathWithEvents followCommand = new FollowPathWithEvents(
+            swerveCommand,
+            trajectories.getScoreGrabCharge2().getMarkers(),
+            eventMap
+        );
+
+        SequentialCommandGroup command = new SequentialCommandGroup();
+            command.addCommands(
+            new InstantCommand(() -> s_Intake.setCone()),
+            new RunArmAuto(s_Arm, 3),
+            new SpitIntakeAuto(s_Intake),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreGrabCharge2().getInitialHolonomicPose())),
             new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
             new AutoBalance(s_Drivetrain));
         return command;
@@ -573,9 +562,6 @@ public class AutoChooser {
             case SCORE_TWICE_0 :
             return getScoreTwice0();
 
-            case SCORE_TWICE_1 :
-            return getScoreTwice1();
-
             case SCORE_TWICE_2 :
             return getScoreTwice2();
 
@@ -597,14 +583,14 @@ public class AutoChooser {
             case SCORE_CHARGE_2 :
             return getScoreCharge2();
 
-            case SCORE_TWICE_CHARGE_0 :
-            return getScoreTwiceCharge0();
+            case SCORE_GRAB_CHARGE_0 :
+            return getScoreGrabCharge0();
 
-            case SCORE_TWICE_CHARGE_2 :
-            return getScoreTwiceCharge2();
+            case SCORE_GRAB_CHARGE_1 :
+            return getScoreGrabCharge1();
 
-            case SCORE_GRAB_CHARGE :
-            return getScoreGrabCharge();
+            case SCORE_GRAB_CHARGE_2 :
+            return getScoreGrabCharge2();
         }
         return new InstantCommand();
     }
@@ -612,9 +598,9 @@ public class AutoChooser {
     private enum AutonomousMode {
         DO_NOTHING, LEAVE_COMMUNITY_0, LEAVE_COMMUNITY_1, LEAVE_COMMUNITY_2, 
         SCORE_LEAVE_0, SCORE_LEAVE_1, SCORE_LEAVE_2, 
-        SCORE_TWICE_0, SCORE_TWICE_1, SCORE_TWICE_2,
+        SCORE_TWICE_0, SCORE_TWICE_2,
         LEAVE_CHARGE_0, LEAVE_CHARGE_1, LEAVE_CHARGE_2,
         SCORE_CHARGE_0, SCORE_CHARGE_1, SCORE_CHARGE_2,
-        SCORE_TWICE_CHARGE_0, SCORE_TWICE_CHARGE_2, SCORE_GRAB_CHARGE
+        SCORE_GRAB_CHARGE_0, SCORE_GRAB_CHARGE_1, SCORE_GRAB_CHARGE_2
     }
 }
