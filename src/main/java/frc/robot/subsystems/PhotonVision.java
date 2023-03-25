@@ -31,6 +31,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -313,7 +314,7 @@ public class PhotonVision extends SubsystemBase{
                 y = pose2dDrivetrain.getY() - (targetY + 1.7 + 1.7);
             }
         }
-        return (Math.sqrt(Math.pow(Math.sqrt(x * x + y * y), 2) + Math.pow(targetHeight - 0.485, 2)) - 0.7032) * -50000;
+        return (Math.sqrt(Math.pow(Math.sqrt(x * x + y * y), 2) + Math.pow(targetHeight - 0.48, 2)) - 0.7032) * -50000;
     }
 
     public double getAutoTrackAngle(){
@@ -330,13 +331,20 @@ public class PhotonVision extends SubsystemBase{
             return angleOffset / 5.78;
         }
         theta = Math.atan(x / y);
-        theta = Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() - theta - Math.PI / 2;
+        theta %= Math.PI;
+        if(Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() > Math.PI){
+            theta = Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() - theta + Math.PI / 2;
+        }
+        else{
+            theta = Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() - theta - Math.PI / 2;
+        }
         theta = Math.toDegrees(theta);
         return (theta + angleOffset) / 5.78;
     }
 
     @Override
     public void periodic(){
+        SmartDashboard.putBoolean("Auto", auto);
         if(DriverStation.isTeleopEnabled()){
             distance.setDouble(getAutoTrackDistance());
             angle.setDouble(getAutoTrackAngle());
