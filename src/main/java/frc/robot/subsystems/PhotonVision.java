@@ -60,6 +60,9 @@ public class PhotonVision extends SubsystemBase{
     private double x, y, targetX, targetY, targetHeight, theta, angleOffset;
 
     public PhotonVision(LED s_LED, Intake s_Intake) {
+        SmartDashboard.putNumber("X", 0);
+        SmartDashboard.putNumber("Y", 0);
+        SmartDashboard.putNumber("Gyro", 0);
         this.s_LED = s_LED;
         this.s_Intake = s_Intake;
         try{
@@ -278,13 +281,16 @@ public class PhotonVision extends SubsystemBase{
     }
 
     public double getAutoTrackDistance(){
+        setMidMid(); //FIXME
         pose2d = getEstimatedGlobalPose(pose2dDrivetrain);
         if(!getEstimatedGlobalPose(pose2d).equals(Robot.m_robotContainer.s_Drivetrain.getPose()) && photonCamera.getLatestResult().getBestTarget() != null){
             Robot.m_robotContainer.s_Drivetrain.resetOdometry(pose2d);
             pose2dDrivetrain = pose2d;
         }
         else{
-            pose2dDrivetrain = Robot.m_robotContainer.s_Drivetrain.getPose();
+            //pose2dDrivetrain = Robot.m_robotContainer.s_Drivetrain.getPose();
+            SmartDashboard.getNumber("X", 0);
+            SmartDashboard.getNumber("Y", 0);
         }
         if(DriverStation.getAlliance().toString().equals("Blue")){
             if(pose2dDrivetrain.getY() > -1 && pose2dDrivetrain.getY() < 1.9 && ((pose2dDrivetrain.getY() < 1.05 && pose2dDrivetrain.getY() - 0.15 > -1) || (pose2dDrivetrain.getY() > 1.05 && pose2dDrivetrain.getY() + 0.15 < 1.9))){
@@ -330,21 +336,18 @@ public class PhotonVision extends SubsystemBase{
         else if(y == 0 && s_Intake.getDistance() < 0.45){
             return angleOffset / 5.78;
         }
+        angleOffset = 0;
         theta = Math.atan(x / y);
-        theta %= Math.PI;
-        if(Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() > Math.PI){
-            theta = Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() - theta + Math.PI / 2;
-        }
-        else{
-            theta = Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians() - theta - Math.PI / 2;
-        }
+        SmartDashboard.putNumber("X Calc", x);
+        SmartDashboard.putNumber("Y Calc", y);
+        theta = /*Robot.m_robotContainer.s_Drivetrain.getYaw().getRadians()*/SmartDashboard.getNumber("Gyro", 0) - theta - Math.PI / 2;
         theta = Math.toDegrees(theta);
+        SmartDashboard.putNumber("Theta", theta);
         return (theta + angleOffset) / 5.78;
     }
 
     @Override
     public void periodic(){
-        SmartDashboard.putBoolean("Auto", auto);
         if(DriverStation.isTeleopEnabled()){
             distance.setDouble(getAutoTrackDistance());
             angle.setDouble(getAutoTrackAngle());

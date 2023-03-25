@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -19,7 +20,7 @@ public class LED extends SubsystemBase {
     private final CANdle candle;
     private final Timer timer, timer1;
     private boolean green, red, white, flag, flag1, flag2, flag3, flag4, flag5, flag6, cube, cone, bad = false; 
-    private int disableLight = 1;
+    private int r, g, b, num;
 
     public LED(Intake s_Intake) {
         candle = new CANdle(Constants.CANDLE_ID, "CANivore");
@@ -141,12 +142,12 @@ public class LED extends SubsystemBase {
         // This method will be called once per scheduler run
         if(bad){
             for(int i = 0; i < 350; i++){
-                if(timer.get() > 0.2 && i % 2 != 0 && !flag){
+                if(timer.get() > 0.2 && !flag){
                     candle.setLEDs(12, 237, 54);
                     timer.reset();
                     flag = true;
                 }
-                else if(timer.get() > 0.2 && i % 2 == 0 && flag){
+                else if(timer.get() > 0.2 && flag){
                     candle.setLEDs(179, 83, 97);
                     timer.reset();
                     flag = false;
@@ -164,6 +165,81 @@ public class LED extends SubsystemBase {
                     candle.setLEDs(255, 0, 255, 0, 1, 25);
                     candle.setLEDs(0, 244, 255, 0, 1, 25);
                     candle.setLEDs(2, 250, 2, 0, 1, 25);
+                    //FIXME get number of leds
+            for(int i = 0; i < 200; i++){
+                if(timer.get() > 0.1 && !flag){
+                    candle.setLEDs(r, g, b, 0, i, 1);
+                    candle.setLEDs(r, g, b, 0, i + 50, 1);
+                    timer.reset();
+                    flag = true;
+                    if(i == 200){
+                        num++;
+                        candle.setLEDs(0, 0, 0);
+                    }
+                }
+                else if(timer.get() > 0.1 && flag){
+                    candle.setLEDs(0, 0, 0, 0, i - 2, 1);
+                    candle.setLEDs(0, 0, 0, 0, i + 50, 1);
+                    timer.reset();
+                    flag = false;
+                    if(i == 200){
+                        num++;
+                        candle.setLEDs(0, 0, 0);
+                    }
+                }
+            }
+            SmartDashboard.putNumber("R", r);
+            SmartDashboard.putNumber("G", g);
+            SmartDashboard.putNumber("B", b);
+
+            switch(num){
+                case 0:
+                r = 255;
+                g = 0;
+                b = 0;
+                break;
+
+                case 1:
+                r = 0;
+                g = 0;
+                b = 255;
+                break;
+
+                case 2:
+                r = 0;
+                g = 255;
+                b = 0;
+                break;
+
+                case 3:
+                r = 255;
+                g = 226;
+                b = 2;
+                break;
+
+                case 4:
+                r = 255;
+                g = 0;
+                b = 255;
+                break;
+
+                case 5:
+                r = 0;
+                g = 244;
+                b = 255;
+                break;
+
+                case 6:
+                r = 2;
+                g = 250;
+                b = 2;
+                break;
+
+                case 7:
+                r = 255;
+                g = 165;
+                b = 0;
+                break;
             }
         }
         else if(!s_Intake.intakeFull()){
@@ -189,12 +265,12 @@ public class LED extends SubsystemBase {
             }
             for(int i = 0; i < 350; i++){
                 if(!flag2){
-                    if(timer.get() > 0.1 && i % 2 != 0 && !flag){
+                    if(timer.get() > 0.1 && !flag){
                         candle.setLEDs(0, 0, 254);
                         timer.reset();
                         flag = true;
                     }
-                    else if(timer.get() > 0.1 && i % 2 == 0 && flag){
+                    else if(timer.get() > 0.1 && flag){
                         candle.setLEDs(0, 0, 0);
                         timer.reset();
                         flag = false;
@@ -219,24 +295,24 @@ public class LED extends SubsystemBase {
             }
             for(int i = 0; i < 350; i++){
                 if(!flag2){
-                    if(timer.get() > 0.1 && i % 2 != 0 && !flag){
+                    if(timer.get() > 0.1 && !flag){
                         candle.setLEDs(0, 255, 0);
                         timer.reset();
                         flag = true;
                     }
-                    else if(timer.get() > 0.1 && i % 2 == 0 && flag){
+                    else if(timer.get() > 0.1 && flag){
                         candle.setLEDs(0, 0, 0);
                         timer.reset();
                         flag = false;
                     }
                 }
                 else{
-                    if(timer.get() > 0.2 && i % 2 != 0 && !flag){
+                    if(timer.get() > 0.2 && !flag){
                         candle.setLEDs(0, 255, 0);
                         timer.reset();
                         flag = true;
                     }
-                    else if(timer.get() > 0.2 && i % 2 == 0 && flag){
+                    else if(timer.get() > 0.2 && flag){
                         candle.setLEDs(0, 0, 0);
                         timer.reset();
                         flag = false;
@@ -257,24 +333,24 @@ public class LED extends SubsystemBase {
             }
             for(int i = 0; i < 350; i++){
                 if(!flag2){
-                    if(timer.get() > 0.1 && i % 2 != 0 && !flag){
+                    if(timer.get() > 0.1 && !flag){
                         candle.setLEDs(255, 0, 0);
                         timer.reset();
                         flag = true;
                     }
-                    else if(timer.get() > 0.1 && i % 2 == 0 && flag){
+                    else if(timer.get() > 0.1 && flag){
                         candle.setLEDs(0, 0, 0);
                         timer.reset();
                         flag = false;
                     }
                 }
                 else{
-                    if(timer.get() > 0.2 && i % 2 != 0 && !flag){
+                    if(timer.get() > 0.2 && !flag){
                         candle.setLEDs(255, 0, 0);
                         timer.reset();
                         flag = true;
                     }
-                    else if(timer.get() > 0.2 && i % 2 == 0 && flag){
+                    else if(timer.get() > 0.2 && flag){
                         candle.setLEDs(0, 0, 0);
                         timer.reset();
                         flag = false;
@@ -295,24 +371,24 @@ public class LED extends SubsystemBase {
             }
             for(int i = 0; i < 350; i++){
                 if(!flag2){
-                    if(timer.get() > 0.1 && i % 2 != 0 && !flag){
+                    if(timer.get() > 0.1 && !flag){
                         candle.setLEDs(200, 180, 180);
                         timer.reset();
                         flag = true;
                     }
-                    else if(timer.get() > 0.1 && i % 2 == 0 && flag){
+                    else if(timer.get() > 0.1 && flag){
                         candle.setLEDs(0, 0, 0);
                         timer.reset();
                         flag = false;
                     }
                 }
                 else{
-                    if(timer.get() > 0.2 && i % 2 != 0 && !flag){
+                    if(timer.get() > 0.2 && !flag){
                         candle.setLEDs(200, 180, 180);
                         timer.reset();
                         flag = true;
                     }
-                    else if(timer.get() > 0.2 && i % 2 == 0 && flag){
+                    else if(timer.get() > 0.2 && flag){
                         candle.setLEDs(0, 0, 0);
                         timer.reset();
                         flag = false;
