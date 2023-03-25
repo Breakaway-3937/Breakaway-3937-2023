@@ -18,7 +18,8 @@ public class LED extends SubsystemBase {
     private final Intake s_Intake;
     private final CANdle candle;
     private final Timer timer, timer1;
-    private boolean green, red, white, flag, flag2, flag3, flag4, flag5, flag6, cube, cone, bad = false; 
+    private boolean green, red, white, flag, flag1, flag2, flag3, flag4, flag5, flag6, cube, cone, bad = false; 
+    private int disableLight = 1;
 
     public LED(Intake s_Intake) {
         candle = new CANdle(Constants.CANDLE_ID, "CANivore");
