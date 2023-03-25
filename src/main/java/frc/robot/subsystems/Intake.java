@@ -90,7 +90,7 @@ public class Intake extends SubsystemBase {
   }
 
   public double getDistance(){
-    return 0.342 - 0.291 * Math.log(uSSensor.getVoltage()) + 0.095;
+    return 0.342 - 0.291 * Math.log(uSSensor.getVoltage()) + 0.045;
   }
 
   @Override
