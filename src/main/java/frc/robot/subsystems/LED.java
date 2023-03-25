@@ -29,7 +29,7 @@ public class LED extends SubsystemBase {
         timer.start();
         CANdleConfiguration configAll = new CANdleConfiguration();
         configAll.statusLedOffWhenActive = false;
-        configAll.disableWhenLOS = true;
+        configAll.disableWhenLOS = false;
         configAll.stripType = LEDStripType.GRB;
         configAll.brightnessScalar = 0.1;
         configAll.vBatOutputMode = VBatOutputMode.Modulated;

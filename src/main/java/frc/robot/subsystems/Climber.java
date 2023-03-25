@@ -64,15 +64,15 @@ public class Climber extends SubsystemBase {
   }
 
   public void setClimberSpeed(){
-    pid1.setSmartMotionMaxVelocity(1000, 0);
+    pid1.setSmartMotionMaxVelocity(750, 0);
     pid1.setSmartMotionMaxAccel(500, 0);
   }
 
   public void setValues(){
-    climber1kP = 9e-5;
-    climber1kI = 0.5e-6;
+    climber1kP = 1e-10;
+    climber1kI = 0;
     climber1kD = 0;
-    climber1kFF = 0.0034;
+    climber1kFF = 0.001;
   }
 
   @Override
