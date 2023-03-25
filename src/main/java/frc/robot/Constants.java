@@ -28,7 +28,7 @@ public final class Constants {
     
 
     public static class VisionConstants {
-        public static final Transform3d ROBOT_TO_CAM = new Transform3d(new Translation3d(0.3019665792, 0, 0.09500616), new Rotation3d(0.26179938, 0, 0));
+        public static final Transform3d ROBOT_TO_CAM = new Transform3d(new Translation3d(0.3019665792, 0, 0.19), new Rotation3d(0.26179938, 0, 0));
         public static final String CAMERA_NAME = "Global_Shutter_Camera";
         public static final double HIGH_LEFT_POST_X = 0.4;
         public static final double HIGH_LEFT_POST_Y = 0.5;
@@ -66,12 +66,12 @@ public final class Constants {
         public static final int RIGHT = 90;
         public static final int DOWN = 180;
         public static final int LEFT = 270;
-        public static final int BUTTON_GRID_HIGH_LEFT = 1;
+        public static final int BUTTON_GRID_HIGH_LEFT = 3;
         public static final int BUTTON_GRID_HIGH_MID = 2;
-        public static final int BUTTON_GRID_HIGH_RIGHT = 3;
-        public static final int BUTTON_GRID_MID_LEFT = 4;
+        public static final int BUTTON_GRID_HIGH_RIGHT = 1;
+        public static final int BUTTON_GRID_MID_LEFT = 6;
         public static final int BUTTON_GRID_MID_MID = 5;
-        public static final int BUTTON_GRID_MID_RIGHT = 6;
+        public static final int BUTTON_GRID_MID_RIGHT = 4;
         public static final int BUTTON_GRID_HYBRID_LEFT = 7;
         public static final int BUTTON_GRID_HYBRID_MID = 8;
         public static final int BUTTON_GRID_HYBRID_RIGHT = 9;
