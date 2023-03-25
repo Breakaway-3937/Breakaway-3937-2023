@@ -153,9 +153,6 @@ public class LED extends SubsystemBase {
             }
         }
         else if(DriverStation.isDisabled()){
-            //both sides do running lights toword the frount. goes red, blue, green, yellow, megenta, aquamarine, olive green, and orange.
-            //after orange it has a 0.25 seconds long and then flashes white twice.
-            //after flash it repeats but runs toword the back of the robot. 
             if(timer.get() > 0.01 && !flag){
                 candle.setLEDs(r, g, b, 0, i, 8);
                 candle.setLEDs(r, g, b, 0, i + 49, 8);
