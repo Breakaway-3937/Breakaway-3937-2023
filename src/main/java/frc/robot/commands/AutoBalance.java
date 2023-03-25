@@ -46,7 +46,6 @@ public class AutoBalance extends CommandBase {
       }
     }
     else if(Math.abs(s_Drivetrain.getRoll()) < acceptable){
-      s_Drivetrain.drive(new Translation2d(-value, 0), 0.3, true, false);
       s_Drivetrain.drive(new Translation2d(0, 0), 0, true, false);
     }
   }
