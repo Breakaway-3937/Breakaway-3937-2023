@@ -72,7 +72,7 @@ public class Climber extends SubsystemBase {
     climber1kP = 9e-5;
     climber1kI = 0.5e-6;
     climber1kD = 0;
-    climber1kFF = 0.0017;
+    climber1kFF = 0.0034;
   }
 
   @Override

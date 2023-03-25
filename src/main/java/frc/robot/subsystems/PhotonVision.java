@@ -56,7 +56,7 @@ public class PhotonVision extends SubsystemBase{
     private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));
     private Pose2d pose2dDrivetrain = new Pose2d(0, 0, new Rotation2d(0));
-    private double x, y, targetX, targetY, theta, angleOffset;
+    private double x, y, targetX, targetY, targetHeight, theta, angleOffset;
 
     public PhotonVision(LED s_LED, Intake s_Intake) {
         this.s_LED = s_LED;
@@ -105,6 +105,7 @@ public class PhotonVision extends SubsystemBase{
             targetX = Constants.VisionConstants.HIGH_LEFT_POST_X;
             targetY = Constants.VisionConstants.HIGH_LEFT_POST_Y + 1.1;
         }
+        targetHeight = Constants.VisionConstants.HIGH_HEIGHT;
     }
     
     public void setHighRight(){
@@ -125,6 +126,7 @@ public class PhotonVision extends SubsystemBase{
             targetX = Constants.VisionConstants.HIGH_RIGHT_POST_X;
             targetY = Constants.VisionConstants.HIGH_RIGHT_POST_Y - 1.1;
         }
+        targetHeight = Constants.VisionConstants.HIGH_HEIGHT;
     }
 
     public void setHighMid(){
@@ -139,6 +141,7 @@ public class PhotonVision extends SubsystemBase{
         hybridRight = false;
         targetX = Constants.VisionConstants.HIGH_MID_X;
         targetY = Constants.VisionConstants.HIGH_MID_Y;
+        targetHeight = Constants.VisionConstants.HIGH_HEIGHT;
     }
 
     public void setMidLeft(){
@@ -159,6 +162,7 @@ public class PhotonVision extends SubsystemBase{
             targetX = Constants.VisionConstants.MID_LEFT_POST_X;
             targetY = Constants.VisionConstants.MID_LEFT_POST_Y + 1.1;
         }
+        targetHeight = Constants.VisionConstants.MID_HEIGHT;
     }
 
     public void setMidRight(){
@@ -179,6 +183,7 @@ public class PhotonVision extends SubsystemBase{
             targetX = Constants.VisionConstants.MID_RIGHT_POST_X;
             targetY = Constants.VisionConstants.MID_RIGHT_POST_Y - 1.1;
         }
+        targetHeight = Constants.VisionConstants.MID_HEIGHT;
     }
 
     public void setMidMid(){
@@ -193,6 +198,7 @@ public class PhotonVision extends SubsystemBase{
         hybridRight = false;
         targetX = Constants.VisionConstants.MID_MID_X;
         targetY = Constants.VisionConstants.MID_MID_Y;
+        targetHeight = Constants.VisionConstants.MID_HEIGHT;
     }
 
     public void setHybridMid(){
@@ -205,8 +211,6 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = true;
         hybridRight = false;
-        targetX = Constants.VisionConstants.MID_HYBRID_X;
-        targetY = Constants.VisionConstants.MID_HYBRID_Y;
     }
 
     public void setHybridLeft(){
@@ -219,14 +223,6 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = true;
         hybridMid = false;
         hybridRight = false;
-        if(DriverStation.getAlliance().toString().equals("Blue")){
-            targetX = Constants.VisionConstants.LEFT_HYBRID_X;
-            targetY = Constants.VisionConstants.LEFT_HYBRID_Y;
-        }
-        else{
-            targetX = Constants.VisionConstants.LEFT_HYBRID_X;
-            targetY = Constants.VisionConstants.LEFT_HYBRID_Y + 1.1;
-        }
     }
 
     public void setHybridRight(){
@@ -239,14 +235,6 @@ public class PhotonVision extends SubsystemBase{
         hybridLeft = false;
         hybridMid = false;
         hybridRight = true;
-        if(DriverStation.getAlliance().toString().equals("Blue")){
-            targetX = Constants.VisionConstants.RIGHT_HYBRID_X;
-            targetY = Constants.VisionConstants.RIGHT_HYBRID_Y;
-        }
-        else{
-            targetX = Constants.VisionConstants.RIGHT_HYBRID_X;
-            targetY = Constants.VisionConstants.RIGHT_HYBRID_Y - 1.1;
-        }
     }
 
     public ArrayList<Boolean> getSelectedScore(){
@@ -325,20 +313,20 @@ public class PhotonVision extends SubsystemBase{
                 y = pose2dDrivetrain.getY() - (targetY + 1.7 + 1.7);
             }
         }
-        return (Math.sqrt(x * x + y * y) - 0.35) * -50000;
+        return (Math.sqrt(Math.pow(Math.sqrt(x * x + y * y), 2) + Math.pow(targetHeight - 0.485, 2)) - 0.7032) * -50000;
     }
 
     public double getAutoTrackAngle(){
-        if(s_Intake.getDistance() > 0.40){
+        if(s_Intake.getDistance() > 0.45){
             angleOffset = 0;
         }
         else{
-            angleOffset = Math.toDegrees(Math.atan((s_Intake.getDistance())/Math.sqrt(x * x + y * y)));
+            angleOffset = Math.toDegrees(Math.atan((s_Intake.getDistance() - 0.27)/Math.sqrt(x * x + y * y)));
         }
-        if(y == 0 && s_Intake.getDistance() > 0.40){
+        if(y == 0 && s_Intake.getDistance() > 0.45){
             return 0;
         }
-        else if(y == 0 && s_Intake.getDistance() < 0.4){
+        else if(y == 0 && s_Intake.getDistance() < 0.45){
             return angleOffset / 5.78;
         }
         theta = Math.atan(x / y);
@@ -349,10 +337,12 @@ public class PhotonVision extends SubsystemBase{
 
     @Override
     public void periodic(){
-        distance.setDouble(getAutoTrackDistance());
-        angle.setDouble(getAutoTrackAngle());
-        poseX.setDouble(pose2dDrivetrain.getX());
-        poseY.setDouble(pose2dDrivetrain.getY());
+        if(DriverStation.isTeleopEnabled()){
+            distance.setDouble(getAutoTrackDistance());
+            angle.setDouble(getAutoTrackAngle());
+            poseX.setDouble(pose2dDrivetrain.getX());
+            poseY.setDouble(pose2dDrivetrain.getY());
+        }
         if(auto){
             if(!photonCamera.isConnected()){
                 s_LED.bad();

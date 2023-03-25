@@ -10,19 +10,18 @@ public class AutoTrajectories {
 
     private PathPlannerTrajectory leaveCommunity0, leaveCommunity1, leaveCommunity2,
                              scoreLeave0, scoreLeave1, scoreLeave2,
-                             scoreTwice0, scoreTwice1, scoreTwice2,
-                             scoreThree0, scoreThree1, scoreThree2,
+                             scoreTwice0, scoreTwice2,
                              leaveCharge0, leaveCharge1, leaveCharge2,
                              scoreCharge0, scoreCharge1, scoreCharge2,
-                             scoreTwiceCharge0, scoreTwiceCharge1, scoreTwiceCharge2,
-                             scoreThreeCharge0, scoreThreeCharge1, scoreThreeCharge2;
+                             scoreGrabCharge0, scoreGrabCharge1, scoreGrabCharge2;
 
 
     private final PathConstraints constraints, slowConstraints;
 
     public AutoTrajectories() {
         constraints = new PathConstraints(Constants.Auto.KMAX_SPEED_METERS_PER_SECOND, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
-        slowConstraints = new PathConstraints(1.5, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
+        //Coach(God(in his words)) said turn to 10
+        slowConstraints = new PathConstraints(1.6, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED);
     }
 
     public PathPlannerTrajectory getLeaveCommunity0() {
@@ -56,33 +55,13 @@ public class AutoTrajectories {
     }
 
     public PathPlannerTrajectory getScoreTwice0(){
-        scoreTwice0 = PathPlanner.loadPath("ScoreTwo0", constraints);
+        scoreTwice0 = PathPlanner.loadPath("ScoreTwice0", constraints);
         return scoreTwice0;
     }
 
-    public PathPlannerTrajectory getScoreTwice1(){
-        scoreTwice1 = PathPlanner.loadPath("ScoreTwo1", slowConstraints);
-        return scoreTwice1;
-    }
-
     public PathPlannerTrajectory getScoreTwice2(){
-        scoreTwice2 = PathPlanner.loadPath("ScoreTwo2", constraints);
+        scoreTwice2 = PathPlanner.loadPath("ScoreTwice2", constraints);
         return scoreTwice2;
-    }
-
-    public PathPlannerTrajectory getScoreThree0(){
-        scoreThree0 = PathPlanner.loadPath("ScoreThree0", constraints);
-        return scoreThree0;
-    }
-
-    public PathPlannerTrajectory getScoreThree1(){
-        scoreThree1 = PathPlanner.loadPath("ScoreThree1", slowConstraints);
-        return scoreThree1;
-    }
-
-    public PathPlannerTrajectory getScoreThree2(){
-        scoreThree2 = PathPlanner.loadPath("ScoreThree2", constraints);
-        return scoreThree2;
     }
 
     public PathPlannerTrajectory getLeaveCharge0(){
@@ -115,34 +94,18 @@ public class AutoTrajectories {
         return scoreCharge2;
     }
 
-    public PathPlannerTrajectory getScoreTwiceCharge0(){
-        scoreTwiceCharge0 = PathPlanner.loadPath("ScoreTwoCharge0", constraints);
-        return scoreTwiceCharge0;
+    public PathPlannerTrajectory getScoreGrabCharge0(){
+        scoreGrabCharge0 = PathPlanner.loadPath("ScoreGrabCharge0", constraints);
+        return scoreGrabCharge0;
     }
 
-    public PathPlannerTrajectory getScoreTwiceCharge1(){
-        scoreTwiceCharge1 = PathPlanner.loadPath("ScoreTwoCharge1", slowConstraints);
-        return scoreTwiceCharge1;
+    public PathPlannerTrajectory getScoreGrabCharge1(){
+        scoreGrabCharge1 = PathPlanner.loadPath("ScoreGrabCharge1", slowConstraints);
+        return scoreGrabCharge1;
     }
 
-    public PathPlannerTrajectory getScoreTwiceCharge2(){
-        scoreTwiceCharge2 = PathPlanner.loadPath("ScoreTwoCharge2", constraints);
-        return scoreTwiceCharge2;
+    public PathPlannerTrajectory getScoreGrabCharge2(){
+        scoreGrabCharge2 = PathPlanner.loadPath("ScoreGrabCharge2", constraints);
+        return scoreGrabCharge2;
     }
-
-    public PathPlannerTrajectory getScoreThreeCharge0(){
-        scoreThreeCharge0 = PathPlanner.loadPath("ScoreThreeCharge0", constraints);
-        return scoreThreeCharge0;
-    }
-
-    public PathPlannerTrajectory getScoreThreeCharge1(){
-        scoreThreeCharge1 = PathPlanner.loadPath("ScoreThreeCharge1", slowConstraints);
-        return scoreThreeCharge1;
-    }
-
-    public PathPlannerTrajectory getScoreThreeCharge2(){
-        scoreThreeCharge2 = PathPlanner.loadPath("ScoreThreeCharge2", constraints);
-        return scoreThreeCharge2;
-    }
-
 }

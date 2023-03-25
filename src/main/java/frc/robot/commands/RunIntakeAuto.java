@@ -49,7 +49,7 @@ public class RunIntakeAuto extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(s_Intake.intakeFull() && timer.get() > 0.25){
+    if(s_Intake.intakeFull() && timer.get() > 2){
       return true;
     }
     else{

@@ -36,6 +36,7 @@ public final class Constants {
         public static final double HIGH_RIGHT_POST_Y = 1.6;
         public static final double HIGH_MID_X = 0.4;
         public static final double HIGH_MID_Y = 1.05;
+        public static final double HIGH_HEIGHT = 1.1684;
 
         public static final double MID_LEFT_POST_X = 0.8;
         public static final double MID_LEFT_POST_Y = 0.5;
@@ -43,13 +44,7 @@ public final class Constants {
         public static final double MID_RIGHT_POST_Y = 1.6;
         public static final double MID_MID_X = 0.8;
         public static final double MID_MID_Y = 1.05;
-
-        public static final double LEFT_HYBRID_X = 1.2;
-        public static final double LEFT_HYBRID_Y = 0.5;
-        public static final double RIGHT_HYBRID_X = 1.2;
-        public static final double RIGHT_HYBRID_Y = 1.6;
-        public static final double MID_HYBRID_X = 1.2;
-        public static final double MID_HYBRID_Y = 1.05;
+        public static final double MID_HEIGHT = 0.8636;
     }
 
     public static final class Controllers{
@@ -205,8 +200,6 @@ public final class Constants {
     public static final class Auto {
         public static final double KMAX_SPEED_METERS_PER_SECOND = 3;
         public static final double KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 3;
-        public static final double KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND = Math.PI;
-        public static final double KMAX_ANGULAR_SPEED_RADIANS_PER_SECOND_SQUARED = Math.PI;
     
         public static final double KP_X_CONTROLLER = 1;
         public static final double KP_Y_CONTROLLER = 1;

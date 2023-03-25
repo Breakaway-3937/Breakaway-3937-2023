@@ -48,11 +48,12 @@ public class RunArm extends CommandBase {
     }
     else if(s_Photon.getSelectedScore().get(3) || s_Photon.getSelectedScore().get(4) || s_Photon.getSelectedScore().get(5)){
       shoulderPosition = -12.75;
-      if(extensionPosition > -24500){
+      if(!flag1 && extensionPosition > -24500){
         state = 0;
       }
       else{
         state = 1;
+        flag1 = true;
       }
       extensionPosition = -24500;
       wristPosition = 43.8;
@@ -62,11 +63,12 @@ public class RunArm extends CommandBase {
     }
     else if(s_Photon.getSelectedScore().get(6) || s_Photon.getSelectedScore().get(7) || s_Photon.getSelectedScore().get(8)){
       shoulderPosition = -5;
-      if(extensionPosition > -307){
+      if(!flag1 && extensionPosition > -307){
         state = 0;
       }
       else{
         state = 1;
+        flag1 = true;
       }
       extensionPosition = -307;
       wristPosition = 35;
@@ -74,44 +76,51 @@ public class RunArm extends CommandBase {
       track = false;
       ready = false;
     }
+    //Ground intake
     if(xboxController.getRawButton(1)){
       s_Photon.setAllFalse();
+      //Dead Cone
       if(Intake.getDeadCone()){
         shoulderPosition = 0;
-        if(extensionPosition > -9000){
+        if(!flag1 && extensionPosition > -9000){
           state = 0;
         }
         else{
           state = 1;
+          flag1 = true;
         }
         extensionPosition = -9000;
-        wristPosition = 8;
+        wristPosition = 16;
         turretPosition = 0;
         track = false;
       }
+      //Cone
       else if(Intake.getConeCubeMode()){
-        shoulderPosition = -0.5;
-        if(extensionPosition > -20){
+        shoulderPosition = 0;
+        if(!flag1 && extensionPosition > -192){
           state = 0;
         }
         else{
           state = 1;
+          flag1 = true;
         }
-        extensionPosition = -20;
-        wristPosition = 12;
+        extensionPosition = -192;
+        wristPosition = 12.4;
         turretPosition = 0;
         track = false;
       }
+      //Cube
       else if(!Intake.getConeCubeMode()){
         shoulderPosition = -0.5;
-        if(extensionPosition > -20){
+        if(!flag1 && extensionPosition > -759){
           state = 0;
         }
         else{
           state = 1;
+          flag1 = true;
         }
-        extensionPosition = -20;
-        wristPosition = 19.85;
+        extensionPosition = -759;
+        wristPosition = 20;
         turretPosition = 0;
         track = false;
       }   
@@ -121,11 +130,12 @@ public class RunArm extends CommandBase {
       s_Photon.setAllFalse();
       if(Intake.getConeCubeMode()){
         shoulderPosition = -14;
-        if(extensionPosition > -32000){
+        if(!flag1 && extensionPosition > -32000){
           state = 0;
         }
         else{
           state = 1;
+          flag1 = true;
         }
         extensionPosition = -32000;
         wristPosition = 47;
@@ -134,11 +144,12 @@ public class RunArm extends CommandBase {
       }
       else if(!Intake.getConeCubeMode()){
         shoulderPosition = -13.26;
-        if(extensionPosition > -30200){
+        if(!flag1 && extensionPosition > -30200){
           state = 0;
         }
         else{
           state = 1;
+          flag1 = true;
         }
         extensionPosition = -30200;
         wristPosition = 44.76;
@@ -164,11 +175,12 @@ public class RunArm extends CommandBase {
     else if(xboxController.getRawButton(2)){
       s_Photon.setAllFalse();
       shoulderPosition = -6.5;
-      if(extensionPosition > -417){
+      if(!flag1 && extensionPosition > -417){
         state = 0;
       }
       else{
         state = 1;
+        flag1 = true;
       }
       extensionPosition = -417;
       wristPosition = 0.2;
@@ -177,11 +189,12 @@ public class RunArm extends CommandBase {
     }
     if(xboxController.getRawButton(5)){
       shoulderPosition = -0.5;
-        if(extensionPosition > -20){
+        if(!flag1 && extensionPosition > -20){
           state = 0;
         }
         else{
           state = 1;
+          flag1 = true;
         }
         extensionPosition = -20;
         wristPosition = 0;
