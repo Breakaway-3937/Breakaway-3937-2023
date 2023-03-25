@@ -154,16 +154,16 @@ public class LED extends SubsystemBase {
             }
         }
         else if(DriverStation.isDisabled()){
-            //FIXME add led pattern
-            while(DriverStation.isDisabled() == true){
-                if(disableLight == 1){
-                    candle.setLEDs(250, 2, 2);
-                    disableLight = 2;
-                }
-                if(disableLight == 2){
-                    candle.setLEDs(2, 2, 250);
-                    disableLight =1;
-                }
+            //both sides do running lights toword the frount. goes red, blue, green, yellow, megenta, aquamarine, olive green, and orange.
+            //after orange it has a 0.25 seconds long and then flashes white twice.
+            //after flash it repeats but runs toword the back of the robot. 
+                    candle.setLEDs(250, 2, 2, 0, 1, 25); // assuming their are 25 on each side.
+                    candle.setLEDs(2, 2, 250, 0, 1, 25);
+                    candle.setLEDs(2, 250, 2, 0, 1, 25);
+                    candle.setLEDs(255, 226, 2, 0, 1, 25);
+                    candle.setLEDs(255, 0, 255, 0, 1, 25);
+                    candle.setLEDs(0, 244, 255, 0, 1, 25);
+                    candle.setLEDs(2, 250, 2, 0, 1, 25);
             }
         }
         else if(!s_Intake.intakeFull()){
