@@ -39,20 +39,20 @@ public class RunArmAuto extends CommandBase {
     if(level == 3 && !flag1){
       shoulderPosition = -12.1;
       extensionPosition = -46500;
-      wristPosition = 34.16;
+      wristPosition = 36;
       turretPosition = 0;
       state = 0;
     }
     else if(level == 2 && !flag1){
-      shoulderPosition = -12.75;
-      if(extensionPosition > -24500){
+      shoulderPosition = -11.85;
+      if(extensionPosition > -26628){
         state = 0;
       }
       else{
         state = 1;
       }
-      extensionPosition = -24500;
-      wristPosition = 43.8;
+      extensionPosition = -26628;
+      wristPosition = 50;
       turretPosition = 0;
       flag1 = true;
     }
@@ -72,19 +72,19 @@ public class RunArmAuto extends CommandBase {
     if(level == -1 && !flag1){
       if(Intake.getDeadCone()){
         shoulderPosition = 0;
-        if(extensionPosition > -9000){
+        if(extensionPosition > -15256){
           state = 0;
         }
         else{
           state = 1;
         }
-        extensionPosition = -9000;
-        wristPosition = 16;
+        extensionPosition = -15256;
+        wristPosition = 12;
         turretPosition = 0;
         flag1 = true;
       }
       else if(Intake.getConeCubeMode()){
-        shoulderPosition = -0.5;
+        shoulderPosition = 0;
         if(extensionPosition > -192){
           state = 0;
         }
@@ -92,7 +92,7 @@ public class RunArmAuto extends CommandBase {
           state = 1;
         }
         extensionPosition = -192;
-        wristPosition = 12.4;
+        wristPosition = 14;
         turretPosition = 0;
         flag1 = true;
       }
@@ -105,20 +105,15 @@ public class RunArmAuto extends CommandBase {
           state = 1;
         }
         extensionPosition = -759;
-        wristPosition = 20;
+        wristPosition = 25;
         turretPosition = 0;
         flag1 = true;
       }   
     }
     else if(level == 0 && !flag1){
       shoulderPosition = -10;
-      if(extensionPosition == -20 || extensionPosition == -9000){
-        state = 0;
-      }
-      else{
-        state = 1;
-      }
-      extensionPosition = -20;
+      state = 1;
+      extensionPosition = -100;
       wristPosition = 0;
       turretPosition = 0;
       flag1 = true;
