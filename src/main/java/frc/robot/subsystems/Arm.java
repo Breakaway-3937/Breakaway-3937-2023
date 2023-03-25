@@ -184,10 +184,10 @@ public class Arm extends SubsystemBase {
     shoulderkI = 0;
     shoulderkD = 0;
     shoulderkFF = 0.001;
-    turretkP = 5e-9;
+    turretkP = 4e-8;
     turretkI = 0;
     turretkD = 0;
-    turretkFF = 0.0025;
+    turretkFF = 0.001;
     wristkP = 7e-7;
     wristkI = 0;
     wristkD = 0;
