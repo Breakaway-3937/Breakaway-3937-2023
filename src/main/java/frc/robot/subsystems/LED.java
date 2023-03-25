@@ -19,6 +19,7 @@ public class LED extends SubsystemBase {
     private final CANdle candle;
     private final Timer timer, timer1;
     private boolean green, red, white, flag, flag1, flag2, flag3, flag4, flag5, flag6, cube, cone, bad = false; 
+    private int disableLight = 1;
 
     public LED(Intake s_Intake) {
         candle = new CANdle(Constants.CANDLE_ID, "CANivore");
@@ -154,6 +155,16 @@ public class LED extends SubsystemBase {
         }
         else if(DriverStation.isDisabled()){
             //FIXME add led pattern
+            while(DriverStation.isDisabled() == true){
+                if(disableLight == 1){
+                    candle.setLEDs(250, 2, 2);
+                    disableLight = 2;
+                }
+                if(disableLight == 2){
+                    candle.setLEDs(2, 2, 250);
+                    disableLight =1;
+                }
+            }
         }
         else if(!s_Intake.intakeFull()){
             setOthersFalse("all");
