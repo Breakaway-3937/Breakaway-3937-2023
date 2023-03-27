@@ -167,7 +167,7 @@ public class RunArm extends CommandBase {
       turretPosition = 0;
       track = false;
     }
-    if(xboxController.getRawButton(5)){
+    if(xboxController.getRawAxis(2) > 0.5){
       shoulderPosition = -0.5;
         if(!flag1 && extensionPosition > -100){
           state = 0;
