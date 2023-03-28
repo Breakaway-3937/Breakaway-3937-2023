@@ -279,7 +279,7 @@ public class PhotonVision extends SubsystemBase{
 
     public double getAutoTrackDistance(){
         pose2d = getEstimatedGlobalPose(pose2dDrivetrain);
-        if(!getEstimatedGlobalPose(pose2d).equals(Robot.m_robotContainer.s_Drivetrain.getPose()) && photonCamera.getLatestResult().getBestTarget() != null){
+        if(!pose2d.equals(Robot.m_robotContainer.s_Drivetrain.getPose()) && photonCamera.getLatestResult().getBestTarget() != null){
             Robot.m_robotContainer.s_Drivetrain.resetOdometry(pose2d);
             pose2dDrivetrain = pose2d;
         }
@@ -352,10 +352,7 @@ public class PhotonVision extends SubsystemBase{
             if(photonCamera.isConnected()){
                 s_LED.notBad();
             }
-            if(getAutoTrackAngle() >= -5 && getAutoTrackAngle() <= 5){
-                s_LED.green();
-            }
-            else if(DriverStation.getAlliance().toString().equals("Blue") && pose2dDrivetrain.getX() > 4){
+            if(DriverStation.getAlliance().toString().equals("Blue") && pose2dDrivetrain.getX() > 4){
                 s_LED.red();
             }
             else if(DriverStation.getAlliance().toString().equals("Red") && 16.5 - pose2dDrivetrain.getX() > 4){
@@ -364,9 +361,12 @@ public class PhotonVision extends SubsystemBase{
             else if(getAutoTrackAngle() < -5 || getAutoTrackAngle() > 5){
                 s_LED.white();
             }
+            else if(getAutoTrackAngle() >= -5 && getAutoTrackAngle() <= 5){
+                s_LED.green();
+            }
         }
         else if(!auto){
-            s_LED.setTrackingLEDsOff();
+            s_LED.setTrackingLEDsOff(!photonCamera.isConnected());
         }
     }
 }

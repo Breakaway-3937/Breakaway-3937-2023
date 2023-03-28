@@ -91,11 +91,16 @@ public class LED extends SubsystemBase {
         bad = false;
     }
 
-    public void setTrackingLEDsOff(){
+    public void setTrackingLEDsOff(boolean bad){
         green = false;
         red = false;
         white = false;
-        bad = false;
+        if(DriverStation.isDisabled()){
+            this.bad = bad;
+        }
+        else{
+            this.bad = false;
+        }
     }
 
     public void cone(){
