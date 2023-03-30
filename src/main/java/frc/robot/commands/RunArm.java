@@ -48,7 +48,7 @@ public class RunArm extends CommandBase {
       ready = false;
     }
     else if(s_Photon.getSelectedScore().get(3) || s_Photon.getSelectedScore().get(4) || s_Photon.getSelectedScore().get(5)){
-      shoulderPosition = -11.85;
+      shoulderPosition = -12.2;
       if(!flag1 && extensionPosition > -26628){
         state = 0;
       }
@@ -106,7 +106,7 @@ public class RunArm extends CommandBase {
           flag1 = true;
         }
         extensionPosition = -192;
-        wristPosition = 14;
+        wristPosition = 14.75;
         turretPosition = 0;
         track = false;
       }

@@ -9,7 +9,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Intake;
 
 public class RunArmAuto extends CommandBase {
-  private boolean flag, flag1, done = false;
+  private boolean flag, flag1, flag2, done = false;
   private int state, level;
   private final Arm s_Arm;
   private double shoulderPosition, turretPosition, extensionPosition, wristPosition = 0;
@@ -27,6 +27,7 @@ public class RunArmAuto extends CommandBase {
     done = false;
     flag = false;
     flag1 = false;
+    flag2 = false;
     shoulderPosition = -10;
     turretPosition = 0; 
     extensionPosition = -30;
@@ -44,7 +45,7 @@ public class RunArmAuto extends CommandBase {
       state = 0;
     }
     else if(level == 2 && !flag1){
-      shoulderPosition = -11.85;
+      shoulderPosition = -12.2;
       if(extensionPosition > -26628){
         state = 0;
       }
@@ -92,7 +93,7 @@ public class RunArmAuto extends CommandBase {
           state = 1;
         }
         extensionPosition = -192;
-        wristPosition = 14;
+        wristPosition = 14.75;
         turretPosition = 0;
         flag1 = true;
       }
@@ -132,7 +133,7 @@ public class RunArmAuto extends CommandBase {
       if(!flag){
         s_Arm.setShoulder(shoulderPosition);
       }
-      if(s_Arm.getShoulder1Position() < shoulderPosition + 0.5 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
+      if(s_Arm.getShoulder1Position() < shoulderPosition + 1 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
           s_Arm.setTurret(turretPosition);
           s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
@@ -148,8 +149,12 @@ public class RunArmAuto extends CommandBase {
       s_Arm.setWrist(wristPosition);
       if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125 && !flag){
         s_Arm.setShoulder(shoulderPosition);
+        flag2 = true;
       }
-      if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125){
+      if(flag){
+        flag2 = true;
+      }
+      if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125 && flag2){
         done = true;
       }
       break;
