@@ -6,6 +6,7 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -224,7 +225,7 @@ public class AutoChooser {
             s_Drivetrain);
 
         HashMap<String, Command> eventMap = new HashMap<>();
-            eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new RunIntakeAuto(s_Intake), new RunArmAuto(s_Arm, 0)));
+            eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(2.25), new RunIntakeAuto(s_Intake)), new RunArmAuto(s_Arm, 0)));
             
 
         FollowPathWithEvents followCommand = new FollowPathWithEvents(
@@ -243,6 +244,7 @@ public class AutoChooser {
         new RunArmAuto(s_Arm, 3),
         new SpitIntakeAuto(s_Intake),
         new RunArmAuto(s_Arm, 0));
+        DriverStation.reportWarning("Auto Command Start", true);
         return command;
     }
 
@@ -262,7 +264,7 @@ public class AutoChooser {
             s_Drivetrain);
 
         HashMap<String, Command> eventMap = new HashMap<>();
-            eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new RunIntakeAuto(s_Intake), new RunArmAuto(s_Arm, 0)));
+            eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new RunIntakeAuto(s_Intake), new WaitCommand(2.25)), new RunArmAuto(s_Arm, 0)));
             
 
         FollowPathWithEvents followCommand = new FollowPathWithEvents(
@@ -281,6 +283,7 @@ public class AutoChooser {
             new RunArmAuto(s_Arm, 3),
             new SpitIntakeAuto(s_Intake),
             new RunArmAuto(s_Arm, 0));
+            DriverStation.reportWarning("Auto Command Start", true);
         return command;
     }
 
@@ -400,6 +403,7 @@ public class AutoChooser {
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge1().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
             new AutoBalance(s_Drivetrain));
+            DriverStation.reportWarning("Auto Command Start", true);
         return command;
     }
 
@@ -444,12 +448,12 @@ public class AutoChooser {
             s_Drivetrain);
 
         HashMap<String, Command> eventMap = new HashMap<>();
-            eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(3), new RunIntakeAuto(s_Intake)), new RunArmAuto(s_Arm, 0)));
+            eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(2.25), new RunIntakeAuto(s_Intake)), new RunArmAuto(s_Arm, 0)));
             
 
         FollowPathWithEvents followCommand = new FollowPathWithEvents(
             swerveCommand,
-            trajectories.getScoreGrabCharge2().getMarkers(),
+            trajectories.getScoreGrabCharge0().getMarkers(),
             eventMap
         );
 
@@ -480,12 +484,12 @@ public class AutoChooser {
             s_Drivetrain);
 
         HashMap<String, Command> eventMap = new HashMap<>();
-            eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(3), new RunIntakeAuto(s_Intake)), new RunArmAuto(s_Arm, 0)));
+            eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(2.25), new RunIntakeAuto(s_Intake)), new RunArmAuto(s_Arm, 0)));
             
 
         FollowPathWithEvents followCommand = new FollowPathWithEvents(
             swerveCommand,
-            trajectories.getScoreGrabCharge2().getMarkers(),
+            trajectories.getScoreGrabCharge1().getMarkers(),
             eventMap
         );
 
@@ -516,7 +520,7 @@ public class AutoChooser {
             s_Drivetrain);
 
         HashMap<String, Command> eventMap = new HashMap<>();
-            eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(3), new RunIntakeAuto(s_Intake)), new RunArmAuto(s_Arm, 0)));
+            eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(2.25), new RunIntakeAuto(s_Intake)), new RunArmAuto(s_Arm, 0)));
             
 
         FollowPathWithEvents followCommand = new FollowPathWithEvents(
