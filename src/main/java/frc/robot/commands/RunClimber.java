@@ -28,7 +28,7 @@ public class RunClimber extends CommandBase {
   @Override
   public void execute() {
     if(xboxController.getRawButton(5)){
-      s_Climber.setClimber(42);
+      s_Climber.setClimber(42.3);
     }
     else if(xboxController.getRawAxis(2) > 0.5){
       s_Climber.setClimberSpeed();
