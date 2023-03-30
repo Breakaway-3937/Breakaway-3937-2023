@@ -8,6 +8,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -170,6 +171,8 @@ public class Arm extends SubsystemBase {
     leadExtension.configPeakOutputReverse(-0.9);
     leadExtension.configMotionCruiseVelocity(15000);
     leadExtension.configMotionAcceleration(12500);
+    leadExtension.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 35, 0.5));
+    followerExtension.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 35, 0.5));
     leadExtension.setNeutralMode(NeutralMode.Brake);
     followerExtension.setNeutralMode(NeutralMode.Brake);
     followerExtension.follow(leadExtension);
@@ -177,7 +180,7 @@ public class Arm extends SubsystemBase {
 
   public void setValues(){
     extensionkP = 0.75;
-    extensionkI = 0.0075;
+    extensionkI = 0;
     extensionkD = 7.5;
     extensionkFF = 0.3;
     shoulderkP = 4e-8;
