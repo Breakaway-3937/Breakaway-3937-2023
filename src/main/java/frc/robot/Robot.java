@@ -27,8 +27,6 @@ public class Robot extends TimedRobot {
 
   private PowerDistribution powerDistribution;
 
-  private boolean flag = false;
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -81,12 +79,7 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {
-    if(!flag){
-      DriverStation.reportWarning("Auto Periodic", true);
-      flag = true;
-    }
-  }
+  public void autonomousPeriodic() {}
 
   @Override
   public void teleopInit() {
