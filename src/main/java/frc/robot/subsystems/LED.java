@@ -21,6 +21,7 @@ public class LED extends SubsystemBase {
     private boolean green, red, white, flag, flag1, flag2, flag3, flag4, flag5, flag6, cube, cone, bad = false; 
     private int r, g, b, num; 
     private int i = 8;
+    private int count = 1;
 
     public LED(Intake s_Intake) {
         candle = new CANdle(Constants.CANDLE_ID, "CANivore");
@@ -158,6 +159,12 @@ public class LED extends SubsystemBase {
             }
         }
         else if(DriverStation.isDisabled()){
+            if(i > 16){
+                count = 8;
+            }
+            if(i < 16){
+                count = i - 8;
+            }
             if(i >= 49){
                 if(timer.get() > 0.01){
                     candle.setLEDs(0, 0, 0, 0, i - 2, 1);
@@ -177,8 +184,8 @@ public class LED extends SubsystemBase {
             }
             else if(i < 49){
                 if(timer.get() > 0.01 && !flag){
-                    candle.setLEDs(r, g, b, 0, i, 8);
-                    candle.setLEDs(r, g, b, 0, i + 49, 8);
+                    candle.setLEDs(r, g, b, 0, i, count);
+                    candle.setLEDs(r, g, b, 0, i + 49, count);
                     timer.reset();
                     flag = true;
                 }
