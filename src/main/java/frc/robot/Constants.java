@@ -5,7 +5,7 @@ import java.net.SocketException;
 import java.util.Enumeration;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.revrobotics.SparkMaxAlternateEncoder;
+
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -155,7 +155,6 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 0;
             public static final int ANGLE_MOTOR_ID = 1;
             public static final int CANCODER_ID = 21;
-            
             public static final double ANGLE_OFFSET = 72.6855 + 180.0;
             public static final double ANGLE_OFFSET_PRACTICE = 60.4685;
             public static final SwerveModuleConstants CONSTANTS = 
@@ -224,8 +223,6 @@ public final class Constants {
         public static final int LEAD_EXTENSION_ID = 4;
         public static final int FOLLOWER_EXTENSION_ID = 16;
         public static final int TURRET_ID = 14;
-        public static final SparkMaxAlternateEncoder.Type ALT_ENC_TYPE = SparkMaxAlternateEncoder.Type.kQuadrature;
-        public static final int CPR = 8192;
     }
 
     public static String getMACAddress() {
