@@ -14,7 +14,7 @@ public class TeleopSwerve extends CommandBase {
     private boolean fieldRelative;
     private boolean openLoop;
     
-    private Drivetrain s_DriveTrain;
+    private Drivetrain s_Drivetrain;
     private Joystick translationalController;
     private Joystick rotationalController;
     private int translationAxis;
@@ -24,9 +24,9 @@ public class TeleopSwerve extends CommandBase {
     /**
      * Driver control
      */
-    public TeleopSwerve(Drivetrain s_DriveTrain, Joystick controller, Joystick controller1, int translationAxis, int strafeAxis, int rotationAxis, boolean fieldRelative, boolean openLoop) {
-        this.s_DriveTrain = s_DriveTrain;
-        addRequirements(s_DriveTrain);
+    public TeleopSwerve(Drivetrain s_Drivetrain, Joystick controller, Joystick controller1, int translationAxis, int strafeAxis, int rotationAxis, boolean fieldRelative, boolean openLoop) {
+        this.s_Drivetrain = s_Drivetrain;
+        addRequirements(s_Drivetrain);
 
         this.translationalController = controller;
         this.rotationalController = controller1;
@@ -50,6 +50,6 @@ public class TeleopSwerve extends CommandBase {
 
         translation = new Translation2d(yAxis, xAxis).times(Constants.Drivetrain.MAX_SPEED);
         rotation = rAxis * Constants.Drivetrain.MAX_ANGULAR_VELOCITY;
-        s_DriveTrain.drive(translation, rotation, fieldRelative, openLoop);
+        s_Drivetrain.drive(translation, rotation, fieldRelative, openLoop);
     }
 }
