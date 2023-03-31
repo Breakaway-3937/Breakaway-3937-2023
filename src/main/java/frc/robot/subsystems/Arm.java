@@ -73,10 +73,6 @@ public class Arm extends SubsystemBase {
   public void setTurret(double position){
     turretPIDController.setReference(position, ControlType.kSmartMotion);
   }
-
-  public void runTurret(double turretSpeed){
-    turret.set(turretSpeed);
-  }
   
   public double getShoulder1Position(){
     return shoulderEncoder.getPosition();
