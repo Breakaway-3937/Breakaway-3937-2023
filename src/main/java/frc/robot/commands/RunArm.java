@@ -204,14 +204,14 @@ public class RunArm extends CommandBase {
         if(s_Photon.getAuto() && track && ready){
           turretPosition = s_Photon.getAutoTrackAngle();
           if(turretPosition >= -5 && turretPosition <= 5){
-            s_Arm.setTurret(turretPosition);
+            //s_Arm.setTurret(turretPosition);
             s_Arm.setExtension(extensionPosition);
             s_Arm.setWrist(wristPosition);
           }
         }
         else if(!s_Photon.getAuto() || !track){
           if(turretPosition >= -5 && turretPosition <= 5){
-            s_Arm.setTurret(turretPosition);
+            //s_Arm.setTurret(turretPosition);
             s_Arm.setExtension(extensionPosition);
             s_Arm.setWrist(wristPosition);
           }
@@ -223,14 +223,14 @@ public class RunArm extends CommandBase {
       if(s_Photon.getAuto() && track && ready){
         turretPosition = s_Photon.getAutoTrackAngle();
         if(turretPosition >= -5 && turretPosition <= 5){
-          s_Arm.setTurret(turretPosition);
+          //s_Arm.setTurret(turretPosition);
           s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
         }
       }
       else if(!s_Photon.getAuto() || !track){
         if(turretPosition >= -5 && turretPosition <= 5){
-          s_Arm.setTurret(turretPosition);
+          //s_Arm.setTurret(turretPosition);
           s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
         }
