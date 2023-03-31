@@ -6,7 +6,6 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -224,6 +223,17 @@ public class AutoChooser {
             false,
             s_Drivetrain);
 
+        PPSwerveControllerCommand swerveCommand1 = new PPSwerveControllerCommand(
+            trajectories.getScoreTwice0Leave(), 
+            s_Drivetrain::getPose, 
+            Constants.Drivetrain.SWERVE_KINEMATICS,
+            new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
+            new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
+            thetaController,
+            s_Drivetrain::setModuleStates, 
+            false,
+            s_Drivetrain);
+
         HashMap<String, Command> eventMap = new HashMap<>();
             eventMap.put("intake", new SequentialCommandGroup(new InstantCommand(() -> s_Intake.setCube()), new RunArmAuto(s_Arm, -1), new ParallelRaceGroup(new WaitCommand(2.25), new RunIntakeAuto(s_Intake)), new RunArmAuto(s_Arm, 0)));
             
@@ -243,8 +253,9 @@ public class AutoChooser {
         new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
         new RunArmAuto(s_Arm, 3),
         new SpitIntakeAuto(s_Intake),
-        new RunArmAuto(s_Arm, 0));
-        DriverStation.reportWarning("Auto Command Start", true);
+        new RunArmAuto(s_Arm, 0),
+        new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice0Leave().getInitialHolonomicPose())),
+        swerveCommand1);
         return command;
     }
 
@@ -254,6 +265,17 @@ public class AutoChooser {
 
         PPSwerveControllerCommand swerveCommand = new PPSwerveControllerCommand(
             trajectories.getScoreTwice2(), 
+            s_Drivetrain::getPose, 
+            Constants.Drivetrain.SWERVE_KINEMATICS,
+            new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
+            new PIDController(Constants.Auto.KP_Y_CONTROLLER, 0, 0),
+            thetaController,
+            s_Drivetrain::setModuleStates, 
+            false,
+            s_Drivetrain);
+
+        PPSwerveControllerCommand swerveCommand1 = new PPSwerveControllerCommand(
+            trajectories.getScoreTwice2Leave(), 
             s_Drivetrain::getPose, 
             Constants.Drivetrain.SWERVE_KINEMATICS,
             new PIDController(Constants.Auto.KP_X_CONTROLLER, 0, 0),
@@ -282,8 +304,9 @@ public class AutoChooser {
             new SequentialCommandGroup(new RunArmAuto(s_Arm, 0), followCommand),
             new RunArmAuto(s_Arm, 3),
             new SpitIntakeAuto(s_Intake),
-            new RunArmAuto(s_Arm, 0));
-            DriverStation.reportWarning("Auto Command Start", true);
+            new RunArmAuto(s_Arm, 0),
+            new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreTwice2Leave().getInitialHolonomicPose())),
+            swerveCommand1);
         return command;
     }
 
@@ -403,7 +426,6 @@ public class AutoChooser {
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreCharge1().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand),
             new AutoBalance(s_Drivetrain));
-            DriverStation.reportWarning("Auto Command Start", true);
         return command;
     }
 

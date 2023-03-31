@@ -10,7 +10,7 @@ public class AutoTrajectories {
 
     private PathPlannerTrajectory leaveCommunity0, leaveCommunity1, leaveCommunity2,
                              scoreLeave0, scoreLeave1, scoreLeave2,
-                             scoreTwice0, scoreTwice2,
+                             scoreTwice0, scoreTwice2, scoreTwice0Leave, scoreTwice2Leave,
                              leaveCharge0, leaveCharge1, leaveCharge2,
                              scoreCharge0, scoreCharge1, scoreCharge2,
                              scoreGrabCharge0, scoreGrabCharge1, scoreGrabCharge2;
@@ -29,7 +29,9 @@ public class AutoTrajectories {
         scoreLeave1 = PathPlanner.loadPath("ScoreLeave1", slowConstraints);
         scoreLeave2 = PathPlanner.loadPath("ScoreLeave2", constraints);
         scoreTwice0 = PathPlanner.loadPath("ScoreTwice0", constraints);
+        scoreTwice0Leave = PathPlanner.loadPath("ScoreTwice0Leave", constraints);
         scoreTwice2 = PathPlanner.loadPath("ScoreTwice2", constraints);
+        scoreTwice2Leave = PathPlanner.loadPath("ScoreTwice2Leave", constraints);
         leaveCharge0 = PathPlanner.loadPath("LeaveCharge0", constraints);
         leaveCharge1 = PathPlanner.loadPath("LeaveCharge1", slowConstraints);
         leaveCharge2 = PathPlanner.loadPath("LeaveCharge2", constraints);
@@ -71,6 +73,14 @@ public class AutoTrajectories {
 
     public PathPlannerTrajectory getScoreTwice2(){
         return scoreTwice2;
+    }
+
+    public PathPlannerTrajectory getScoreTwice0Leave(){
+        return scoreTwice0Leave;
+    }
+
+    public PathPlannerTrajectory getScoreTwice2Leave(){
+        return scoreTwice2Leave;
     }
 
     public PathPlannerTrajectory getLeaveCharge0(){
