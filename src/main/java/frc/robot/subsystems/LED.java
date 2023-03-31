@@ -158,37 +158,36 @@ public class LED extends SubsystemBase {
             }
         }
         else if(DriverStation.isDisabled()){
-            if(timer.get() > 0.01 && !flag){
-                candle.setLEDs(r, g, b, 0, i, 8);
-                candle.setLEDs(r, g, b, 0, i + 49, 8);
-                timer.reset();
-                flag = true;
-                if(i == 49){
-                    if(num == 6){
-                        num = 0;
+            if(i >= 49){
+                if(timer.get() > 0.01){
+                    candle.setLEDs(0, 0, 0, 0, i - 2, 1);
+                    candle.setLEDs(0, 0, 0, 0, i + 49 - 2, 1);
+                    timer.reset();
+                    i++;
+                    if(i == 60){
+                        i = 8;
+                        if(num == 6){
+                            num = 0;
+                        }
+                        else{
+                            num++;
+                        }
                     }
-                    else{
-                        num++;
-                    }
-                    candle.setLEDs(0, 0, 0);
-                    i = 8;
                 }
             }
-            else if(timer.get() > 0.01 && flag){
-                candle.setLEDs(0, 0, 0, 0, i - 2, 1);
-                candle.setLEDs(0, 0, 0, 0, i + 49 - 2, 1);
-                timer.reset();
-                flag = false;
-                i++;
-                if(i == 49){
-                    if(num == 6){
-                        num = 0;
-                    }
-                    else{
-                        num++;
-                    }
-                    candle.setLEDs(0, 0, 0);
-                    i = 8;
+            else if(i < 49){
+                if(timer.get() > 0.01 && !flag){
+                    candle.setLEDs(r, g, b, 0, i, 8);
+                    candle.setLEDs(r, g, b, 0, i + 49, 8);
+                    timer.reset();
+                    flag = true;
+                }
+                else if(timer.get() > 0.01 && flag){
+                    candle.setLEDs(0, 0, 0, 0, i - 2, 1);
+                    candle.setLEDs(0, 0, 0, 0, i + 49 - 2, 1);
+                    timer.reset();
+                    flag = false;
+                    i++;
                 }
             }
 
