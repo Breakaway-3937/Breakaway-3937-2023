@@ -134,7 +134,7 @@ public class RunArmAuto extends CommandBase {
         s_Arm.setShoulder(shoulderPosition);
       }
       if(s_Arm.getShoulder1Position() < shoulderPosition + 1 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
-          //s_Arm.setTurret(turretPosition);
+          s_Arm.setTurret(turretPosition);
           s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
       }
@@ -144,7 +144,7 @@ public class RunArmAuto extends CommandBase {
       break;
 
       case 1:
-      //s_Arm.setTurret(turretPosition);
+      s_Arm.setTurret(turretPosition);
       s_Arm.setExtension(extensionPosition);
       s_Arm.setWrist(wristPosition);
       if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125 && !flag){
