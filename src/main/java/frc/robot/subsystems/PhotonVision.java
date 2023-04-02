@@ -333,7 +333,6 @@ public class PhotonVision extends SubsystemBase{
         theta = -Math.atan(y / x);
         theta = Math.toDegrees(theta);
         theta = (180 - (Robot.m_robotContainer.s_Drivetrain.getYaw().getDegrees() + 3600000) % 360) - theta;
-        theta = 0;
         return (theta - angleOffset) / 5.78;
     }
 
