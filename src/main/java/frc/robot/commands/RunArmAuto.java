@@ -2,6 +2,10 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+
+//FIXME get new wrist values
+
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -38,53 +42,46 @@ public class RunArmAuto extends CommandBase {
   @Override
   public void execute() {
     if(level == 3 && !flag1){
-      shoulderPosition = -12.1;
-      extensionPosition = -46500;
-      wristPosition = 36;
-      turretPosition = 0;
+      if(Intake.getConeCubeMode()){
+        shoulderPosition = -12.1;
+        extensionPosition = -46500;
+        wristPosition = 36;
+        turretPosition = 0;
+      }
       state = 0;
     }
     else if(level == 2 && !flag1){
-      shoulderPosition = -12.2;
-      if(extensionPosition > -26628){
-        state = 0;
-      }
-      else{
-        state = 1;
-      }
-      extensionPosition = -26628;
-      wristPosition = 50;
-      turretPosition = 0;
-      flag1 = true;
-    }
-    else if(level == 1 && !flag1){
-      shoulderPosition = -5;
-      if(extensionPosition > -307){
-        state = 0;
-      }
-      else{
-        state = 1;
-      }
-      extensionPosition = -307;
-      wristPosition = 35;
-      turretPosition = 0;
-      flag1 = true;
-    }
-    if(level == -1 && !flag1){
-      if(Intake.getDeadCone()){
-        shoulderPosition = 0;
-        if(extensionPosition > -15256){
+      if(Intake.getConeCubeMode()){
+        shoulderPosition = -12.2;
+        if(extensionPosition > -26628){
           state = 0;
         }
         else{
           state = 1;
         }
-        extensionPosition = -15256;
-        wristPosition = 12;
+        extensionPosition = -26628;
+        wristPosition = 50;
         turretPosition = 0;
-        flag1 = true;
       }
-      else if(Intake.getConeCubeMode()){
+      flag1 = true;
+    }
+    else if(level == 1 && !flag1){
+      if(Intake.getConeCubeMode()){
+        shoulderPosition = -5;
+        if(extensionPosition > -307){
+          state = 0;
+        }
+        else{
+          state = 1;
+        }
+        extensionPosition = -307;
+        wristPosition = 35;
+        turretPosition = 0;
+      }
+      flag1 = true;
+    }
+    if(level == -1 && !flag1){
+      if(Intake.getConeCubeMode()){
         shoulderPosition = 0;
         if(extensionPosition > -192){
           state = 0;

@@ -16,9 +16,9 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   private final WPI_TalonFX intakeMotor;
-  private static AnalogInput uSSensor, bBSensor;
+  private final AnalogInput uSSensor, bBSensor;
   private final GenericEntry usDistance, bBDistance;
-  private static boolean cone, deadCone;
+  private static boolean cone;
 
   public Intake() {
     intakeMotor = new WPI_TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
@@ -40,7 +40,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void spit(){
-    intakeMotor.set(ControlMode.PercentOutput, -0.9);
+    intakeMotor.set(ControlMode.PercentOutput, -1);
   }
   
   public void stopIntake(){
@@ -48,8 +48,8 @@ public class Intake extends SubsystemBase {
   }
 
   public boolean intakeFull(){
-    if(getConeCubeMode() || getDeadCone()){
-      if(getDistance() < 0.45){
+    if(getConeCubeMode()){
+      if(getDistance() < 0.45){ //FIXME get new value for new intake
         return true;
       }
       else{
@@ -68,25 +68,14 @@ public class Intake extends SubsystemBase {
 
   public void setCone(){
     cone = true;
-    deadCone = false;
   }
 
   public void setCube(){
     cone = false;
-    deadCone = false;
-  }
-
-  public void setDeadCone(){
-    cone = false;
-    deadCone = true;
   }
 
   public static boolean getConeCubeMode(){
     return cone;
-  }
-
-  public static boolean getDeadCone(){
-    return deadCone;
   }
 
   public double getDistance(){
