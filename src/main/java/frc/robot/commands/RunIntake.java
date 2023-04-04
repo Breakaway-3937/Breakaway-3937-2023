@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
@@ -12,10 +13,13 @@ import frc.robot.subsystems.Intake;
 public class RunIntake extends CommandBase {
   private final Intake s_Intake;
   private final XboxController xboxController;
+  private final Timer timer;
   /** Creates a new RunIntake. */
   public RunIntake(Intake s_Intake, XboxController xboxController) {
     this.s_Intake = s_Intake;
     this.xboxController = xboxController;
+    timer = new Timer();
+    timer.start();
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(s_Intake);
   }
@@ -27,14 +31,21 @@ public class RunIntake extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(xboxController.getRawButton(6)){
+    if(!s_Intake.intakeFull()){
+      timer.stop();
+      timer.reset();
+    }
+    if((!xboxController.getRawButton(6) && xboxController.getRawAxis(3) < 0.5) || timer.get() > 0.25){
+      s_Intake.stopIntake();
+    }
+    else if(xboxController.getRawButton(6)){
       s_Intake.runIntake();
     }
-    if(xboxController.getRawAxis(3) > 0.5){
+    else if(xboxController.getRawAxis(3) > 0.5){
       s_Intake.spit();
     }
-    else if(!xboxController.getRawButton(6) && xboxController.getRawAxis(3) < 0.5){
-      s_Intake.stopIntake();
+    else if(s_Intake.intakeFull()){
+      timer.start();
     }
   }
   

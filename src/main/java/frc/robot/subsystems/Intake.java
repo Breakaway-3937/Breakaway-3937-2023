@@ -22,6 +22,7 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     intakeMotor = new WPI_TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
+    intakeMotor.configFactoryDefault();
     intakeMotor.setNeutralMode(NeutralMode.Brake);
     uSSensor = new AnalogInput(Constants.Intake.US_SENSOR_ID);
     uSSensor.resetAccumulator();
@@ -30,17 +31,23 @@ public class Intake extends SubsystemBase {
     usDistance = Shuffleboard.getTab("Intake").add("US Sensor", 0).withPosition(0, 0).getEntry();
     bBDistance = Shuffleboard.getTab("Intake").add("BB Sensor", 0).withPosition(1, 0).getEntry();
   }
-  
-  public void runIntake(double speed){
-    intakeMotor.set(ControlMode.PercentOutput, speed);
-  }
 
   public void runIntake(){
-    intakeMotor.set(ControlMode.PercentOutput, 1);
+    if(getConeCubeMode()){
+      intakeMotor.set(ControlMode.PercentOutput, -1);
+    }
+    else{
+      intakeMotor.set(ControlMode.PercentOutput, 1);
+    }
   }
 
   public void spit(){
-    intakeMotor.set(ControlMode.PercentOutput, -1);
+    if(getConeCubeMode()){
+      intakeMotor.set(ControlMode.PercentOutput, 1);
+    }
+    else{
+      intakeMotor.set(ControlMode.PercentOutput, -1);
+    }
   }
   
   public void stopIntake(){

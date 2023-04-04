@@ -41,15 +41,13 @@ public class RunIntakeAuto extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if(Intake.getConeCubeMode()){
-      s_Intake.stopIntake();
-    }
+    s_Intake.stopIntake();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(s_Intake.intakeFull() && timer.get() > 1){
+    if(s_Intake.intakeFull() && timer.get() > 0.5){
       return true;
     }
     else{
