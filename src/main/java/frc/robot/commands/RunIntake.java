@@ -35,17 +35,22 @@ public class RunIntake extends CommandBase {
       timer.stop();
       timer.reset();
     }
-    if((!xboxController.getRawButton(6) && xboxController.getRawAxis(3) < 0.5) || timer.get() > 0.25){
-      s_Intake.stopIntake();
+    if(s_Intake.intakeFull()){
+      timer.start();
+    }
+    if(timer.get() > 0.25){
+      if(!Intake.getConeCubeMode()){
+        s_Intake.stopIntake();
+      }
     }
     else if(xboxController.getRawButton(6)){
       s_Intake.runIntake();
     }
+    if(!xboxController.getRawButton(6) && xboxController.getRawAxis(3) < 0.5){
+      s_Intake.stopIntake();
+    }
     else if(xboxController.getRawAxis(3) > 0.5){
       s_Intake.spit();
-    }
-    else if(s_Intake.intakeFull()){
-      timer.start();
     }
   }
   

@@ -128,7 +128,7 @@ public class RobotContainer {
     hybridLeft.onTrue(new InstantCommand(() -> s_Photon.setHybridLeft()));
     up.onTrue(new InstantCommand(() -> s_LED.cone()).alongWith(new InstantCommand(() -> s_Intake.setCone())));
     right.onTrue(new InstantCommand(() -> s_LED.cube()).alongWith(new InstantCommand(() -> s_Intake.setCube())));
-    down.onTrue(new InstantCommand(() -> s_LED.cone()).alongWith(new InstantCommand(() -> s_Intake.setCone()))); //FIXME add manual protect for intake
+    down.onTrue(new InstantCommand(() -> s_Intake.setManualOverride(true)));
     left.onTrue(new InstantCommand(() -> s_Photon.setAuto()));
   } 
 

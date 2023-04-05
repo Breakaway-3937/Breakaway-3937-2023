@@ -19,6 +19,7 @@ public class Intake extends SubsystemBase {
   private final AnalogInput uSSensor, bBSensor;
   private final GenericEntry usDistance, bBDistance;
   private static boolean cone;
+  private boolean override;
 
   public Intake() {
     intakeMotor = new WPI_TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
@@ -56,7 +57,7 @@ public class Intake extends SubsystemBase {
 
   public boolean intakeFull(){
     if(getConeCubeMode()){
-      if(getDistance() < 0.45){ //FIXME get new value for new intake
+      if(getDistance() < 0.45){
         return true;
       }
       else{
@@ -64,13 +65,21 @@ public class Intake extends SubsystemBase {
       }
     }
     else{
-      if(bBSensor.getValue() > 4000){
+      if(bBSensor.getValue() > 350){
         return true;
       }
       else{
         return false;
       }
     }
+  }
+
+  public void setManualOverride(boolean override){
+    this.override = override;
+  }
+
+  public boolean getManualOverride(){
+    return override;
   }
 
   public void setCone(){

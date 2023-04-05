@@ -2,10 +2,6 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-
-//FIXME get new wrist values
-
-
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -35,7 +31,7 @@ public class RunArmAuto extends CommandBase {
     shoulderPosition = -10;
     turretPosition = 0; 
     extensionPosition = -30;
-    wristPosition = 0;
+    wristPosition = 10;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -43,67 +39,83 @@ public class RunArmAuto extends CommandBase {
   public void execute() {
     if(level == 3 && !flag1){
       if(Intake.getConeCubeMode()){
-        shoulderPosition = -12.1;
-        extensionPosition = -46500;
-        wristPosition = 36;
+        shoulderPosition = -12.75;
+        extensionPosition = -44500;
+        wristPosition = 60;
+        turretPosition = 0;
+      }
+      else if(!Intake.getConeCubeMode()){
+        shoulderPosition = -10.75;
+        extensionPosition = -44500;
+        wristPosition = 44.2;
         turretPosition = 0;
       }
       state = 0;
     }
     else if(level == 2 && !flag1){
       if(Intake.getConeCubeMode()){
-        shoulderPosition = -12.2;
-        if(extensionPosition > -26628){
+        shoulderPosition = -13.5;
+        if(extensionPosition > -19500){
           state = 0;
         }
         else{
           state = 1;
         }
-        extensionPosition = -26628;
-        wristPosition = 50;
+        extensionPosition = -19500;
+        wristPosition = 66.5;
+        turretPosition = 0;
+      }
+      else if(!Intake.getConeCubeMode()){
+        shoulderPosition = -10.5;
+        if(!flag1 && extensionPosition > -19000){
+          state = 0;
+        }
+        else{
+          state = 1;
+        }
+        extensionPosition = -19000;
+        wristPosition = 44.2;
         turretPosition = 0;
       }
       flag1 = true;
     }
     else if(level == 1 && !flag1){
-      if(Intake.getConeCubeMode()){
-        shoulderPosition = -5;
-        if(extensionPosition > -307){
-          state = 0;
-        }
-        else{
-          state = 1;
-        }
-        extensionPosition = -307;
-        wristPosition = 35;
-        turretPosition = 0;
+      shoulderPosition = -5;
+      if(extensionPosition > -100){
+        state = 0;
       }
+      else{
+        state = 1;
+      }
+      extensionPosition = -100;
+      wristPosition = 42;
+      turretPosition = 0;
       flag1 = true;
     }
     if(level == -1 && !flag1){
       if(Intake.getConeCubeMode()){
         shoulderPosition = 0;
-        if(extensionPosition > -192){
+        if(extensionPosition > -100){
           state = 0;
         }
         else{
           state = 1;
         }
-        extensionPosition = -192;
-        wristPosition = 14.75;
+        extensionPosition = -100;
+        wristPosition = 28.5;
         turretPosition = 0;
         flag1 = true;
       }
       else if(!Intake.getConeCubeMode()){
-        shoulderPosition = -0.5;
-        if(extensionPosition > -759){
+        shoulderPosition = 0;
+        if(extensionPosition > -100){
           state = 0;
         }
         else{
           state = 1;
         }
-        extensionPosition = -759;
-        wristPosition = 25;
+        extensionPosition = -100;
+        wristPosition = 32;
         turretPosition = 0;
         flag1 = true;
       }   
@@ -112,12 +124,12 @@ public class RunArmAuto extends CommandBase {
       shoulderPosition = -10;
       state = 1;
       extensionPosition = -100;
-      wristPosition = 0;
+      wristPosition = 10;
       turretPosition = 0;
       flag1 = true;
     }
 
-  if((shoulderPosition == -0.5 || shoulderPosition == 0) && s_Arm.getShoulder1Position() < shoulderPosition + 1 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
+  if(shoulderPosition == 0 && s_Arm.getShoulder1Position() < shoulderPosition + 1 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
     s_Arm.stopShoulder();
     flag = true;
   }
@@ -131,7 +143,7 @@ public class RunArmAuto extends CommandBase {
         s_Arm.setShoulder(shoulderPosition);
       }
       if(s_Arm.getShoulder1Position() < shoulderPosition + 1 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
-          s_Arm.setTurret(turretPosition);
+          //s_Arm.setTurret(turretPosition);
           s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
       }
@@ -141,7 +153,7 @@ public class RunArmAuto extends CommandBase {
       break;
 
       case 1:
-      s_Arm.setTurret(turretPosition);
+      //s_Arm.setTurret(turretPosition);
       s_Arm.setExtension(extensionPosition);
       s_Arm.setWrist(wristPosition);
       if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125 && !flag){

@@ -324,7 +324,7 @@ public class PhotonVision extends SubsystemBase{
         else{
             angleOffset = Math.toDegrees(Math.atan((s_Intake.getDistance() + 0.05 - 0.27)/(RunArm.getExtensionValue() / -50000 + 0.61)));
         }
-        if(y == 0 && s_Intake.getDistance() > 0.45){  //FIXME get new intake distance
+        if(y == 0 && s_Intake.getDistance() > 0.45){ 
             return 0;
         }
         else if(y == 0 && s_Intake.getDistance() < 0.45){

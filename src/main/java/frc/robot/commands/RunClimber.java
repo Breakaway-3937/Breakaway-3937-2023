@@ -32,7 +32,7 @@ public class RunClimber extends CommandBase {
     }
     else if(xboxController.getRawAxis(2) > 0.5){
       s_Climber.setClimberSpeed();
-      s_Climber.setClimber(-3); 
+      s_Climber.setClimber(-2); 
     }
   }
 
