@@ -42,6 +42,9 @@ public class RunIntake extends CommandBase {
       if(!Intake.getConeCubeMode()){
         s_Intake.stopIntake();
       }
+      else if(xboxController.getRawButton(6)){
+        s_Intake.runIntake();
+      }
     }
     else if(xboxController.getRawButton(6)){
       s_Intake.runIntake();
