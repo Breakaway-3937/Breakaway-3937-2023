@@ -42,14 +42,14 @@ public class RunArm extends CommandBase {
     if(s_Photon.getSelectedScore().get(0) || s_Photon.getSelectedScore().get(1) || s_Photon.getSelectedScore().get(2)){
       intake = false;
       if(Intake.getConeCubeMode()){
-        shoulderPosition = -12.75;
+        shoulderPosition = -13;
         extensionPosition = -44500;
         wristPosition = 60;
         turretPosition = 0;
         state = 0;
       }
       else if(!Intake.getConeCubeMode()){
-        shoulderPosition = -10.75;
+        shoulderPosition = -11.25;
         extensionPosition = -44500;
         wristPosition = 44.2;
         turretPosition = 0;
@@ -61,7 +61,7 @@ public class RunArm extends CommandBase {
     else if(s_Photon.getSelectedScore().get(3) || s_Photon.getSelectedScore().get(4) || s_Photon.getSelectedScore().get(5)){
       intake = false;
       if(Intake.getConeCubeMode()){
-        shoulderPosition = -13.5;
+        shoulderPosition = -13.75;
         if(!flag1 && extensionPosition > -19500){
           state = 0;
         }
@@ -74,7 +74,7 @@ public class RunArm extends CommandBase {
         turretPosition = 0;
       }
       else if(!Intake.getConeCubeMode()){
-        shoulderPosition = -10.5;
+        shoulderPosition = -11;
         if(!flag1 && extensionPosition > -19000){
           state = 0;
         }
@@ -91,7 +91,7 @@ public class RunArm extends CommandBase {
     }
     else if(s_Photon.getSelectedScore().get(6) || s_Photon.getSelectedScore().get(7) || s_Photon.getSelectedScore().get(8)){
       intake = false;
-      shoulderPosition = -5;
+      shoulderPosition = 0;
       if(!flag1 && extensionPosition > -100){
         state = 0;
       }
@@ -100,7 +100,7 @@ public class RunArm extends CommandBase {
         flag1 = true;
       }
       extensionPosition = -100;
-      wristPosition = 42;
+      wristPosition = 2;
       turretPosition = 0;
       track = false;
       ready = false;
@@ -111,7 +111,6 @@ public class RunArm extends CommandBase {
       Robot.m_robotContainer.s_Intake.setManualOverride(false);
       intake = true;
       s_Photon.setAllFalse();
-      //Cone
       if(Intake.getConeCubeMode()){
         shoulderPosition = 0;
         if(!flag1 && extensionPosition > -100){
@@ -124,9 +123,7 @@ public class RunArm extends CommandBase {
         extensionPosition = -100;
         wristPosition = 28.5;
         turretPosition = 0;
-        track = false;
       }
-      //Cube
       else if(!Intake.getConeCubeMode()){
         shoulderPosition = 0;
         if(!flag1 && extensionPosition > -100){
@@ -137,10 +134,10 @@ public class RunArm extends CommandBase {
           flag1 = true;
         }
         extensionPosition = -100;
-        wristPosition = 32;
+        wristPosition = 29;
         turretPosition = 0;
-        track = false;
-      }   
+      }
+      track = false; 
     }
     //Jack Arm
     else if(xboxController.getRawButton(4)){
@@ -235,7 +232,7 @@ public class RunArm extends CommandBase {
         wristPosition = 28.5;
       }
       else if(!Intake.getConeCubeMode()){
-        wristPosition = 32;
+        wristPosition = 29;
       }
     }
 
