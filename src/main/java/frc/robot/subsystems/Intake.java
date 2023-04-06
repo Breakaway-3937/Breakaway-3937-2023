@@ -65,7 +65,7 @@ public class Intake extends SubsystemBase {
       }
     }
     else{
-      if(bBSensor.getValue() > 350){
+      if(bBSensor.getValue() > 4000){
         return true;
       }
       else{
