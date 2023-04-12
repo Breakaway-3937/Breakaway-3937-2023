@@ -57,7 +57,7 @@ public class Intake extends SubsystemBase {
 
   public boolean intakeFull(){
     if(getConeCubeMode()){
-      if(getDistance() < 0.45){
+      if(getDistance() < 0.35){
         return true;
       }
       else{
@@ -95,7 +95,9 @@ public class Intake extends SubsystemBase {
   }
 
   public double getDistance(){
-    return 0.342 - 0.291 * Math.log(uSSensor.getVoltage()) + 0.045;
+    //Converts sensor value to inches then to meters with the cone offset from center
+    return (-8.673 * Math.log(uSSensor.getVoltage()) + 11.452) / 39.37;
+    //return 0.342 - 0.291 * Math.log(uSSensor.getVoltage()) + 0.045;
   }
 
   @Override

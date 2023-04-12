@@ -30,20 +30,20 @@ public final class Constants {
     public static class VisionConstants {
         public static final Transform3d ROBOT_TO_CAM = new Transform3d(new Translation3d(0.3019665792, 0, 0.19), new Rotation3d(0, 0.349066, 0));
         public static final String CAMERA_NAME = "Global_Shutter_Camera";
-        public static final double HIGH_LEFT_POST_X = 0.4;
-        public static final double HIGH_LEFT_POST_Y = 0.5;
-        public static final double HIGH_RIGHT_POST_X = 0.4;
-        public static final double HIGH_RIGHT_POST_Y = 1.6;
-        public static final double HIGH_MID_X = 0.4;
-        public static final double HIGH_MID_Y = 1.05;
+        public static final double HIGH_LEFT_POST_X = 0.369;
+        public static final double HIGH_LEFT_POST_Y = 0.513;
+        public static final double HIGH_RIGHT_POST_X = 0.369;
+        public static final double HIGH_RIGHT_POST_Y = 1.63;
+        public static final double HIGH_MID_X = 0.369;
+        public static final double HIGH_MID_Y = 1.07;
         public static final double HIGH_HEIGHT = 1.1684;
 
-        public static final double MID_LEFT_POST_X = 0.8;
-        public static final double MID_LEFT_POST_Y = 0.5;
-        public static final double MID_RIGHT_POST_X = 0.8;
-        public static final double MID_RIGHT_POST_Y = 1.6;
-        public static final double MID_MID_X = 0.8;
-        public static final double MID_MID_Y = 1.05;
+        public static final double MID_LEFT_POST_X = 0.803;
+        public static final double MID_LEFT_POST_Y = 0.513;
+        public static final double MID_RIGHT_POST_X = 0.803;
+        public static final double MID_RIGHT_POST_Y = 1.63;
+        public static final double MID_MID_X = 0.803;
+        public static final double MID_MID_Y = 1.07;
         public static final double MID_HEIGHT = 0.8636;
     }
 

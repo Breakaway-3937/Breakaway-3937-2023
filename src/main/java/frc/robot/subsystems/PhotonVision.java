@@ -291,13 +291,13 @@ public class PhotonVision extends SubsystemBase{
                 x = targetX - pose2dDrivetrain.getX();
                 y = targetY - pose2dDrivetrain.getY();
             }
-            else if(pose2dDrivetrain.getY() > 1.9 && pose2dDrivetrain.getY() < 3.6 && ((pose2dDrivetrain.getY() < 1.05 + 1.7 && pose2dDrivetrain.getY() - 0.15 > 1.9) || (pose2dDrivetrain.getY() > 1.05 + 1.7 && pose2dDrivetrain.getY() + 0.15 < 3.6))){
+            else if(pose2dDrivetrain.getY() > 1.9 && pose2dDrivetrain.getY() < 3.6 && ((pose2dDrivetrain.getY() < 1.05 + 1.634 && pose2dDrivetrain.getY() - 0.15 > 1.9) || (pose2dDrivetrain.getY() > 1.05 + 1.634 && pose2dDrivetrain.getY() + 0.15 < 3.6))){
                 x = targetX - pose2dDrivetrain.getX();
-                y = (targetY + 1.7) - pose2dDrivetrain.getY();
+                y = (targetY + 1.634) - pose2dDrivetrain.getY();
             }
-            else if(pose2dDrivetrain.getY() > 3.6 && pose2dDrivetrain.getY() < 6 && ((pose2dDrivetrain.getY() < 1.05 + 1.7 + 1.7 && pose2dDrivetrain.getY() - 0.15 > 3.6) || (pose2dDrivetrain.getY() > 1.05 + 1.7 + 1.7 && pose2dDrivetrain.getY() + 0.15 < 6))){
+            else if(pose2dDrivetrain.getY() > 3.6 && pose2dDrivetrain.getY() < 6 && ((pose2dDrivetrain.getY() < 1.05 + 1.634 + 1.634 && pose2dDrivetrain.getY() - 0.15 > 3.6) || (pose2dDrivetrain.getY() > 1.05 + 1.634 + 1.634 && pose2dDrivetrain.getY() + 0.15 < 6))){
                 x = targetX - pose2dDrivetrain.getX();
-                y = (targetY + 1.7 + 1.7) - pose2dDrivetrain.getY();
+                y = (targetY + 1.634 + 1.634) - pose2dDrivetrain.getY();
             }
         }
         else{
@@ -305,24 +305,24 @@ public class PhotonVision extends SubsystemBase{
                 x = targetX - 16.5 - pose2dDrivetrain.getX();
                 y = targetY - pose2dDrivetrain.getY();
             }
-            else if(pose2dDrivetrain.getY() > 1.9 && pose2dDrivetrain.getY() < 3.6 && ((pose2dDrivetrain.getY() < 1.05 + 1.7 && pose2dDrivetrain.getY() - 0.15 > 1.9) || (pose2dDrivetrain.getY() > 1.05 + 1.7 && pose2dDrivetrain.getY() + 0.15 < 3.6))){
+            else if(pose2dDrivetrain.getY() > 1.9 && pose2dDrivetrain.getY() < 3.6 && ((pose2dDrivetrain.getY() < 1.05 + 1.634 && pose2dDrivetrain.getY() - 0.15 > 1.9) || (pose2dDrivetrain.getY() > 1.05 + 1.634 && pose2dDrivetrain.getY() + 0.15 < 3.6))){
                 x = targetX - 16.5 - pose2dDrivetrain.getX();
-                y = (targetY + 1.7) - pose2dDrivetrain.getY();
+                y = (targetY + 1.634) - pose2dDrivetrain.getY();
             }
-            else if(pose2dDrivetrain.getY() > 3.6 && pose2dDrivetrain.getY() < 6 && ((pose2dDrivetrain.getY() < 1.05 + 1.7 + 1.7 && pose2dDrivetrain.getY() - 0.15 > 3.6) || (pose2dDrivetrain.getY() > 1.05 + 1.7 + 1.7 && pose2dDrivetrain.getY() + 0.15 < 6))){
+            else if(pose2dDrivetrain.getY() > 3.6 && pose2dDrivetrain.getY() < 6 && ((pose2dDrivetrain.getY() < 1.05 + 1.634 + 1.634 && pose2dDrivetrain.getY() - 0.15 > 3.6) || (pose2dDrivetrain.getY() > 1.05 + 1.634 + 1.634 && pose2dDrivetrain.getY() + 0.15 < 6))){
                 x = targetX - 16.5 - pose2dDrivetrain.getX();
-                y = (targetY + 1.7 + 1.7) - pose2dDrivetrain.getY();
+                y = (targetY + 1.634 + 1.634) - pose2dDrivetrain.getY();
             }
         }
         return (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(targetHeight - 0.48, 2)) - 0.61) * -50000;
     }
 
     public double getAutoTrackAngle(){
-        if(s_Intake.getDistance() > 0.45){
+        if(s_Intake.getDistance() > 0.35){
             angleOffset = 0;
         }
         else{
-            angleOffset = Math.toDegrees(Math.atan((s_Intake.getDistance() + 0.05 - 0.27)/(RunArm.getExtensionValue() / -50000 + 0.61)));
+            angleOffset = Math.toDegrees(Math.atan((s_Intake.getDistance() + 0.057 - 0.19)/(RunArm.getExtensionValue() / -50000 + 0.61)));
         }
         if(y == 0 && s_Intake.getDistance() > 0.45){ 
             return 0;
@@ -330,10 +330,9 @@ public class PhotonVision extends SubsystemBase{
         else if(y == 0 && s_Intake.getDistance() < 0.45){
             return angleOffset / 5.78;
         }
-        theta = -Math.atan(y / x);
+        theta = Math.atan(y / x);
         theta = Math.toDegrees(theta);
-        theta = (180 - (Robot.m_robotContainer.s_Drivetrain.getYaw().getDegrees() + 3600000) % 360) - theta;
-        return (theta - angleOffset) / 5.78;
+        return -angleOffset / 5.78;
     }
 
     @Override
@@ -357,10 +356,10 @@ public class PhotonVision extends SubsystemBase{
             else if(DriverStation.getAlliance().toString().equals("Red") && 16.5 - pose2dDrivetrain.getX() > 4){
                 s_LED.red();
             }
-            else if(getAutoTrackAngle() < -5 || getAutoTrackAngle() > 5){
+            else if(getAutoTrackAngle() < -6 || getAutoTrackAngle() > 6){
                 s_LED.white();
             }
-            else if(getAutoTrackAngle() >= -5 && getAutoTrackAngle() <= 5){
+            else if(getAutoTrackAngle() >= -6 && getAutoTrackAngle() <= 6){
                 s_LED.green();
             }
         }

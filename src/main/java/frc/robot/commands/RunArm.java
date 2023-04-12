@@ -16,7 +16,7 @@ public class RunArm extends CommandBase {
   private double shoulderPosition, turretPosition, wristPosition;
   public static double extensionPosition;
   private int state;
-  private boolean flag, flag1, track, ready, intake, manualOverride;
+  private boolean flag, flag1, track, intake, manualOverride;
   /** Creates a new RunArm. */
   public RunArm(Arm s_Arm, XboxController xboxController, PhotonVision s_Photon){
     this.s_Arm = s_Arm;
@@ -56,7 +56,6 @@ public class RunArm extends CommandBase {
         state = 0;
       }
       track = true;
-      ready = false;
     }
     else if(s_Photon.getSelectedScore().get(3) || s_Photon.getSelectedScore().get(4) || s_Photon.getSelectedScore().get(5)){
       intake = false;
@@ -87,7 +86,6 @@ public class RunArm extends CommandBase {
         turretPosition = 0;
       }
       track = true;
-      ready = false;
     }
     else if(s_Photon.getSelectedScore().get(6) || s_Photon.getSelectedScore().get(7) || s_Photon.getSelectedScore().get(8)){
       intake = false;
@@ -100,10 +98,9 @@ public class RunArm extends CommandBase {
         flag1 = true;
       }
       extensionPosition = -100;
-      wristPosition = 2;
+      wristPosition = 13.5;
       turretPosition = 0;
       track = false;
-      ready = false;
     }
     //Ground Intake
     if(xboxController.getRawButton(1)){
@@ -144,17 +141,11 @@ public class RunArm extends CommandBase {
       intake = false;
       s_Photon.setAllFalse();
       shoulderPosition = -13;
-      if(!flag1 && extensionPosition > -35700){
-        state = 0;
-      }
-      else{
-        state = 1;
-        flag1 = true;
-      }
       extensionPosition = -35700;
       wristPosition = 61;
       turretPosition = 0;
       track = false;
+      state = 0;
     }
     else if(xboxController.getRawButton(3)){
       intake = false;
@@ -236,10 +227,6 @@ public class RunArm extends CommandBase {
       }
     }
 
-    if(xboxController.getRawButton(8)){
-      ready = true;
-    }
-
     switch(state){
       case 0:
       if(!flag){
@@ -247,17 +234,22 @@ public class RunArm extends CommandBase {
         flag1 = false;
       }
       if(s_Arm.getShoulder1Position() < shoulderPosition + 0.5 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
-        if(s_Photon.getAuto() && track && ready){
+        if(s_Photon.getAuto() && track){
           turretPosition = s_Photon.getAutoTrackAngle();
-          if(turretPosition >= -5 && turretPosition <= 5){
-            //s_Arm.setTurret(turretPosition);
+          if(turretPosition >= -6 && turretPosition <= 6){
+            s_Arm.setTurret(turretPosition);
+            s_Arm.setExtension(extensionPosition);
+            s_Arm.setWrist(wristPosition);
+          }
+          else{
+            s_Arm.setTurret(0);
             s_Arm.setExtension(extensionPosition);
             s_Arm.setWrist(wristPosition);
           }
         }
         else if(!s_Photon.getAuto() || !track){
-          if(turretPosition >= -5 && turretPosition <= 5){
-            //s_Arm.setTurret(turretPosition);
+          if(turretPosition >= -6 && turretPosition <= 6){
+            s_Arm.setTurret(turretPosition);
             s_Arm.setExtension(extensionPosition);
             s_Arm.setWrist(wristPosition);
           }
@@ -266,17 +258,22 @@ public class RunArm extends CommandBase {
       break;
 
       case 1:
-      if(s_Photon.getAuto() && track && ready){
+      if(s_Photon.getAuto() && track){
         turretPosition = s_Photon.getAutoTrackAngle();
-        if(turretPosition >= -5 && turretPosition <= 5){
-          //s_Arm.setTurret(turretPosition);
+        if(turretPosition >= -6 && turretPosition <= 6){
+          s_Arm.setTurret(turretPosition);
+          s_Arm.setExtension(extensionPosition);
+          s_Arm.setWrist(wristPosition);
+        }
+        else{
+          s_Arm.setTurret(0);
           s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
         }
       }
       else if(!s_Photon.getAuto() || !track){
-        if(turretPosition >= -5 && turretPosition <= 5){
-          //s_Arm.setTurret(turretPosition);
+        if(turretPosition >= -6 && turretPosition <= 6){
+          s_Arm.setTurret(turretPosition);
           s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
         }
