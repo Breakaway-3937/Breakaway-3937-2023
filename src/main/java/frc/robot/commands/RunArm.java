@@ -215,10 +215,10 @@ public class RunArm extends CommandBase {
 
     manualOverride = Robot.m_robotContainer.s_Intake.getManualOverride();
 
-    if((intake && Robot.m_robotContainer.s_Intake.intakeFull()) || (intake && manualOverride)){
+    if((intake && Robot.m_robotContainer.s_Intake.intakeFull()) || (intake && !manualOverride)){
       wristPosition = 2;
     }
-    else if(intake && !manualOverride){
+    else if(intake && manualOverride){
       if(Intake.getConeCubeMode()){
         wristPosition = 27.5;
       }
