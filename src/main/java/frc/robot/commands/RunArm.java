@@ -291,6 +291,10 @@ public class RunArm extends CommandBase {
     return extensionPosition;
   }
 
+  public void setFlag1False(){
+    flag1 = false;
+  }
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
