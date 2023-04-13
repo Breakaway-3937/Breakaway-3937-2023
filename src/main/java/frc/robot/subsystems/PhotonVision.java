@@ -104,7 +104,7 @@ public class PhotonVision extends SubsystemBase{
         }
         else{
             targetX = Constants.VisionConstants.HIGH_LEFT_POST_X;
-            targetY = Constants.VisionConstants.HIGH_LEFT_POST_Y + 1.1;
+            targetY = Constants.VisionConstants.HIGH_LEFT_POST_Y + 1.118;
         }
         targetHeight = Constants.VisionConstants.HIGH_HEIGHT;
     }
@@ -125,7 +125,7 @@ public class PhotonVision extends SubsystemBase{
         }
         else{
             targetX = Constants.VisionConstants.HIGH_RIGHT_POST_X;
-            targetY = Constants.VisionConstants.HIGH_RIGHT_POST_Y - 1.1;
+            targetY = Constants.VisionConstants.HIGH_RIGHT_POST_Y - 1.118;
         }
         targetHeight = Constants.VisionConstants.HIGH_HEIGHT;
     }
@@ -161,7 +161,7 @@ public class PhotonVision extends SubsystemBase{
         }
         else{
             targetX = Constants.VisionConstants.MID_LEFT_POST_X;
-            targetY = Constants.VisionConstants.MID_LEFT_POST_Y + 1.1;
+            targetY = Constants.VisionConstants.MID_LEFT_POST_Y + 1.118;
         }
         targetHeight = Constants.VisionConstants.MID_HEIGHT;
     }
@@ -182,7 +182,7 @@ public class PhotonVision extends SubsystemBase{
         }
         else{
             targetX = Constants.VisionConstants.MID_RIGHT_POST_X;
-            targetY = Constants.VisionConstants.MID_RIGHT_POST_Y - 1.1;
+            targetY = Constants.VisionConstants.MID_RIGHT_POST_Y - 1.118;
         }
         targetHeight = Constants.VisionConstants.MID_HEIGHT;
     }
