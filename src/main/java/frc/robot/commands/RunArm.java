@@ -236,40 +236,26 @@ public class RunArm extends CommandBase {
 
     switch(state){
       case 0:
-      if(!s_Photon.getAuto()){
-        if(!flag && shoulderPosition <= 0 && shoulderPosition >= -13.75){
-          s_Arm.setShoulder(shoulderPosition);
-          flag1 = false;
-        }
-      }
-      else if(s_Photon.getAuto()){
-        shoulderPosition = s_Photon.getAutoTrackShoulder();
-        if(!flag && shoulderPosition <= 0 && shoulderPosition >= -13.75){
-          s_Arm.setShoulder(shoulderPosition);
-          flag1 = false;
-        }
-        else if(!flag && (shoulderPosition >= 0 || shoulderPosition <= -13.75)){
-          s_Arm.setShoulder(-10);
-          flag1 = false;
-        }
+      if(!flag){
+        s_Arm.setShoulder(shoulderPosition);
+        flag1 = false;
       }
       if(s_Arm.getShoulder1Position() < shoulderPosition + 0.5 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
         if(s_Photon.getAuto() && track){
           turretPosition = s_Photon.getAutoTrackAngle();
-          extensionPosition = s_Photon.getAutoTrackDistance();
-          if(turretPosition >= -6 && turretPosition <= 6 && extensionPosition <= -100 && extensionPosition >= -46500){
+          if(turretPosition >= -6 && turretPosition <= 6){
             s_Arm.setTurret(turretPosition);
             s_Arm.setExtension(extensionPosition);
             s_Arm.setWrist(wristPosition);
           }
           else{
             s_Arm.setTurret(0);
-            s_Arm.setExtension(-100);
+            s_Arm.setExtension(extensionPosition);
             s_Arm.setWrist(wristPosition);
           }
         }
         else if(!s_Photon.getAuto() || !track){
-          if(turretPosition >= -6 && turretPosition <= 6 && extensionPosition <= -100 && extensionPosition >= -46500){
+          if(turretPosition >= -6 && turretPosition <= 6){
             s_Arm.setTurret(turretPosition);
             s_Arm.setExtension(extensionPosition);
             s_Arm.setWrist(wristPosition);
@@ -281,41 +267,27 @@ public class RunArm extends CommandBase {
       case 1:
       if(s_Photon.getAuto() && track){
         turretPosition = s_Photon.getAutoTrackAngle();
-        extensionPosition = s_Photon.getAutoTrackDistance();
-        if(turretPosition >= -6 && turretPosition <= 6 && extensionPosition <= -100 && extensionPosition >= -46500){
+        if(turretPosition >= -6 && turretPosition <= 6){
           s_Arm.setTurret(turretPosition);
           s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
         }
         else{
           s_Arm.setTurret(0);
-          s_Arm.setExtension(-100);
+          s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
         }
       }
       else if(!s_Photon.getAuto() || !track){
-        if(turretPosition >= -6 && turretPosition <= 6 && extensionPosition <= -100 && extensionPosition >= -46500){
+        if(turretPosition >= -6 && turretPosition <= 6){
           s_Arm.setTurret(turretPosition);
           s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
         }
       }
-      if(!s_Photon.getAuto()){
-        if(!flag && shoulderPosition <= 0 && shoulderPosition >= -13.75){
-          s_Arm.setShoulder(shoulderPosition);
-          flag1 = false;
-        }
-      }
-      else if(s_Photon.getAuto()){
-        shoulderPosition = s_Photon.getAutoTrackShoulder();
-        if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125 && !flag && shoulderPosition <= 0 && shoulderPosition >= -13.75){
-          s_Arm.setShoulder(shoulderPosition);
-          flag1 = false;
-        }
-        else if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125 && !flag && (shoulderPosition >= 0 || shoulderPosition <= -13.75)){
-          s_Arm.setShoulder(-10);
-          flag1 = false;
-        }
+      if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125 && !flag){
+        s_Arm.setShoulder(shoulderPosition);
+        flag1 = false;
       }
       break;
       
@@ -324,10 +296,6 @@ public class RunArm extends CommandBase {
 
   public static double getExtensionValue(){
     return extensionPosition;
-  }
-
-  public static double getShoulderValue(){
-    return shoulderPosition;
   }
 
   public void setFlag1False(){

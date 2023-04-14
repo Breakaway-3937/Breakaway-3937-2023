@@ -45,8 +45,6 @@ public final class Constants {
         public static final double MID_MID_X = 0.803;
         public static final double MID_MID_Y = 1.07;
         public static final double MID_HEIGHT = 0.8636;
-
-        public static final double SHOULDER_HEIGHT_MID = -13.75;
     }
 
     public static final class Controllers{

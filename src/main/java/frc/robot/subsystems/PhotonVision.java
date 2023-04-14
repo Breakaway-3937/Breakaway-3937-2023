@@ -51,7 +51,7 @@ public class PhotonVision extends SubsystemBase{
     private final LED s_LED;
     private final PhotonCamera photonCamera;
     private final PhotonPoseEstimator photonPoseEstimator;
-    private final GenericEntry poseX, poseY, distance, angle, shoulder;
+    private final GenericEntry poseX, poseY, distance, angle;
     private AprilTagFieldLayout atfl;
     private boolean highLeft, highMid, highRight, midLeft, midMid, midRight, hybridLeft, hybridMid, hybridRight, auto = false;
     private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
@@ -75,7 +75,6 @@ public class PhotonVision extends SubsystemBase{
         poseY = Shuffleboard.getTab("SyrupTag").add("Pose Y", 0).withPosition(1, 0).getEntry();
         distance = Shuffleboard.getTab("SyrupTag").add("Distance", 0).withPosition(2, 0).getEntry();
         angle = Shuffleboard.getTab("SyrupTag").add("Angle", 0).withPosition(3, 0).getEntry();
-        shoulder = Shuffleboard.getTab("SyrupTag").add("Shoulder", 0).withPosition(4, 0).getEntry();
     }
 
     public Pose2d getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
@@ -322,7 +321,7 @@ public class PhotonVision extends SubsystemBase{
             angleOffset = 0;
         }
         else{
-            angleOffset = Math.toDegrees(Math.atan((s_Intake.getDistance() + 0.057 - 0.196)/(Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(targetHeight - 0.48, 2)))));
+            angleOffset = Math.toDegrees(Math.atan((s_Intake.getDistance() + 0.057 - 0.196)/(RunArm.getExtensionValue() / -50000 + 0.91)));
         }
         if(y == 0 && s_Intake.getDistance() > 0.35){ 
             return 0;
@@ -332,11 +331,8 @@ public class PhotonVision extends SubsystemBase{
         }
         theta = Math.atan(y / x);
         theta = Math.toDegrees(theta);
+        theta = 0;
         return (theta - angleOffset) / 5.78;
-    }
-
-    public double getAutoTrackShoulder(){
-        return (Math.asin((RunArm.getExtensionValue() / -50000 + 0.91) / Constants.VisionConstants.SHOULDER_HEIGHT_MID) * RunArm.getShoulderValue()) / Math.asin((Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(targetHeight - 0.48, 2))) / Constants.VisionConstants.SHOULDER_HEIGHT_MID);
     }
 
     @Override
@@ -344,7 +340,6 @@ public class PhotonVision extends SubsystemBase{
         if(DriverStation.isTeleopEnabled()){
             distance.setDouble(getAutoTrackDistance());
             angle.setDouble(getAutoTrackAngle());
-            shoulder.setDouble(getAutoTrackShoulder());
             poseX.setDouble(pose2dDrivetrain.getX());
             poseY.setDouble(pose2dDrivetrain.getY());
         }
@@ -361,10 +356,10 @@ public class PhotonVision extends SubsystemBase{
             else if(DriverStation.getAlliance().toString().equals("Red") && 16.5 - pose2dDrivetrain.getX() > 4){
                 s_LED.red();
             }
-            else if((getAutoTrackAngle() < -6 || getAutoTrackAngle() > 6) && (getAutoTrackDistance() > -100 || getAutoTrackDistance() < -46500)){
+            else if(getAutoTrackAngle() < -6 || getAutoTrackAngle() > 6){
                 s_LED.white();
             }
-            else if((getAutoTrackAngle() >= -6 && getAutoTrackAngle() <= 6) && (getAutoTrackDistance() <= -100 && getAutoTrackDistance() >= -46500)){
+            else if(getAutoTrackAngle() >= -6 && getAutoTrackAngle() <= 6){
                 s_LED.green();
             }
         }
