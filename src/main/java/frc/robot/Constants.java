@@ -28,7 +28,7 @@ public final class Constants {
     
 
     public static class VisionConstants {
-        public static final Transform3d ROBOT_TO_CAM = new Transform3d(new Translation3d(0.3019665792, 0, 0.19), new Rotation3d(0, 0.349066, 0));
+        public static final Transform3d ROBOT_TO_CAM = new Transform3d(new Translation3d(0.3019665792, 0, 0.19), new Rotation3d(0, -0.349066, 0));
         public static final String CAMERA_NAME = "Global_Shutter_Camera";
         public static final double HIGH_LEFT_POST_X = 0.369;
         public static final double HIGH_LEFT_POST_Y = 0.513;
@@ -45,6 +45,8 @@ public final class Constants {
         public static final double MID_MID_X = 0.803;
         public static final double MID_MID_Y = 1.07;
         public static final double MID_HEIGHT = 0.8636;
+
+        public static final double SHOULDER_HEIGHT_MID = -13.75;
     }
 
     public static final class Controllers{
