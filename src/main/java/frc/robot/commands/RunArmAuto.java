@@ -102,7 +102,7 @@ public class RunArmAuto extends CommandBase {
           state = 1;
         }
         extensionPosition = -100;
-        wristPosition = 27.5;
+        wristPosition = 29;
         turretPosition = 0;
       }
       else if(!Intake.getConeCubeMode()){
