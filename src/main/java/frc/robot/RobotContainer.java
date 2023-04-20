@@ -72,6 +72,7 @@ public class RobotContainer {
   private final POVButton right = new POVButton(xboxController, Constants.Controllers.RIGHT);
   private final POVButton down = new POVButton(xboxController, Constants.Controllers.DOWN);
   private final POVButton left = new POVButton(xboxController, Constants.Controllers.LEFT);
+  private final JoystickButton backButton = new JoystickButton(xboxController, Constants.Controllers.XBOX_CONTROLLER_BACK_BUTTON);
 
   /* Subsystems */
   public final Drivetrain s_Drivetrain = new Drivetrain();
@@ -137,7 +138,8 @@ public class RobotContainer {
     up.onTrue(new InstantCommand(() -> s_LED.cone()).alongWith(new InstantCommand(() -> s_Intake.setCone())));
     right.onTrue(new InstantCommand(() -> s_LED.cube()).alongWith(new InstantCommand(() -> s_Intake.setCube())));
     down.onTrue(new InstantCommand(() -> s_Intake.setManualOverride(true)));
-    left.onTrue(new InstantCommand(() -> s_Photon.setAuto()));
+    left.onTrue(new InstantCommand(() -> s_Photon.setAuto(true)));
+    backButton.onTrue(new InstantCommand(() -> s_Photon.setAuto(false)));
   } 
 
   /**
