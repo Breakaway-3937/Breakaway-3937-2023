@@ -114,7 +114,7 @@ public class RunArmAuto extends CommandBase {
           state = 1;
         }
         extensionPosition = -100;
-        wristPosition = 29;
+        wristPosition = 30;
         turretPosition = 0;
       }
       flag1 = true;

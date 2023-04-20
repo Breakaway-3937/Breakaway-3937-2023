@@ -156,7 +156,7 @@ public class RunArm extends CommandBase {
           flag1 = true;
         }
         extensionPosition = -100;
-        wristPosition = 29;
+        wristPosition = 30;
         turretPosition = 0;
       }
       track = false; 
@@ -259,7 +259,7 @@ public class RunArm extends CommandBase {
         wristPosition = 29;
       }
       else if(!Intake.getConeCubeMode()){
-        wristPosition = 29;
+        wristPosition = 30;
       }
     }
 
