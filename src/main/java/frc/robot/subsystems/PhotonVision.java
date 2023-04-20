@@ -251,13 +251,8 @@ public class PhotonVision extends SubsystemBase{
         return array;
     }
 
-    public void setAuto(){
-        if(!auto){
-            auto = true;
-        }
-        else{
-            auto = false;
-        }
+    public void setAuto(boolean auto){
+        this.auto = auto;
     }
 
     public void setAllFalse(){
