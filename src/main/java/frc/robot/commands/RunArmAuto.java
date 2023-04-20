@@ -66,7 +66,7 @@ public class RunArmAuto extends CommandBase {
         turretPosition = 0;
       }
       else if(!Intake.getConeCubeMode()){
-        shoulderPosition = -11;
+        shoulderPosition = -10.75;
         if(!flag1 && extensionPosition > -19000){
           state = 0;
         }

@@ -47,7 +47,7 @@ public class Intake extends SubsystemBase {
       intakeMotor.set(ControlMode.PercentOutput, 1);
     }
     else{
-      intakeMotor.set(ControlMode.PercentOutput, -1);
+      intakeMotor.set(ControlMode.PercentOutput, -0.8);
     }
   }
   
@@ -95,9 +95,7 @@ public class Intake extends SubsystemBase {
   }
 
   public double getDistance(){
-    //Converts sensor value to inches then to meters with the cone offset from center
     return (-8.673 * Math.log(uSSensor.getVoltage()) + 11.452) / 39.37;
-    //return 0.342 - 0.291 * Math.log(uSSensor.getVoltage()) + 0.045;
   }
 
   @Override
