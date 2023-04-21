@@ -153,7 +153,7 @@ public class AutoChooser {
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
             new InstantCommand(() -> s_Intake.setCone()),
-            new RunArmAuto(s_Arm, 2),
+            new RunArmAuto(s_Arm, 3),
             new SpitIntakeAuto(s_Intake),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave0().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
@@ -177,7 +177,7 @@ public class AutoChooser {
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
             new InstantCommand(() -> s_Intake.setCone()),
-            new RunArmAuto(s_Arm, 2),
+            new RunArmAuto(s_Arm, 3),
             new SpitIntakeAuto(s_Intake),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave1().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
@@ -201,7 +201,7 @@ public class AutoChooser {
         SequentialCommandGroup command = new SequentialCommandGroup();
             command.addCommands(
             new InstantCommand(() -> s_Intake.setCone()),
-            new RunArmAuto(s_Arm, 2),
+            new RunArmAuto(s_Arm, 3),
             new SpitIntakeAuto(s_Intake),
             new InstantCommand(() -> s_Drivetrain.resetOdometry(trajectories.getScoreLeave2().getInitialHolonomicPose())),
             new ParallelCommandGroup(new RunArmAuto(s_Arm, 0), swerveCommand));
