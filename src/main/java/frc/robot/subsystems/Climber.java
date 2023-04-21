@@ -63,7 +63,12 @@ public class Climber extends SubsystemBase {
     climber2.follow(climber1, true);
   }
 
-  public void setClimberSpeed(){
+  public void setFastClimberSpeed(){
+    pid1.setSmartMotionMaxVelocity(3000, 0);
+    pid1.setSmartMotionMaxAccel(1500, 0);
+  }
+
+  public void setSlowClimberSpeed(){
     pid1.setSmartMotionMaxVelocity(500, 0);
     pid1.setSmartMotionMaxAccel(250, 0);
   }
