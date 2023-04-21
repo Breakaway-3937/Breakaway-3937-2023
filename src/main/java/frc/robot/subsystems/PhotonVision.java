@@ -312,16 +312,16 @@ public class PhotonVision extends SubsystemBase{
     }
 
     public double getAutoTrackAngle(){
-        if(s_Intake.getDistance() > 0.35 || !Intake.getConeCubeMode()){
+        if(s_Intake.getDistance() > 0.3 || !Intake.getConeCubeMode()){
             angleOffset = 0;
         }
         else{
             angleOffset = Math.toDegrees(Math.atan((s_Intake.getDistance() + 0.057 - 0.196)/(RunArm.getExtensionValue() / -50000 + 0.91)));
         }
-        if(y == 0 && s_Intake.getDistance() > 0.35){ 
+        if(y == 0 && s_Intake.getDistance() > 0.3){ 
             return 0;
         }
-        else if(y == 0 && s_Intake.getDistance() < 0.35){
+        else if(y == 0 && s_Intake.getDistance() < 0.3){
             return angleOffset / 5.78;
         }
         theta = Math.atan(y / x);

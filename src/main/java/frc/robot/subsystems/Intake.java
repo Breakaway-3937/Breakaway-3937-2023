@@ -57,7 +57,7 @@ public class Intake extends SubsystemBase {
 
   public boolean intakeFull(){
     if(getConeCubeMode()){
-      if(getDistance() < 0.35){
+      if(getDistance() < 0.3){
         return true;
       }
       else{
@@ -95,7 +95,7 @@ public class Intake extends SubsystemBase {
   }
 
   public double getDistance(){
-    return -0.0656 * Math.pow(uSSensor.getVoltage(), 3) + 0.4794 * Math.pow(uSSensor.getVoltage(), 2) - 1.2203 * uSSensor.getVoltage() + 1.1937;
+    return -0.261 * Math.log(uSSensor.getVoltage()) + 0.3455;
   }
 
   @Override
