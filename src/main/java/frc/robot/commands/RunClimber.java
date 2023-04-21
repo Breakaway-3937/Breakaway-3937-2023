@@ -29,11 +29,15 @@ public class RunClimber extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(xboxController.getRawButton(5)){
+    if(xboxController.getRawButton(3)){
+      s_Climber.setClimber(0);
+    }
+    else if(xboxController.getRawButton(5)){
+      s_Climber.setFastClimberSpeed();
       s_Climber.setClimber(42.3);
     }
     else if(xboxController.getRawAxis(2) > 0.5){
-      s_Climber.setClimberSpeed();
+      s_Climber.setSlowClimberSpeed();
       s_Climber.setClimber(-2.25); 
     }
   }
