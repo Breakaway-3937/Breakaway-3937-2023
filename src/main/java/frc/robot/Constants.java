@@ -5,7 +5,7 @@ import java.net.SocketException;
 import java.util.Enumeration;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-
+import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -94,6 +94,7 @@ public final class Constants {
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
         public static final double OPEN_LOOP_RAMP = 0.25;
+        public static final OpenLoopRampsConfigs config = new OpenLoopRampsConfigs();
         public static final double CLOSED_LOOP_RAMP = 0.0;
 
         public static final double DRIVE_GEAR_RATIO = (6.75 / 1.0);
