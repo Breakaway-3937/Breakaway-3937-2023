@@ -1,12 +1,14 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.Pigeon2;
 
 import frc.robot.Constants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+
+import com.ctre.phoenix6.hardware.Pigeon2;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -24,7 +26,6 @@ public class Drivetrain extends SubsystemBase {
 
     public Drivetrain() {
         gyro = new Pigeon2(Constants.Drivetrain.PIGEON_ID, "CANivore");
-        gyro.configFactoryDefault();
         zeroGyro();
         
         swerveMods = new SwerveModule[] {
@@ -34,7 +35,7 @@ public class Drivetrain extends SubsystemBase {
             new SwerveModule(3, Constants.Drivetrain.Mod3.CONSTANTS)
         };
 
-        swerveOdometry = new SwerveDriveOdometry(Constants.Drivetrain.SWERVE_KINEMATICS, getYaw(), getPositions());
+        swerveOdometry = new SwerveDriveOdometry(Constants.Drivetrain.SWERVE_KINEMATICS, Rotation2d.fromDegrees(getYaw()), getPositions());
         
        
         mod0Cancoder = Shuffleboard.getTab("Drive").add("Mod 0 Cancoder", swerveMods[0].getState().angle.getDegrees()).withPosition(0, 0).getEntry();
@@ -52,7 +53,7 @@ public class Drivetrain extends SubsystemBase {
                                     translation.getX(), 
                                     translation.getY(), 
                                     rotation, 
-                                    getYaw()
+                                    Rotation2d.fromDegrees(getYaw())
                                 )
                                 : new ChassisSpeeds(
                                     translation.getX(), 
@@ -90,14 +91,12 @@ public class Drivetrain extends SubsystemBase {
         gyro.setYaw(180);
     }
 
-    public Rotation2d getYaw() {
-        double[] ypr = new double[3];
-        gyro.getYawPitchRoll(ypr);
-        return (Constants.Drivetrain.INVERT_GYRO) ? Rotation2d.fromDegrees(360 - ypr[0]) : Rotation2d.fromDegrees(ypr[0]);
+    public double getYaw() {
+        return gyro.getYaw().getValue();
     }
 
     public double getRoll(){
-        return gyro.getRoll();
+        return gyro.getRoll().getValue();
     }
 
     public void setModuleStates(SwerveModuleState[] desiredStates) {
@@ -109,19 +108,19 @@ public class Drivetrain extends SubsystemBase {
     } 
 
     public void resetOdometry(Pose2d pose) {
-        swerveOdometry.resetPosition(getYaw(), getPositions(), pose);
+        swerveOdometry.resetPosition(Rotation2d.fromDegrees(getYaw()), getPositions(), pose);
     }
 
     @Override
     public void periodic(){
-        swerveOdometry.update(getYaw(), getPositions());  
+        swerveOdometry.update(Rotation2d.fromDegrees(getYaw()), getPositions());  
         
         mod0Cancoder.setDouble(swerveMods[0].getCanCoder().getDegrees());
         mod1Cancoder.setDouble(swerveMods[1].getCanCoder().getDegrees());
         mod2Cancoder.setDouble(swerveMods[2].getCanCoder().getDegrees());
         mod3Cancoder.setDouble(swerveMods[3].getCanCoder().getDegrees());
         
-        yaw.setDouble(gyro.getYaw());
-        roll.setDouble(gyro.getRoll());
+        yaw.setDouble(gyro.getYaw().getValue());
+        roll.setDouble(gyro.getRoll().getValue());
     }   
 }
