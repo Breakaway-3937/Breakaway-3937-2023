@@ -14,16 +14,19 @@ import frc.robot.Robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderStatusFrame;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 public class SwerveModule {
     public int moduleNumber;
     private double angleOffset;
     private TalonFX mAngleMotor;
     private TalonFX mDriveMotor;
-    private CANCoder angleEncoder;
+    private CANcoder angleEncoder;
     private double lastAngle;
 
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Drivetrain.DRIVE_KS, Constants.Drivetrain.DRIVE_KV, Constants.Drivetrain.DRIVE_KA);
@@ -33,19 +36,16 @@ public class SwerveModule {
         angleOffset = moduleConstants.angleOffset;
         
         /* Angle Encoder Config */
-        angleEncoder = new CANCoder(moduleConstants.cancoderID, "CANivore");
+        angleEncoder = new CANcoder(moduleConstants.cancoderID, "CANivore");
         configAngleEncoder();
-        angleEncoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData, 20);
         
         /* Angle Motor Config */
         mAngleMotor = new TalonFX(moduleConstants.angleMotorID, "CANivore");
         configAngleMotor();
-        mAngleMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 20);
 
         /* Drive Motor Config */
         mDriveMotor = new TalonFX(moduleConstants.driveMotorID, "CANivore");
         configDriveMotor();
-        mAngleMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_12_Feedback1, 20);
 
         lastAngle = getState().angle.getDegrees();
     }
@@ -55,15 +55,15 @@ public class SwerveModule {
 
         if(isOpenLoop){
             double percentOutput = desiredState.speedMetersPerSecond / Constants.Drivetrain.MAX_SPEED;
-            mDriveMotor.set(ControlMode.PercentOutput, percentOutput);
+            mDriveMotor.setControl(new DutyCycleOut(percentOutput, true, false));
         }
         else {
             double velocity = Conversions.MPSToFalcon(desiredState.speedMetersPerSecond, Constants.Drivetrain.WHEEL_CIRCUMFERENCE, Constants.Drivetrain.DRIVE_GEAR_RATIO);
-            mDriveMotor.set(ControlMode.Velocity, velocity, DemandType.ArbitraryFeedForward, feedforward.calculate(desiredState.speedMetersPerSecond));
+            mDriveMotor.setControl(new VelocityDutyCycle(velocity, true, 0, 0, false));
         }
 
         double angle = (Math.abs(desiredState.speedMetersPerSecond) <= (Constants.Drivetrain.MAX_SPEED * 0.01)) ? lastAngle : desiredState.angle.getDegrees(); //Prevent rotating module if speed is less then 1%. Prevents Jittering.
-        mAngleMotor.set(ControlMode.Position, Conversions.degreesToFalcon(angle, Constants.Drivetrain.ANGLE_GEAR_RATIO)); 
+        mAngleMotor.setControl(new PositionVoltage(Conversions.degreesToFalcon(angle, Constants.Drivetrain.ANGLE_GEAR_RATIO), true, 0, 0, false)); 
         lastAngle = angle;
     }
 
@@ -94,7 +94,7 @@ public class SwerveModule {
     }
 
     public Rotation2d getCanCoder(){
-        return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
+        return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition().getValue());
     }
 
     private Rotation2d getAngle(){
