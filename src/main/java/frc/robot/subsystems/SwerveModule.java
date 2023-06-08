@@ -15,7 +15,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.sensors.CANCoderStatusFrame;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.CoastOut;
 import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -73,23 +77,29 @@ public class SwerveModule {
     }
 
     private void configAngleEncoder(){        
-        angleEncoder.configFactoryDefault();
-        angleEncoder.configAllSettings(Robot.ctreConfigs.swerveCanCoderConfig);
+        //angleEncoder.configFactoryDefault();
+        angleEncoder.getConfigurator().apply(new CANcoderConfiguration());
+        //angleEncoder.configAllSettings(Robot.ctreConfigs.swerveCanCoderConfig);
+        angleEncoder.getConfigurator().apply(Robot.ctreConfigs.swerveCanCoderConfig);
     }
 
     private void configAngleMotor(){
-        mAngleMotor.configFactoryDefault();
+        //mAngleMotor.configFactoryDefault();
+        mAngleMotor.getConfigurator().apply(new TalonFXConfiguration()); //New default method
+        //mAngleMotor.getConfigurator().apply(Robot.ctreConfigs.swerveAngleFXConfig);
         mAngleMotor.getConfigurator().apply(Robot.ctreConfigs.swerveAngleFXConfig);
         mAngleMotor.setInverted(Constants.Drivetrain.ANGLE_MOTOR_INVERT);
-        mAngleMotor.setNeutralMode(Constants.Drivetrain.ANGLE_NEUTRAL_MODE);
+        //mAngleMotor.setNeutralMode(Constants.Drivetrain.ANGLE_NEUTRAL_MODE); //IN CTRE CONFIG NOW
         resetToAbsolute();
     }
 
     private void configDriveMotor(){        
-        mDriveMotor.configFactoryDefault();
-        mDriveMotor.configAllSettings(Robot.ctreConfigs.swerveDriveFXConfig);
+        //mDriveMotor.configFactoryDefault();
+        mDriveMotor.getConfigurator().apply(new TalonFXConfiguration()); //New default method
+        //mDriveMotor.configAllSettings(Robot.ctreConfigs.swerveDriveFXConfig);
         mDriveMotor.setInverted(Constants.Drivetrain.DRIVE_MOTOR_INVERT);
-        mDriveMotor.setNeutralMode(Constants.Drivetrain.DRIVE_NEUTRAL_MODE);
+        mDriveMotor.getConfigurator().apply(Robot.ctreConfigs.swerveAngleFXConfig);
+        //mDriveMotor.setNeutralMode(Constants.Drivetrain.DRIVE_NEUTRAL_MODE); //IN CTRE CONFIG NOW
         mDriveMotor.setSelectedSensorPosition(0);
     }
 
