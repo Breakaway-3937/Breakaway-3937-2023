@@ -41,21 +41,21 @@ public class Align extends CommandBase {
     xAxis = (Math.abs(xAxis) < Constants.Controllers.STICK_DEADBAND) ? 0 : xAxis;
     
     if((DriverStation.getAlliance().toString().equals("Blue") && s_Drivetrain.getPose().getX() < 8.25) || (DriverStation.getAlliance().toString().equals("Red") && 16.5 - s_Drivetrain.getPose().getX() < 8.25)){
-      rAxis = pValue * (180 - (s_Drivetrain.getYaw().getDegrees() + 3600000) % 360);
+      rAxis = pValue * (180 - (s_Drivetrain.getYaw() + 3600000) % 360);
       rotation = rAxis * Constants.Drivetrain.MAX_ANGULAR_VELOCITY;
       if(Math.abs(rotation) > maxRads){
         rotation = maxRads * rotation / Math.abs(rotation);
       }
     }
     else if(DriverStation.getAlliance().toString().equals("Blue") && s_Drivetrain.getPose().getX() > 8.25){
-      rAxis = pValue * (90 - (s_Drivetrain.getYaw().getDegrees() + 3600000) % 360);
+      rAxis = pValue * (90 - (s_Drivetrain.getYaw() + 3600000) % 360);
       rotation = rAxis * Constants.Drivetrain.MAX_ANGULAR_VELOCITY;
       if(Math.abs(rotation) > maxRads){
         rotation = maxRads * rotation / Math.abs(rotation);
       }
     }
     else if(DriverStation.getAlliance().toString().equals("Red") && 16.5 - s_Drivetrain.getPose().getX() > 8.25){
-      rAxis = pValue * (270 - (s_Drivetrain.getYaw().getDegrees() + 3600000) % 360);
+      rAxis = pValue * (270 - (s_Drivetrain.getYaw() + 3600000) % 360);
       rotation = rAxis * Constants.Drivetrain.MAX_ANGULAR_VELOCITY;
       if(Math.abs(rotation) > maxRads){
         rotation = maxRads * rotation / Math.abs(rotation);

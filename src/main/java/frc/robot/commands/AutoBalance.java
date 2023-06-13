@@ -29,7 +29,7 @@ public class AutoBalance extends CommandBase {
   @Override
   public void execute() {
     s_Drivetrain.drive(new Translation2d(value, 0), 0, true, false);
-    if((s_Drivetrain.getYaw().getDegrees() % 360 > 315 || s_Drivetrain.getYaw().getDegrees() % 360 < 45) && Math.abs(s_Drivetrain.getRoll()) > acceptable){
+    if((s_Drivetrain.getYaw() % 360 > 315 || s_Drivetrain.getYaw() % 360 < 45) && Math.abs(s_Drivetrain.getRoll()) > acceptable){
       if(s_Drivetrain.getRoll() < 0){
         value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * -0.013;
       }
@@ -37,7 +37,7 @@ public class AutoBalance extends CommandBase {
         value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * 0.013;
       }
     }
-    else if((s_Drivetrain.getYaw().getDegrees() % 360 > 135 || s_Drivetrain.getYaw().getDegrees() % 360 < 225) && Math.abs(s_Drivetrain.getRoll()) > acceptable){
+    else if((s_Drivetrain.getYaw() % 360 > 135 || s_Drivetrain.getYaw() % 360 < 225) && Math.abs(s_Drivetrain.getRoll()) > acceptable){
       if(s_Drivetrain.getRoll() > 0){
         value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * -0.013;
       }

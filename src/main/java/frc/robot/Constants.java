@@ -4,8 +4,8 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -94,7 +94,6 @@ public final class Constants {
         public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
         public static final double OPEN_LOOP_RAMP = 0.25;
-        public static final OpenLoopRampsConfigs config = new OpenLoopRampsConfigs();
         public static final double CLOSED_LOOP_RAMP = 0.0;
 
         public static final double DRIVE_GEAR_RATIO = (6.75 / 1.0);
@@ -139,15 +138,15 @@ public final class Constants {
         public static final double MAX_ANGULAR_VELOCITY = 11.5;
 
         /* Neutral Modes */
-        public static final NeutralMode ANGLE_NEUTRAL_MODE = NeutralMode.Brake;
-        public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
+        public static final NeutralModeValue ANGLE_NEUTRAL_MODE = NeutralModeValue.Brake;
+        public static final NeutralModeValue DRIVE_NEUTRAL_MODE = NeutralModeValue.Brake;
 
         /* Motor Inverts */
         public static final boolean DRIVE_MOTOR_INVERT = false;
         public static final boolean ANGLE_MOTOR_INVERT = false;
 
         /* Angle Encoder Invert */
-        public static final boolean CANCODER_INVERT = false;
+        public static final SensorDirectionValue CANCODER_INVERT = SensorDirectionValue.Clockwise_Positive;
 
         /* Module Specific Constants */
 
