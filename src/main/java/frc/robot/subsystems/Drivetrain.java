@@ -42,8 +42,8 @@ public class Drivetrain extends SubsystemBase {
         mod1Cancoder = Shuffleboard.getTab("Drive").add("Mod 1 Cancoder", swerveMods[1].getState().angle.getDegrees()).withPosition(1, 0).getEntry();
         mod2Cancoder = Shuffleboard.getTab("Drive").add("Mod 2 Cancoder", swerveMods[2].getState().angle.getDegrees()).withPosition(2, 0).getEntry();
         mod3Cancoder = Shuffleboard.getTab("Drive").add("Mod 3 Cancoder", swerveMods[3].getState().angle.getDegrees()).withPosition(3, 0).getEntry();
-        yaw = Shuffleboard.getTab("Drive").add("Yaw", gyro.getYaw()).withPosition(0, 1).getEntry();
-        roll = Shuffleboard.getTab("Drive").add("Roll", gyro.getRoll()).withPosition(1, 1).getEntry();
+        yaw = Shuffleboard.getTab("Drive").add("Yaw", gyro.getYaw().getValue()).withPosition(0, 1).getEntry();
+        roll = Shuffleboard.getTab("Drive").add("Roll", gyro.getRoll().getValue()).withPosition(1, 1).getEntry();
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
