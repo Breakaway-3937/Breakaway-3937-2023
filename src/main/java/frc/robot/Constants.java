@@ -117,13 +117,16 @@ public final class Constants {
         public static final boolean DRIVE_ENABLE_CURRENT_LIMIT = true;
 
         /* Angle Motor PID Values */
-        public static final double ANGLE_KP = 0.7;
+        //public static final double ANGLE_KP = 0.7;
+        public static final double ANGLE_KP = 1.4; 
         public static final double ANGLE_KI = 0.0;
-        public static final double ANGLE_KD = 12.0;
+        //public static final double ANGLE_KD = 12.0;
+        public static final double ANGLE_KD = 0.024;
         public static final double ANGLE_KF = 0.0;
 
         /* Drive Motor PID Values */
-        public static final double DRIVE_KP = 0.12;
+        //public static final double DRIVE_KP = 0.12;
+        public static final double DRIVE_KP = 0.024;
         public static final double DRIVE_KI = 0.0;
         public static final double DRIVE_KD = 0.0;
         public static final double DRIVE_KF = 0.0;

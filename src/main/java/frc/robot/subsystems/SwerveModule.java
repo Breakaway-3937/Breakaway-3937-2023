@@ -50,7 +50,6 @@ public class SwerveModule {
 
     public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
         desiredState = CTREModuleState.optimize(desiredState, getState().angle); //Custom optimize command, since default WPILib optimize assumes continuous controller which CTRE is not
-
         if(isOpenLoop){
             double percentOutput = desiredState.speedMetersPerSecond / Constants.Drivetrain.MAX_SPEED;
             mDriveMotor.setControl(new DutyCycleOut(percentOutput, true, false));
@@ -90,7 +89,7 @@ public class SwerveModule {
     }
 
     public Rotation2d getCanCoder(){
-        return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition().getValue());
+        return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition().getValue() * 360);
     }
 
     private Rotation2d getAngle(){
@@ -106,7 +105,7 @@ public class SwerveModule {
 
     public SwerveModuleState getState(){
         double velocity = Conversions.falconToMPS(mDriveMotor.getRotorVelocity().getValue(), Constants.Drivetrain.WHEEL_CIRCUMFERENCE, Constants.Drivetrain.DRIVE_GEAR_RATIO);
-        Rotation2d angle = Rotation2d.fromDegrees(Conversions.falconToDegrees(mAngleMotor.getRotorPosition().getValue(), Constants.Drivetrain.ANGLE_GEAR_RATIO));
+        Rotation2d angle = Rotation2d.fromDegrees(Conversions.falconToDegrees(mAngleMotor.getPosition().getValue(), Constants.Drivetrain.ANGLE_GEAR_RATIO));
         return new SwerveModuleState(velocity, angle);
     }
     
