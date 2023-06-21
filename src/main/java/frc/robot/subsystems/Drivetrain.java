@@ -15,7 +15,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -116,13 +115,12 @@ public class Drivetrain extends SubsystemBase {
     public void periodic(){
         swerveOdometry.update(Rotation2d.fromDegrees(getYaw()), getPositions());  
         
-        mod0Cancoder.setDouble(swerveMods[0].getCanCoder().getDegrees());
-        mod1Cancoder.setDouble(swerveMods[1].getCanCoder().getDegrees());
-        mod2Cancoder.setDouble(swerveMods[2].getCanCoder().getDegrees());
-        mod3Cancoder.setDouble(swerveMods[3].getCanCoder().getDegrees());
+        mod0Cancoder.setDouble(swerveMods[0].getCanCoder());
+        mod1Cancoder.setDouble(swerveMods[1].getCanCoder());
+        mod2Cancoder.setDouble(swerveMods[2].getCanCoder());
+        mod3Cancoder.setDouble(swerveMods[3].getCanCoder());
         
         yaw.setDouble(gyro.getYaw().getValue());
         roll.setDouble(gyro.getRoll().getValue());
-        SmartDashboard.putNumber("Angle Motor", getStates()[0].angle.getDegrees());
     }   
 }
