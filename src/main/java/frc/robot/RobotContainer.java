@@ -121,7 +121,8 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* Driver Buttons */
     translationButton.onTrue(new InstantCommand(() -> s_Drivetrain.zeroGyro()));
-    rotationButton.whileTrue(c_Align);
+    //rotationButton.whileTrue(c_Align); //TODO FIXME
+    rotationButton.onTrue(new InstantCommand(() -> s_Drivetrain.setFOC()));
     highLeft.onTrue(new InstantCommand(() -> s_Photon.setHighLeft()).alongWith(new InstantCommand(() -> c_RunArm.setFlag1False())));
     highRight.onTrue(new InstantCommand(() -> s_Photon.setHighRight()).alongWith(new InstantCommand(() -> c_RunArm.setFlag1False())));
     highMid.onTrue(new InstantCommand(() -> s_Photon.setHighMid()).alongWith(new InstantCommand(() -> c_RunArm.setFlag1False())));

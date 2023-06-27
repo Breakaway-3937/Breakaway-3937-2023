@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
@@ -23,6 +24,7 @@ public class Drivetrain extends SubsystemBase {
     private final Pigeon2 gyro;
     private GenericEntry mod0Cancoder, mod1Cancoder, mod2Cancoder, mod3Cancoder;
     private GenericEntry yaw, roll;
+    private boolean enableFOC, foc;
 
     public Drivetrain() {
         gyro = new Pigeon2(Constants.Drivetrain.PIGEON_ID, "CANivore");
@@ -63,7 +65,7 @@ public class Drivetrain extends SubsystemBase {
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Drivetrain.MAX_SPEED);
 
         for(SwerveModule mod : swerveMods){
-            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
+            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop, foc);
         }
     }
 
@@ -103,13 +105,26 @@ public class Drivetrain extends SubsystemBase {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Drivetrain.MAX_SPEED);
         
         for(SwerveModule mod : swerveMods){
-            mod.setDesiredState(desiredStates[mod.moduleNumber], false);
+            mod.setDesiredState(desiredStates[mod.moduleNumber], false, enableFOC);
         }
     } 
 
     public void resetOdometry(Pose2d pose) {
         swerveOdometry.resetPosition(Rotation2d.fromDegrees(getYaw()), getPositions(), pose);
     }
+
+    public void setFOC(){
+    if(foc == false){
+        foc = true;
+    }
+    else if(foc == true){
+        foc = false;
+    }
+    }
+
+    
+
+
 
     @Override
     public void periodic(){
@@ -122,5 +137,7 @@ public class Drivetrain extends SubsystemBase {
         
         yaw.setDouble(gyro.getYaw().getValue());
         roll.setDouble(gyro.getRoll().getValue());
+
+        SmartDashboard.putBoolean("FOC ", foc);
     }   
 }

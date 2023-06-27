@@ -36,6 +36,9 @@ public final class CTREConfigs {
         swerveDriveFXConfig.Slot0.kI = Constants.Drivetrain.DRIVE_KI;
         swerveDriveFXConfig.Slot0.kD = Constants.Drivetrain.DRIVE_KD;
         swerveDriveFXConfig.Slot0.kV = Constants.Drivetrain.DRIVE_KF;
+        swerveDriveFXConfig.Slot1.kP = 5;
+        swerveDriveFXConfig.Slot1.kI = 0;
+        swerveDriveFXConfig.Slot1.kD = 0.001;
         swerveDriveFXConfig.MotorOutput.NeutralMode = Constants.Drivetrain.DRIVE_NEUTRAL_MODE;        
         swerveDriveFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Drivetrain.OPEN_LOOP_RAMP;
         swerveDriveFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Drivetrain.CLOSED_LOOP_RAMP;

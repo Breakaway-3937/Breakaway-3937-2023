@@ -21,6 +21,7 @@ public class TeleopSwerve extends CommandBase {
     private int strafeAxis;
     private int rotationAxis;
 
+
     /**
      * Driver control
      */
@@ -50,6 +51,7 @@ public class TeleopSwerve extends CommandBase {
 
         translation = new Translation2d(yAxis, xAxis).times(Constants.Drivetrain.MAX_SPEED);
         rotation = rAxis * Constants.Drivetrain.MAX_ANGULAR_VELOCITY;
+        
         s_Drivetrain.drive(translation, rotation, fieldRelative, openLoop);
     }
 }
