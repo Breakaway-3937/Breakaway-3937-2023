@@ -20,6 +20,7 @@ public class TeleopSwerve extends CommandBase {
     private int translationAxis;
     private int strafeAxis;
     private int rotationAxis;
+    boolean foc;
 
 
     /**
@@ -51,7 +52,7 @@ public class TeleopSwerve extends CommandBase {
 
         translation = new Translation2d(yAxis, xAxis).times(Constants.Drivetrain.MAX_SPEED);
         rotation = rAxis * Constants.Drivetrain.MAX_ANGULAR_VELOCITY;
-        
-        s_Drivetrain.drive(translation, rotation, fieldRelative, openLoop);
+        foc = rotationalController.getRawButton(1);
+        s_Drivetrain.drive(translation, rotation, fieldRelative, openLoop, foc);
     }
 }

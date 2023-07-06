@@ -28,7 +28,7 @@ public class AutoBalance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    s_Drivetrain.drive(new Translation2d(value, 0), 0, true, false);
+    s_Drivetrain.drive(new Translation2d(value, 0), 0, true, false, false);
     if((s_Drivetrain.getYaw() % 360 > 315 || s_Drivetrain.getYaw() % 360 < 45) && Math.abs(s_Drivetrain.getRoll()) > acceptable){
       if(s_Drivetrain.getRoll() < 0){
         value = (Math.abs(s_Drivetrain.getRoll()) - acceptable) * -0.013;
@@ -46,7 +46,7 @@ public class AutoBalance extends CommandBase {
       }
     }
     else if(Math.abs(s_Drivetrain.getRoll()) < acceptable){
-      s_Drivetrain.drive(new Translation2d(0, 0), 0, true, false);
+      s_Drivetrain.drive(new Translation2d(0, 0), 0, true, false, false);
     }
   }
 
