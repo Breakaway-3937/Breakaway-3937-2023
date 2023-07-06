@@ -61,10 +61,11 @@ public class SwerveModule {
         else {
             double velocity = desiredState.speedMetersPerSecond * rotationsPerMeter;
             if(!focEnabled){
-            mDriveMotor.setControl(new VelocityDutyCycle(velocity, true, 0, 0, false));
+            mDriveMotor.setControl(new VelocityDutyCycle(velocity, false, 0, 0, false));
             }
             else if(focEnabled){
-            mDriveMotor.setControl(torqueCurrentFOC.withVelocity(velocity).withSlot(1));
+            ///mDriveMotor.setControl(torqueCurrentFOC.withVelocity(velocity).withSlot(1));
+            mDriveMotor.setControl(new VelocityDutyCycle(velocity, true, 0, 0, false));
             }
         }
 
