@@ -14,7 +14,6 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
-import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -28,7 +27,6 @@ public class SwerveModule {
     private StatusSignal<Double> anglePosition;
     private StatusSignal<Double> angleVelocity;
     private double rotationsPerMeter = Constants.Drivetrain.DRIVE_GEAR_RATIO / (2 * Math.PI * Constants.Drivetrain.WHEEL_DIAMETER);
-    private VelocityTorqueCurrentFOC  torqueCurrentFOC = new VelocityTorqueCurrentFOC (0,0,1,false);
 
 
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
@@ -56,7 +54,12 @@ public class SwerveModule {
         desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
         if(isOpenLoop){
             double percentOutput = desiredState.speedMetersPerSecond / Constants.Drivetrain.MAX_SPEED;
-            mDriveMotor.setControl(new DutyCycleOut(percentOutput, true, false));
+            if(!focEnabled){
+                mDriveMotor.setControl(new DutyCycleOut(percentOutput, false, false));
+            }
+            else if(focEnabled){
+                mDriveMotor.setControl(new DutyCycleOut(percentOutput, true, false));
+            }
         }
         else {
             double velocity = desiredState.speedMetersPerSecond * rotationsPerMeter;
@@ -64,7 +67,6 @@ public class SwerveModule {
             mDriveMotor.setControl(new VelocityDutyCycle(velocity, false, 0, 0, false));
             }
             else if(focEnabled){
-            ///mDriveMotor.setControl(torqueCurrentFOC.withVelocity(velocity).withSlot(1));
             mDriveMotor.setControl(new VelocityDutyCycle(velocity, true, 0, 0, false));
             }
         }

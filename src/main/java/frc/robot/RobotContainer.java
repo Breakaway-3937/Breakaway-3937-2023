@@ -83,7 +83,7 @@ public class RobotContainer {
   public final Arm s_Arm = new Arm();
   
   /* Commands */
-  public final TeleopSwerve c_TeleopSwerve = new TeleopSwerve(s_Drivetrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop);
+  public final TeleopSwerve c_TeleopSwerve = new TeleopSwerve(s_Drivetrain, translationController, rotationController, buttonGrid, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop);
   public final RunIntake c_RunIntake = new RunIntake(s_Intake, xboxController);
   public final RunClimber c_RunClimber = new RunClimber(s_Climber, xboxController);
   public final RunArm c_RunArm = new RunArm(s_Arm, xboxController, s_Photon);
@@ -121,7 +121,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     /* Driver Buttons */
     translationButton.onTrue(new InstantCommand(() -> s_Drivetrain.zeroGyro()));
-    //rotationButton.whileTrue(c_Align); //TODO FIXME
+    rotationButton.whileTrue(c_Align);
     highLeft.onTrue(new InstantCommand(() -> s_Photon.setHighLeft()).alongWith(new InstantCommand(() -> c_RunArm.setFlag1False())));
     highRight.onTrue(new InstantCommand(() -> s_Photon.setHighRight()).alongWith(new InstantCommand(() -> c_RunArm.setFlag1False())));
     highMid.onTrue(new InstantCommand(() -> s_Photon.setHighMid()).alongWith(new InstantCommand(() -> c_RunArm.setFlag1False())));
