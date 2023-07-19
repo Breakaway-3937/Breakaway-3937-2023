@@ -6,6 +6,8 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
@@ -200,6 +202,10 @@ public class Arm extends SubsystemBase {
     extensionEncoderEntry.setDouble(getExtensionPosition());
     turretEncoderEntry.setDouble(getTurretPosition());
     wristEncoderEntry.setDouble(getWrist());
+    Logger.getInstance().recordOutput("Shoulder", getShoulder1Position());
+    Logger.getInstance().recordOutput("Extension", getExtensionPosition());
+    Logger.getInstance().recordOutput("Turret", getTurretPosition());
+    Logger.getInstance().recordOutput("Wrist", getWrist());
   }
 }
 

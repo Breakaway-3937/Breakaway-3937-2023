@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -103,5 +105,7 @@ public class Intake extends SubsystemBase {
     // This method will be called once per scheduler run
     usDistance.setDouble(getDistance());
     bBDistance.setDouble(bBSensor.getValue());
+    Logger.getInstance().recordOutput("UltraSonic", getDistance());
+    Logger.getInstance().recordOutput("BeamBreak", bBSensor.getValue());
   }
 }

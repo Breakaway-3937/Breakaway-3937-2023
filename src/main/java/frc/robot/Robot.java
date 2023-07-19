@@ -4,8 +4,14 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.LogFileUtil;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
 import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -17,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
   public static CTREConfigs ctreConfigs;
 
   private Command m_autonomousCommand;
@@ -32,11 +38,25 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    Logger.getInstance().recordMetadata("ProjectName", "MyProject"); // Set a metadata value
+
+    if (isReal()) {
+        Logger.getInstance().addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
+        Logger.getInstance().addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+        powerDistribution = new PowerDistribution(25, ModuleType.kRev); // Enables power distribution logging
+    } else {
+        setUseTiming(false); // Run as fast as possible
+        String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+        Logger.getInstance().setReplaySource(new WPILOGReader(logPath)); // Read replay log
+        Logger.getInstance().addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+    }
+
+    // Logger.getInstance().disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
+    Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
     ctreConfigs = new CTREConfigs();
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    powerDistribution = new PowerDistribution(25, ModuleType.kRev);
     powerDistribution.setSwitchableChannel(true);
     powerDistribution.clearStickyFaults();
     CommandScheduler.getInstance().setPeriod(0.025);

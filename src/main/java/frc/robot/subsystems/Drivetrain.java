@@ -7,6 +7,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -124,5 +126,10 @@ public class Drivetrain extends SubsystemBase {
         
         yaw.setDouble(gyro.getYaw().getValue());
         roll.setDouble(gyro.getRoll().getValue());
+
+        Logger.getInstance().recordOutput("Yaw", getYaw());
+        Logger.getInstance().recordOutput("Roll", getRoll());
+        Logger.getInstance().recordOutput("Swerve States", getStates());
+        Logger.getInstance().recordOutput("Pose", swerveOdometry.getPoseMeters());
     }   
 }
