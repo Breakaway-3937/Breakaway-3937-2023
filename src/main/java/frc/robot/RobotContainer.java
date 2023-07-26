@@ -5,6 +5,8 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -149,6 +151,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // A command that is selected will run in autonomous
+    Logger.getInstance().recordOutput("Chooser", "" + autoChooser.getCommand());
     return autoChooser.getCommand();
   }
 }
