@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -308,7 +309,7 @@ public class PhotonVision extends SubsystemBase{
                 y = (targetY + 1.634 + 1.634) - pose2dDrivetrain.getY();
             }
         }
-        return (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(targetHeight - 0.48, 2)) - 0.91) * -50000;
+        return (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(targetHeight - 0.48, 2)) - 0.762) * -50000;
     }
 
     public double getAutoTrackAngle(){
@@ -326,8 +327,8 @@ public class PhotonVision extends SubsystemBase{
         }
         theta = Math.atan(y / x);
         theta = Math.toDegrees(theta);
-        theta = 0;
-        return (theta - angleOffset) / 5.78;
+        theta = (Robot.m_robotContainer.s_Drivetrain.getYaw() + 3600000 % 360 - 180) - theta;
+        return (theta - angleOffset) / 5.78 * -1;
     }
 
     @Override
@@ -337,6 +338,8 @@ public class PhotonVision extends SubsystemBase{
             angle.setDouble(getAutoTrackAngle());
             poseX.setDouble(pose2dDrivetrain.getX());
             poseY.setDouble(pose2dDrivetrain.getY());
+            Logger.getInstance().recordOutput("AutoTrackDistance", getAutoTrackDistance());
+            Logger.getInstance().recordOutput("AutoTrackAngle", getAutoTrackAngle());
         }
         if(auto){
             if(!photonCamera.isConnected()){
