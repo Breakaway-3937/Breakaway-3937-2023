@@ -58,7 +58,7 @@ public class PhotonVision extends SubsystemBase{
     private ArrayList<Boolean> array = new ArrayList<Boolean>(9);
     private Pose2d pose2d = new Pose2d(0, 0, new Rotation2d(0));
     private Pose2d pose2dDrivetrain = new Pose2d(0, 0, new Rotation2d(0));
-    private double x, y, targetX, targetY, targetHeight, theta, angleOffset;
+    private double x, y, intakeDistance, targetX, targetY, targetHeight, theta, angleOffset;
 
     public PhotonVision(LED s_LED, Intake s_Intake) {
         this.s_LED = s_LED;
@@ -107,6 +107,7 @@ public class PhotonVision extends SubsystemBase{
             targetY = Constants.VisionConstants.HIGH_LEFT_POST_Y + 1.118;
         }
         targetHeight = Constants.VisionConstants.HIGH_HEIGHT;
+        intakeDistance = 0.71;
     }
     
     public void setHighRight(){
@@ -128,6 +129,7 @@ public class PhotonVision extends SubsystemBase{
             targetY = Constants.VisionConstants.HIGH_RIGHT_POST_Y - 1.118;
         }
         targetHeight = Constants.VisionConstants.HIGH_HEIGHT;
+        intakeDistance = 0.71;
     }
 
     public void setHighMid(){
@@ -164,6 +166,7 @@ public class PhotonVision extends SubsystemBase{
             targetY = Constants.VisionConstants.MID_LEFT_POST_Y + 1.118;
         }
         targetHeight = Constants.VisionConstants.MID_HEIGHT;
+        intakeDistance = 0.76;
     }
 
     public void setMidRight(){
@@ -185,6 +188,7 @@ public class PhotonVision extends SubsystemBase{
             targetY = Constants.VisionConstants.MID_RIGHT_POST_Y - 1.118;
         }
         targetHeight = Constants.VisionConstants.MID_HEIGHT;
+        intakeDistance = 0.76;
     }
 
     public void setMidMid(){
@@ -309,7 +313,7 @@ public class PhotonVision extends SubsystemBase{
                 y = (targetY + 1.634 + 1.634) - pose2dDrivetrain.getY();
             }
         }
-        return (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(targetHeight - 0.48, 2)) - 0.762) * -50000;
+        return (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(targetHeight - 0.48, 2)) - intakeDistance) * -50000;
     }
 
     public double getAutoTrackAngle(){
@@ -317,7 +321,7 @@ public class PhotonVision extends SubsystemBase{
             angleOffset = 0;
         }
         else{
-            angleOffset = Math.toDegrees(Math.atan((s_Intake.getDistance() + 0.057 - 0.196)/(RunArm.getExtensionValue() / -50000 + 0.91)));
+            angleOffset = Math.toDegrees(Math.atan((s_Intake.getDistance() + 0.057 - 0.196)/(RunArm.getExtensionValue() / -50000 + intakeDistance)));
         }
         if(y == 0 && s_Intake.getDistance() > 0.3){ 
             return 0;
@@ -327,8 +331,7 @@ public class PhotonVision extends SubsystemBase{
         }
         theta = Math.atan(y / x);
         theta = Math.toDegrees(theta);
-        theta = (Robot.m_robotContainer.s_Drivetrain.getYaw() + 3600000 % 360 - 180) - theta;
-        return (theta - angleOffset) / 5.78 * -1;
+        return (theta - angleOffset) / 5.78;
     }
 
     @Override
