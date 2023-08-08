@@ -58,7 +58,7 @@ public class RunArm extends CommandBase {
         turretPosition = 0;
         state = 0;
       }
-      track = true;
+      track = false;
     }
     else if(s_Photon.getSelectedScore().get(3) || s_Photon.getSelectedScore().get(4) || s_Photon.getSelectedScore().get(5)){
       intake = false;
@@ -289,7 +289,7 @@ public class RunArm extends CommandBase {
             s_Arm.setWrist(wristPosition);
           }
           else{
-            s_Arm.setExtension(-46500 + 2000);
+            s_Arm.setExtension(-46500);
             s_Arm.setWrist(wristPosition);
           }
         }
@@ -320,7 +320,7 @@ public class RunArm extends CommandBase {
           s_Arm.setWrist(wristPosition);
         }
         else{
-          s_Arm.setExtension(-46500 + 2000);
+          s_Arm.setExtension(-46500);
           s_Arm.setWrist(wristPosition);
         }
       }
