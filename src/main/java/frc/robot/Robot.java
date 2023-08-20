@@ -4,15 +4,18 @@
 
 package frc.robot;
 
-import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
-import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -32,6 +35,9 @@ public class Robot extends LoggedRobot {
 
   private PowerDistribution powerDistribution;
 
+  private GenericEntry canUtil = Shuffleboard.getTab("System").add("CanUtil", 0).withPosition(0, 0).getEntry();
+
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -40,14 +46,12 @@ public class Robot extends LoggedRobot {
   public void robotInit() {
     Logger.getInstance().recordMetadata("ProjectName", "MyProject"); // Set a metadata value
     if (isReal()) {
-        Logger.getInstance().addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
-        Logger.getInstance().addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-        powerDistribution = new PowerDistribution(25, ModuleType.kRev); // Enables power distribution logging
-    } else {
-        setUseTiming(false); // Run as fast as possible
-        String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
-        Logger.getInstance().setReplaySource(new WPILOGReader(logPath)); // Read replay log
-        Logger.getInstance().addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+      Logger.getInstance().addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
+      Logger.getInstance().addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+      powerDistribution = new PowerDistribution(25, ModuleType.kRev); // Enables power distribution logging
+    }
+    else{
+      powerDistribution = new PowerDistribution(25, ModuleType.kRev);
     }
 
     // Logger.getInstance().disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
@@ -62,6 +66,7 @@ public class Robot extends LoggedRobot {
     powerDistribution.setSwitchableChannel(true);
     powerDistribution.clearStickyFaults();
     CommandScheduler.getInstance().setPeriod(0.025);
+    ComplexWidget pdh = Shuffleboard.getTab("System").add("PDH", powerDistribution).withPosition(1, 0);
   }
 
   /**
@@ -78,6 +83,7 @@ public class Robot extends LoggedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+    canUtil.setDouble(RobotController.getCANStatus().percentBusUtilization * 100);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
