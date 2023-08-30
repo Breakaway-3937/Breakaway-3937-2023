@@ -327,6 +327,9 @@ public class PhotonVision extends SubsystemBase{
         }
         theta = Math.atan(y / x);
         theta = Math.toDegrees(theta);
+        if(RunArm.autoAssist){
+            theta = 0;
+        }
         return (theta - angleOffset) / 5.78;
     }
 
