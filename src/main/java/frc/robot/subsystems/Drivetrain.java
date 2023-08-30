@@ -107,7 +107,7 @@ public class Drivetrain extends SubsystemBase {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Drivetrain.MAX_SPEED);
         
         for(SwerveModule mod : swerveMods){
-            mod.setDesiredState(desiredStates[mod.moduleNumber], false, foc);
+            mod.setDesiredState(desiredStates[mod.moduleNumber], false, false);
         }
     } 
 
@@ -129,7 +129,7 @@ public class Drivetrain extends SubsystemBase {
 
         Logger.getInstance().recordOutput("Yaw", getYaw());
         Logger.getInstance().recordOutput("Roll", getRoll());
-        Logger.getInstance().recordOutput("Swerve States", getStates());
-        Logger.getInstance().recordOutput("Pose", swerveOdometry.getPoseMeters());
+        //Logger.getInstance().recordOutput("Swerve States", getStates());
+        //Logger.getInstance().recordOutput("Pose", swerveOdometry.getPoseMeters());
     }   
 }
