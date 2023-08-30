@@ -19,6 +19,7 @@ public class RunArm extends CommandBase {
   public static double shoulderPosition, extensionPosition;
   private int state;
   private boolean flag, flag1, track, intake, manualOverride, wristFirst;
+  public static boolean autoAssist;
   /** Creates a new RunArm. */
   public RunArm(Arm s_Arm, XboxController xboxController, PhotonVision s_Photon){
     this.s_Arm = s_Arm;
@@ -58,7 +59,8 @@ public class RunArm extends CommandBase {
         turretPosition = 0;
         state = 0;
       }
-      track = false;
+      track = true;
+      autoAssist = true;
     }
     else if(s_Photon.getSelectedScore().get(3) || s_Photon.getSelectedScore().get(4) || s_Photon.getSelectedScore().get(5)){
       intake = false;
@@ -90,6 +92,8 @@ public class RunArm extends CommandBase {
         turretPosition = 0;
       }
       track = true;
+      autoAssist = false;
+
     }
     else if(s_Photon.getSelectedScore().get(6) || s_Photon.getSelectedScore().get(7) || s_Photon.getSelectedScore().get(8)){
       intake = false;
@@ -106,6 +110,7 @@ public class RunArm extends CommandBase {
       wristPosition = 13.5;
       turretPosition = 0;
       track = false;
+      autoAssist = false;
     }
     if(xboxController.getPOV() == Constants.Controllers.DOWN){
       wristFirst = true;
@@ -125,6 +130,7 @@ public class RunArm extends CommandBase {
       wristPosition = 2;
       turretPosition = 0;
       track = false; 
+      autoAssist = false;
     }
     //Ground Intake
     else if(xboxController.getRawButton(1)){
@@ -160,6 +166,7 @@ public class RunArm extends CommandBase {
         turretPosition = 0;
       }
       track = false; 
+      autoAssist = false;
     }
     //Jack Arm
     else if(xboxController.getRawButton(4)){
@@ -178,6 +185,7 @@ public class RunArm extends CommandBase {
       wristPosition = 61;
       turretPosition = 0;
       track = false;
+      autoAssist = false;
       state = 0;
     }
     else if(xboxController.getRawButton(3)){
@@ -191,6 +199,7 @@ public class RunArm extends CommandBase {
       wristPosition = 10;
       turretPosition = 0;
       track = false;
+      autoAssist = false;
     }
     else if(xboxController.getRawButton(2)){
       intake = false;
@@ -208,6 +217,8 @@ public class RunArm extends CommandBase {
         extensionPosition = -100;
         wristPosition = 1;
         turretPosition = 0;
+        autoAssist = false;
+        track = false;
       }
       else if(!Intake.getConeCubeMode()){
         shoulderPosition = -6;
@@ -222,6 +233,7 @@ public class RunArm extends CommandBase {
         wristPosition = 13;
         turretPosition = 0;
       }
+      autoAssist = false;
       track = false;
     }
     if(xboxController.getRawAxis(2) > 0.5){
@@ -235,10 +247,11 @@ public class RunArm extends CommandBase {
           state = 1;
           flag1 = true;
         }
-        extensionPosition = -100;
-        wristPosition = 2;
-        turretPosition = 0;
-        track = false;
+      extensionPosition = -100;
+      wristPosition = 2;
+      turretPosition = 0;
+      track = false;
+      autoAssist = false;
     }
 
     if(shoulderPosition == 0 && s_Arm.getShoulder1Position() < shoulderPosition + 1 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
@@ -275,7 +288,9 @@ public class RunArm extends CommandBase {
       if(s_Arm.getShoulder1Position() < shoulderPosition + 0.5 && s_Arm.getShoulder1Position() > shoulderPosition - 0.5){
         if(s_Photon.getAuto() && track){
           turretPosition = s_Photon.getAutoTrackAngle();
-          extensionPosition = s_Photon.getAutoTrackDistance();
+          if(!autoAssist){
+            extensionPosition = s_Photon.getAutoTrackDistance();
+          }
           if(turretPosition >= -6 && turretPosition <= 6){
             s_Arm.setTurret(turretPosition);
             s_Arm.setWrist(wristPosition);
@@ -306,7 +321,9 @@ public class RunArm extends CommandBase {
       case 1:
       if(s_Photon.getAuto() && track){
         turretPosition = s_Photon.getAutoTrackAngle();
-        extensionPosition = s_Photon.getAutoTrackDistance();
+        if(!autoAssist){
+          extensionPosition = s_Photon.getAutoTrackDistance();
+        }
         if(turretPosition >= -6 && turretPosition <= 6){
           s_Arm.setTurret(turretPosition);
           s_Arm.setWrist(wristPosition);
