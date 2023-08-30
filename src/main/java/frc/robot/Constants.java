@@ -25,7 +25,7 @@ public final class Constants {
     public static final int CANDLE_ID = 15;
     public static final String PRACTICE_MAC = "00:80:2F:25:DE:54";
     public static final boolean PRACTICE_BOT = getMACAddress().equals(PRACTICE_MAC);
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = false;
 
     
 
@@ -119,7 +119,7 @@ public final class Constants {
         public static final boolean DRIVE_ENABLE_CURRENT_LIMIT = true;
 
         /* Angle Motor PID Values */
-        public static final double ANGLE_KP = 16.8; 
+        public static final double ANGLE_KP = 26.3; 
         public static final double ANGLE_KI = 0.0;
         public static final double ANGLE_KD = 0.288;
         public static final double ANGLE_KF = 0.0;
@@ -157,7 +157,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 0;
             public static final int ANGLE_MOTOR_ID = 1;
             public static final int CANCODER_ID = 21;
-            public static final double ANGLE_OFFSET = -0.7024;
+            public static final double ANGLE_OFFSET = /*0.201416;*/ -0.7024;
             public static final double ANGLE_OFFSET_PRACTICE = 0;
             public static final SwerveModuleConstants CONSTANTS = 
                 new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET, ANGLE_OFFSET_PRACTICE);
@@ -168,7 +168,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 19;
             public static final int ANGLE_MOTOR_ID = 18;
             public static final int CANCODER_ID = 22;
-            public static final double ANGLE_OFFSET = -0.8889;
+            public static final double ANGLE_OFFSET = /*0.387207;*/ -0.8889;
             public static final double ANGLE_OFFSET_PRACTICE = 0;
             public static final SwerveModuleConstants CONSTANTS = 
                 new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET, ANGLE_OFFSET_PRACTICE);
@@ -179,7 +179,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 8;
             public static final int ANGLE_MOTOR_ID = 9;
             public static final int CANCODER_ID = 23;
-            public static final double ANGLE_OFFSET = -0.8948;
+            public static final double ANGLE_OFFSET = /*0.395996;*/ -0.8948;
             public static final double ANGLE_OFFSET_PRACTICE = 0;
             public static final SwerveModuleConstants CONSTANTS = 
                 new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET, ANGLE_OFFSET_PRACTICE);
@@ -190,7 +190,7 @@ public final class Constants {
             public static final int DRIVE_MOTOR_ID = 11;
             public static final int ANGLE_MOTOR_ID = 10;
             public static final int CANCODER_ID = 24;
-            public static final double ANGLE_OFFSET = -0.4138;
+            public static final double ANGLE_OFFSET = /*0.916016;*/ -0.4138;
             public static final double ANGLE_OFFSET_PRACTICE = 0;
             public static final SwerveModuleConstants CONSTANTS = 
                 new SwerveModuleConstants(DRIVE_MOTOR_ID, ANGLE_MOTOR_ID, CANCODER_ID, ANGLE_OFFSET, ANGLE_OFFSET_PRACTICE);
