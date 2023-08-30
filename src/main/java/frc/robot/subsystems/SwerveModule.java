@@ -71,7 +71,7 @@ public class SwerveModule {
             }
         }
 
-        mAngleMotor.setControl(new PositionVoltage(desiredState.angle.getRotations(), true, 0, 0, false)); 
+        mAngleMotor.setControl(new PositionVoltage(desiredState.angle.getRotations(), false, 0, 0, false)); 
     }
 
     private void configAngleEncoder(double offset){        
