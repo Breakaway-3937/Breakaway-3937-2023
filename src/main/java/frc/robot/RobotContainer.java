@@ -85,7 +85,7 @@ public class RobotContainer {
   public final Arm s_Arm = new Arm();
   
   /* Commands */
-  public final TeleopSwerve c_TeleopSwerve = new TeleopSwerve(s_Drivetrain, translationController, rotationController, xboxController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop);
+  public final TeleopSwerve c_TeleopSwerve = new TeleopSwerve(s_Drivetrain, translationController, rotationController, translationAxis, strafeAxis, rotationAxis, fieldRelative, openLoop);
   public final RunIntake c_RunIntake = new RunIntake(s_Intake, xboxController);
   public final RunClimber c_RunClimber = new RunClimber(s_Climber, xboxController);
   public final RunArm c_RunArm = new RunArm(s_Arm, xboxController, s_Photon);

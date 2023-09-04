@@ -25,7 +25,7 @@ public final class Constants {
     public static final int CANDLE_ID = 15;
     public static final String PRACTICE_MAC = "00:80:2F:25:DE:54";
     public static final boolean PRACTICE_BOT = getMACAddress().equals(PRACTICE_MAC);
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     
 

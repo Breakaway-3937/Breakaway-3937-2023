@@ -44,20 +44,19 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotInit() {
-    /*Logger.getInstance().recordMetadata("ProjectName", "MyProject"); // Set a metadata value
+    Logger.getInstance().recordMetadata("ProjectName", "MyProject"); // Set a metadata value
     if (isReal()) {
       Logger.getInstance().addDataReceiver(new WPILOGWriter("/media/sda1/")); // Log to a USB stick
       Logger.getInstance().addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
       powerDistribution = new PowerDistribution(25, ModuleType.kRev); // Enables power distribution logging
     }
-    else{*/
+    else{
       powerDistribution = new PowerDistribution(25, ModuleType.kRev);
-    //}
+    }
 
-    // Logger.getInstance().disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
-    /*if(Constants.DEBUG){
+    if(Constants.DEBUG){
       Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
-    }*/
+    }
     
     ctreConfigs = new CTREConfigs();
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
@@ -67,6 +66,7 @@ public class Robot extends LoggedRobot {
     powerDistribution.clearStickyFaults();
     CommandScheduler.getInstance().setPeriod(0.025);
     ComplexWidget pdh = Shuffleboard.getTab("System").add("PDH", powerDistribution).withPosition(1, 0);
+    pdh.hashCode();
   }
 
   /**

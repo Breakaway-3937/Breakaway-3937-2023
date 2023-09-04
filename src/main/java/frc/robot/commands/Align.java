@@ -62,7 +62,7 @@ public class Align extends CommandBase {
       }
     }
     translation = new Translation2d(yAxis, xAxis).times(Constants.Drivetrain.MAX_SPEED);
-    s_Drivetrain.drive(translation, rotation, true, true, false);
+    s_Drivetrain.drive(translation, rotation, true, true);
   }
 
   // Called once the command ends or is interrupted.

@@ -25,7 +25,6 @@ public class Drivetrain extends SubsystemBase {
     private final Pigeon2 gyro;
     private GenericEntry mod0Cancoder, mod1Cancoder, mod2Cancoder, mod3Cancoder;
     private GenericEntry yaw, roll;
-    private boolean foc;
 
     public Drivetrain() {
         gyro = new Pigeon2(Constants.Drivetrain.PIGEON_ID, "CANivore");
@@ -49,8 +48,7 @@ public class Drivetrain extends SubsystemBase {
         roll = Shuffleboard.getTab("Drive").add("Roll", gyro.getRoll().getValue()).withPosition(1, 1).getEntry();
     }
 
-    public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop, boolean foc) {
-        this.foc = foc;
+    public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
         SwerveModuleState[] swerveModuleStates =
             Constants.Drivetrain.SWERVE_KINEMATICS.toSwerveModuleStates(
                 fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -67,7 +65,7 @@ public class Drivetrain extends SubsystemBase {
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Drivetrain.MAX_SPEED);
 
         for(SwerveModule mod : swerveMods){
-            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop, foc);
+            mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
         }
     }
 
@@ -107,7 +105,7 @@ public class Drivetrain extends SubsystemBase {
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Drivetrain.MAX_SPEED);
         
         for(SwerveModule mod : swerveMods){
-            mod.setDesiredState(desiredStates[mod.moduleNumber], false, false);
+            mod.setDesiredState(desiredStates[mod.moduleNumber], false);
         }
     } 
 
@@ -129,7 +127,7 @@ public class Drivetrain extends SubsystemBase {
 
         Logger.getInstance().recordOutput("Yaw", getYaw());
         Logger.getInstance().recordOutput("Roll", getRoll());
-        //Logger.getInstance().recordOutput("Swerve States", getStates());
-        //Logger.getInstance().recordOutput("Pose", swerveOdometry.getPoseMeters());
+        Logger.getInstance().recordOutput("Swerve States", getStates());
+        Logger.getInstance().recordOutput("Pose", swerveOdometry.getPoseMeters());
     }   
 }

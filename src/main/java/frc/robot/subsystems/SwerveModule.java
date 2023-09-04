@@ -26,7 +26,7 @@ public class SwerveModule {
     private StatusSignal<Double> driveVelocity;
     private StatusSignal<Double> anglePosition;
     private StatusSignal<Double> angleVelocity;
-    private double rotationsPerMeter = Constants.Drivetrain.DRIVE_GEAR_RATIO / (2 * Math.PI * Constants.Drivetrain.WHEEL_DIAMETER);
+    private double rotationsPerMeter = Constants.Drivetrain.DRIVE_GEAR_RATIO / Constants.Drivetrain.WHEEL_CIRCUMFERENCE;
 
 
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
@@ -50,27 +50,16 @@ public class SwerveModule {
         angleVelocity = mAngleMotor.getVelocity();
     }
 
-    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop, boolean focEnabled){
+    public void setDesiredState(SwerveModuleState desiredState, boolean isOpenLoop){
         desiredState = SwerveModuleState.optimize(desiredState, getState().angle);
         if(isOpenLoop){
             double percentOutput = desiredState.speedMetersPerSecond / Constants.Drivetrain.MAX_SPEED;
-            if(!focEnabled){
-                mDriveMotor.setControl(new DutyCycleOut(percentOutput, false, false));
-            }
-            else if(focEnabled){
-                mDriveMotor.setControl(new DutyCycleOut(percentOutput, true, false));
-            }
+            mDriveMotor.setControl(new DutyCycleOut(percentOutput, true, false));
         }
         else {
             double velocity = desiredState.speedMetersPerSecond * rotationsPerMeter;
-            if(!focEnabled){
-            mDriveMotor.setControl(new VelocityDutyCycle(velocity, false, 0, 0, false));
-            }
-            else if(focEnabled){
             mDriveMotor.setControl(new VelocityDutyCycle(velocity, true, 0, 0, false));
-            }
         }
-
         mAngleMotor.setControl(new PositionVoltage(desiredState.angle.getRotations(), false, 0, 0, false)); 
     }
 
@@ -114,8 +103,13 @@ public class SwerveModule {
     public SwerveModuleState getState(){
         anglePosition.refresh();
         angleVelocity.refresh();
+        driveVelocity.refresh();
         Rotation2d angle = Rotation2d.fromRotations(BaseStatusSignal.getLatencyCompensatedValue(anglePosition, angleVelocity));
-        return new SwerveModuleState(0, angle);
+        return new SwerveModuleState(velocityRotationsToMeters(), angle);
     }
     
+    public double velocityRotationsToMeters(){
+        return (driveVelocity.getValue() * Constants.Drivetrain.WHEEL_CIRCUMFERENCE) / Constants.Drivetrain.DRIVE_GEAR_RATIO;
+    }
+
 }
