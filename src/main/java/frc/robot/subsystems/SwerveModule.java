@@ -79,7 +79,7 @@ public class SwerveModule {
 
     private void configDriveMotor(){        
         mDriveMotor.getConfigurator().apply(new TalonFXConfiguration());
-        mDriveMotor.getConfigurator().apply(Robot.ctreConfigs.swerveAngleFXConfig);
+        mDriveMotor.getConfigurator().apply(Robot.ctreConfigs.swerveDriveFXConfig);
         mDriveMotor.setRotorPosition(0);
     }
 
@@ -87,16 +87,12 @@ public class SwerveModule {
         return angleEncoder.getAbsolutePosition().getValue();
     }
 
-    private Rotation2d getAngle(){
-        return getState().angle;
-    }
-
     public SwerveModulePosition getPosition(){
         drivePosition.refresh();
         driveVelocity.refresh();
         return new SwerveModulePosition(
             BaseStatusSignal.getLatencyCompensatedValue(drivePosition, driveVelocity) / rotationsPerMeter, 
-            getAngle()
+            getState().angle
         );
     }
 
