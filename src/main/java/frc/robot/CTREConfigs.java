@@ -16,6 +16,7 @@ public final class CTREConfigs {
         swerveAngleFXConfig.CurrentLimits.SupplyCurrentThreshold = Constants.Drivetrain.ANGLE_PEAK_CURRENT_LIMIT;
         swerveAngleFXConfig.CurrentLimits.SupplyTimeThreshold = Constants.Drivetrain.ANGLE_PEAK_CURRENT_DURATION;
 
+
         swerveAngleFXConfig.Slot0.kP = Constants.Drivetrain.ANGLE_KP;
         swerveAngleFXConfig.Slot0.kI = Constants.Drivetrain.ANGLE_KI;
         swerveAngleFXConfig.Slot0.kD = Constants.Drivetrain.ANGLE_KD;

@@ -8,6 +8,7 @@ import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.networktables.GenericEntry;
@@ -26,6 +27,7 @@ public class Intake extends SubsystemBase {
   public Intake() {
     intakeMotor = new WPI_TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
     intakeMotor.configFactoryDefault();
+    intakeMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 25, 40, 0.1));
     intakeMotor.setNeutralMode(NeutralMode.Brake);
     uSSensor = new AnalogInput(Constants.Intake.US_SENSOR_ID);
     uSSensor.resetAccumulator();

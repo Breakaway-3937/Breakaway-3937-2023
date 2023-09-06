@@ -107,6 +107,7 @@ public class Arm extends SubsystemBase {
     wristPIDController.setSmartMotionMaxAccel(1000, 0);
     wristPIDController.setOutputRange(-1, 1);
     wristMotor.setIdleMode(IdleMode.kBrake);
+    wristMotor.setSmartCurrentLimit(40);
 
     wristPIDController.setP(wristkP);
     wristPIDController.setI(wristkI);
@@ -128,12 +129,14 @@ public class Arm extends SubsystemBase {
     shoulderPIDController.setSmartMotionMaxVelocity(750, 0);
     shoulderPIDController.setSmartMotionMaxAccel(350, 0);
     shoulderPIDController.setOutputRange(-1, 0.75);
+    leadShoulder.setSmartCurrentLimit(60);
     leadShoulder.setInverted(true);
     leadShoulder.setIdleMode(IdleMode.kBrake);
   }
 
   private void configFollowerShoulder(){
     followerShoulder.restoreFactoryDefaults();
+    followerShoulder.setSmartCurrentLimit(60);
     followerShoulder.setIdleMode(IdleMode.kBrake);
     followerShoulder.follow(leadShoulder);
   }
@@ -144,6 +147,7 @@ public class Arm extends SubsystemBase {
     turretPIDController = turret.getPIDController();
     turretPIDController.setFeedbackDevice(turretEncoder);
     turretEncoder.setPosition(0);
+    turret.setSmartCurrentLimit(40);
 
     turretPIDController.setP(turretkP);
     turretPIDController.setI(turretkI);
@@ -169,8 +173,8 @@ public class Arm extends SubsystemBase {
     leadExtension.configPeakOutputReverse(-0.9);
     leadExtension.configMotionCruiseVelocity(15000);
     leadExtension.configMotionAcceleration(12500);
-    leadExtension.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 35, 0.5));
-    followerExtension.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 30, 35, 0.5));
+    leadExtension.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 35, 50, 0.1));
+    followerExtension.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 35, 50, 0.1));
     leadExtension.setNeutralMode(NeutralMode.Brake);
     followerExtension.setNeutralMode(NeutralMode.Brake);
     followerExtension.follow(leadExtension);
