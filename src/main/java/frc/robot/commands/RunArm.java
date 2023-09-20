@@ -92,7 +92,7 @@ public class RunArm extends CommandBase {
         turretPosition = 0;
       }
       track = true;
-      autoAssist = false;
+      autoAssist = true;
 
     }
     else if(s_Photon.getSelectedScore().get(6) || s_Photon.getSelectedScore().get(7) || s_Photon.getSelectedScore().get(8)){
