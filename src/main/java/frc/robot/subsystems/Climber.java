@@ -60,6 +60,8 @@ public class Climber extends SubsystemBase {
     pid1.setI(climber1kI);
     pid1.setD(climber1kD);
     pid1.setFF(climber1kFF);
+    climber1.setSmartCurrentLimit(50);
+    climber2.setSmartCurrentLimit(50);
 
     
     climber2.setIdleMode(IdleMode.kBrake);   
