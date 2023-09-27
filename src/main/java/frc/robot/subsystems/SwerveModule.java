@@ -26,7 +26,7 @@ public class SwerveModule {
     private StatusSignal<Double> driveVelocity;
     private StatusSignal<Double> anglePosition;
     private StatusSignal<Double> angleVelocity;
-    private double rotationsPerMeter = Constants.Drivetrain.DRIVE_GEAR_RATIO / Constants.Drivetrain.WHEEL_CIRCUMFERENCE;
+    private final double rotationsPerMeter = Constants.Drivetrain.DRIVE_GEAR_RATIO / Constants.Drivetrain.WHEEL_CIRCUMFERENCE;
 
 
     public SwerveModule(int moduleNumber, SwerveModuleConstants moduleConstants){
