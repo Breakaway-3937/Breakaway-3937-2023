@@ -8,12 +8,10 @@ package frc.robot.subsystems;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.TalonFXSensorCollection;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -31,11 +29,11 @@ import frc.robot.Constants;
 public class Arm extends SubsystemBase {
   private final CANSparkMax leadShoulder;
   private final CANSparkMax followerShoulder;
-  private final WPI_TalonFX leadExtension, followerExtension;
+  private final TalonFX leadExtension, followerExtension;
   private final CANSparkMax turret;
   private final CANSparkMax wristMotor;
-  private TalonFXSensorCollection extensionEncoder;
-  private double shoulderkP, shoulderkI, shoulderkD, shoulderkFF, extensionkP, extensionkI, extensionkD, extensionkFF, turretkP, turretkI, turretkD, turretkFF, wristkP, wristkI, wristkD, wristkFF;
+  private TalonFXConfiguration extensionConfig;
+  private double shoulderkP, shoulderkI, shoulderkD, shoulderkFF, extensionkP, extensionkI, extensionkD, extensionkV, turretkP, turretkI, turretkD, turretkFF, wristkP, wristkI, wristkD, wristkFF;
   private RelativeEncoder shoulderEncoder, turretEncoder, wristEncoder;
   private SparkMaxPIDController shoulderPIDController, turretPIDController, wristPIDController;
   private final GenericEntry shoulderEncoderEntry, extensionEncoderEntry, turretEncoderEntry, wristEncoderEntry;
@@ -44,8 +42,8 @@ public class Arm extends SubsystemBase {
   public Arm() {
     leadShoulder = new CANSparkMax(Constants.Arm.LEAD_SHOULDER_ID, MotorType.kBrushless);
     followerShoulder = new CANSparkMax(Constants.Arm.FOLLOWER_SHOULDER_ID, MotorType.kBrushless);
-    leadExtension = new WPI_TalonFX(Constants.Arm.LEAD_EXTENSION_ID);
-    followerExtension = new WPI_TalonFX(Constants.Arm.FOLLOWER_EXTENSION_ID);
+    leadExtension = new TalonFX(Constants.Arm.LEAD_EXTENSION_ID);
+    followerExtension = new TalonFX(Constants.Arm.FOLLOWER_EXTENSION_ID);
     turret = new CANSparkMax(Constants.Arm.TURRET_ID, MotorType.kBrushless);
     wristMotor = new CANSparkMax(Constants.Intake.WRIST_MOTOR_ID, MotorType.kBrushless);
     setValues();
@@ -160,21 +158,22 @@ public class Arm extends SubsystemBase {
   }
 
   private void configExtention(){
-    leadExtension.configFactoryDefault();
-    followerExtension.configFactoryDefault();
-    extensionEncoder = leadExtension.getSensorCollection();
-    leadExtension.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-    extensionEncoder.setIntegratedSensorPosition(0, 0);
-    leadExtension.config_kP(0, extensionkP);
-    leadExtension.config_kI(0, extensionkI);
-    leadExtension.config_kD(0, extensionkD);
-    leadExtension.config_kF(0, extensionkFF);
+    leadExtension.getConfigurator().apply(new TalonFXConfiguration());
+    followerExtension.getConfigurator().apply(new TalonFXConfiguration());
+    extensionConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+    leadExtension.setRotorPosition(0);
+    extensionConfig.Slot0.kP = extensionkP;
+    extensionConfig.Slot0.kI = extensionkI;
+    extensionConfig.Slot0.kD = extensionkD;
+    extensionConfig.Slot0.kV = extensionkV;
+    extensionConfig.MotionMagic.MotionMagicCruiseVelocity = 73;
+    extensionConfig.MotionMagic.MotionMagicAcceleration = 61;
     leadExtension.configPeakOutputForward(0.9);
     leadExtension.configPeakOutputReverse(-0.9);
     leadExtension.configMotionCruiseVelocity(15000);
     leadExtension.configMotionAcceleration(12500);
     leadExtension.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 35, 50, 0.1));
-    followerExtension.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 35, 50, 0.1));
+    followerExtension.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 35, 50, 0.1));destr
     leadExtension.setNeutralMode(NeutralMode.Brake);
     followerExtension.setNeutralMode(NeutralMode.Brake);
     followerExtension.follow(leadExtension);
@@ -184,7 +183,7 @@ public class Arm extends SubsystemBase {
     extensionkP = 0.75;
     extensionkI = 0;
     extensionkD = 7.5;
-    extensionkFF = 0.3;
+    extensionkV = 0.3;
     shoulderkP = 4e-8;
     shoulderkI = 0;
     shoulderkD = 0;
