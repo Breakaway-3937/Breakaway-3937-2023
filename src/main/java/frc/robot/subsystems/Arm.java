@@ -8,10 +8,12 @@ package frc.robot.subsystems;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
+import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -33,7 +35,7 @@ public class Arm extends SubsystemBase {
   private final CANSparkMax turret;
   private final CANSparkMax wristMotor;
   private TalonFXConfiguration extensionConfig;
-  private double shoulderkP, shoulderkI, shoulderkD, shoulderkFF, extensionkP, extensionkI, extensionkD, extensionkV, turretkP, turretkI, turretkD, turretkFF, wristkP, wristkI, wristkD, wristkFF;
+  private double shoulderkP, shoulderkI, shoulderkD, shoulderkFF, extensionkP, extensionkI, extensionkD, turretkP, turretkI, turretkD, turretkFF, wristkP, wristkI, wristkD, wristkFF;
   private RelativeEncoder shoulderEncoder, turretEncoder, wristEncoder;
   private SparkMaxPIDController shoulderPIDController, turretPIDController, wristPIDController;
   private final GenericEntry shoulderEncoderEntry, extensionEncoderEntry, turretEncoderEntry, wristEncoderEntry;
@@ -67,7 +69,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void setExtension(double position){
-    leadExtension.set(ControlMode.MotionMagic, position);
+    leadExtension.setControl(new MotionMagicDutyCycle(position, true, 0, 0, false));
   }
 
   public void setTurret(double position){
@@ -79,7 +81,7 @@ public class Arm extends SubsystemBase {
   }
 
   public double getExtensionPosition(){
-    return extensionEncoder.getIntegratedSensorPosition();
+    return leadExtension.getRotorPosition().getValue();
   }
 
   public double getTurretPosition(){
@@ -165,25 +167,22 @@ public class Arm extends SubsystemBase {
     extensionConfig.Slot0.kP = extensionkP;
     extensionConfig.Slot0.kI = extensionkI;
     extensionConfig.Slot0.kD = extensionkD;
-    extensionConfig.Slot0.kV = extensionkV;
     extensionConfig.MotionMagic.MotionMagicCruiseVelocity = 73;
     extensionConfig.MotionMagic.MotionMagicAcceleration = 61;
-    leadExtension.configPeakOutputForward(0.9);
-    leadExtension.configPeakOutputReverse(-0.9);
-    leadExtension.configMotionCruiseVelocity(15000);
-    leadExtension.configMotionAcceleration(12500);
-    leadExtension.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 35, 50, 0.1));
-    followerExtension.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 35, 50, 0.1));destr
-    leadExtension.setNeutralMode(NeutralMode.Brake);
-    followerExtension.setNeutralMode(NeutralMode.Brake);
-    followerExtension.follow(leadExtension);
+    extensionConfig.CurrentLimits.SupplyCurrentLimit = 35;
+    extensionConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    extensionConfig.CurrentLimits.SupplyCurrentThreshold = 50;
+    extensionConfig.CurrentLimits.SupplyTimeThreshold = 0.1;
+    extensionConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    leadExtension.getConfigurator().apply(extensionConfig);
+    followerExtension.getConfigurator().apply(extensionConfig);
+    followerExtension.setControl(new Follower(Constants.Arm.LEAD_EXTENSION_ID, false));
   }
 
   public void setValues(){
-    extensionkP = 0.75;
+    extensionkP = 1.501466275659824;
     extensionkI = 0;
-    extensionkD = 7.5;
-    extensionkV = 0.3;
+    extensionkD = 0.0150146;
     shoulderkP = 4e-8;
     shoulderkI = 0;
     shoulderkD = 0;

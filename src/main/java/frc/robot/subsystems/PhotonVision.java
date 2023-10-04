@@ -309,7 +309,7 @@ public class PhotonVision extends SubsystemBase{
                 y = (targetY + 1.634 + 1.634) - pose2dDrivetrain.getY();
             }
         }
-        return (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(targetHeight - 0.48, 2)) - 0.762) * -50000;
+        return (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(targetHeight - 0.48, 2)) - 0.762) * -24.4140625;
     }
 
     public double getAutoTrackAngle(){
@@ -317,7 +317,7 @@ public class PhotonVision extends SubsystemBase{
             angleOffset = 0;
         }
         else{
-            angleOffset = Math.toDegrees(Math.atan((s_Intake.getDistance() + 0.057 - 0.196)/(RunArm.getExtensionValue() / -50000 + 0.762)));
+            angleOffset = Math.toDegrees(Math.atan((s_Intake.getDistance() + 0.057 - 0.196)/(RunArm.getExtensionValue() / -24.4140625 + 0.762)));
         }
         if(y == 0 && s_Intake.getDistance() > 0.3){ 
             return 0;
@@ -356,10 +356,10 @@ public class PhotonVision extends SubsystemBase{
             else if(DriverStation.getAlliance().toString().equals("Red") && 16.5 - pose2dDrivetrain.getX() > 4){
                 s_LED.red();
             }
-            else if((getAutoTrackAngle() < -6 || getAutoTrackAngle() > 6) && (getAutoTrackDistance() > -100 || getAutoTrackDistance() < -46500)){
+            else if((getAutoTrackAngle() < -6 || getAutoTrackAngle() > 6) && (getAutoTrackDistance() > -0.048828125 || getAutoTrackDistance() < -22.705078125)){
                 s_LED.white();
             }
-            else if(getAutoTrackAngle() >= -6 && getAutoTrackAngle() <= 6 && getAutoTrackDistance() >= -46500 && getAutoTrackDistance() <= -100){
+            else if(getAutoTrackAngle() >= -6 && getAutoTrackAngle() <= 6 && getAutoTrackDistance() >= -22.705078125 && getAutoTrackDistance() <= -0.048828125){
                 s_LED.green();
             }
         }

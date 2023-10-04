@@ -34,7 +34,7 @@ public class RunArm extends CommandBase {
   public void initialize() {
     s_Photon.setAllFalse();
     shoulderPosition = -10;
-    extensionPosition = -100;
+    extensionPosition = -0.048828125;
     wristPosition = 10;
     turretPosition = 0;
   }
@@ -47,14 +47,14 @@ public class RunArm extends CommandBase {
       wristFirst = false;
       if(Intake.getConeCubeMode()){
         shoulderPosition = -13;
-        extensionPosition = -44500;
+        extensionPosition = -21.728515625;
         wristPosition = 60;
         turretPosition = 0;
         state = 0;
       }
       else if(!Intake.getConeCubeMode()){
         shoulderPosition = -11.25;
-        extensionPosition = -44500;
+        extensionPosition = -21.728515625;
         wristPosition = 44.2;
         turretPosition = 0;
         state = 0;
@@ -67,27 +67,27 @@ public class RunArm extends CommandBase {
       wristFirst = false;
       if(Intake.getConeCubeMode()){
         shoulderPosition = -13.75;
-        if(!flag1 && extensionPosition >= -19500){
+        if(!flag1 && extensionPosition >= -9.521484375){
           state = 0;
         }
         else{
           state = 1;
           flag1 = true;
         }
-        extensionPosition = -19500;
+        extensionPosition = -9.521484375;
         wristPosition = 66.5;
         turretPosition = 0;
       }
       else if(!Intake.getConeCubeMode()){
         shoulderPosition = -10.75;
-        if(!flag1 && extensionPosition >= -19000){
+        if(!flag1 && extensionPosition >= -9.27734375){
           state = 0;
         }
         else{
           state = 1;
           flag1 = true;
         }
-        extensionPosition = -19000;
+        extensionPosition = -9.27734375;
         wristPosition = 44.2;
         turretPosition = 0;
       }
@@ -99,14 +99,14 @@ public class RunArm extends CommandBase {
       intake = false;
       wristFirst = false;
       shoulderPosition = 0;
-      if(!flag1 && extensionPosition >= -100){
+      if(!flag1 && extensionPosition >= -0.048828125){
         state = 0;
       }
       else{
         state = 1;
         flag1 = true;
       }
-      extensionPosition = -100;
+      extensionPosition = -0.048828125;
       wristPosition = 13.5;
       turretPosition = 0;
       track = false;
@@ -119,14 +119,14 @@ public class RunArm extends CommandBase {
       intake = true;
       s_Photon.setAllFalse();
       shoulderPosition = 0;
-      if(!flag1 && extensionPosition >= -100){
+      if(!flag1 && extensionPosition >= -0.048828125){
         state = 0;
       }
       else{
         state = 1;
         flag1 = true;
       }
-      extensionPosition = -100;
+      extensionPosition = -0.048828125;
       wristPosition = 2;
       turretPosition = 0;
       track = false; 
@@ -141,27 +141,27 @@ public class RunArm extends CommandBase {
       s_Photon.setAllFalse();
       if(Intake.getConeCubeMode()){
         shoulderPosition = 0;
-        if(!flag1 && extensionPosition >= -100){
+        if(!flag1 && extensionPosition >= -0.048828125){
           state = 0;
         }
         else{
           state = 1;
           flag1 = true;
         }
-        extensionPosition = -100;
+        extensionPosition = -0.048828125;
         wristPosition = 29;
         turretPosition = 0;
       }
       else if(!Intake.getConeCubeMode()){
         shoulderPosition = 0;
-        if(!flag1 && extensionPosition >= -100){
+        if(!flag1 && extensionPosition >= -0.048828125){
           state = 0;
         }
         else{
           state = 1;
           flag1 = true;
         }
-        extensionPosition = -100;
+        extensionPosition = -0.048828125;
         wristPosition = 30;
         turretPosition = 0;
       }
@@ -174,14 +174,14 @@ public class RunArm extends CommandBase {
       wristFirst = false;
       s_Photon.setAllFalse();
       shoulderPosition = -13;
-      if(!flag1 && extensionPosition >= -35700){
+      if(!flag1 && extensionPosition >= -17.431640625){
         state = 0;
       }
       else{
         state = 1;
         flag1 = true;
       }
-      extensionPosition = -35700;
+      extensionPosition = -17.431640625;
       wristPosition = 61;
       turretPosition = 0;
       track = false;
@@ -195,7 +195,7 @@ public class RunArm extends CommandBase {
       shoulderPosition = -10;
       state = 1;
       flag1 = true;
-      extensionPosition = -100;
+      extensionPosition = -0.048828125;
       wristPosition = 10;
       turretPosition = 0;
       track = false;
@@ -207,14 +207,14 @@ public class RunArm extends CommandBase {
       s_Photon.setAllFalse();
       if(Intake.getConeCubeMode()){
         shoulderPosition = 0;
-        if(!flag1 && extensionPosition >= -100){
+        if(!flag1 && extensionPosition >= -0.048828125){
           state = 0;
         }
         else{
           state = 1;
           flag1 = true;
         }
-        extensionPosition = -100;
+        extensionPosition = -0.048828125;
         wristPosition = 1;
         turretPosition = 0;
         autoAssist = false;
@@ -222,14 +222,14 @@ public class RunArm extends CommandBase {
       }
       else if(!Intake.getConeCubeMode()){
         shoulderPosition = -6;
-        if(!flag1 && extensionPosition >= -100){
+        if(!flag1 && extensionPosition >= -0.048828125){
           state = 0;
         }
         else{
           state = 1;
           flag1 = true;
         }
-        extensionPosition = -100;
+        extensionPosition = -0.048828125;
         wristPosition = 13;
         turretPosition = 0;
       }
@@ -240,14 +240,14 @@ public class RunArm extends CommandBase {
       intake = false;
       wristFirst = true;
       shoulderPosition = 0;
-        if(!flag1 && extensionPosition >= -100){
+        if(!flag1 && extensionPosition >= -0.048828125){
           state = 0;
         }
         else{
           state = 1;
           flag1 = true;
         }
-      extensionPosition = -100;
+      extensionPosition = -0.048828125;
       wristPosition = 2;
       turretPosition = 0;
       track = false;
@@ -299,17 +299,17 @@ public class RunArm extends CommandBase {
             s_Arm.setTurret(0);
             s_Arm.setWrist(wristPosition);
           }
-          if(extensionPosition <= -100 && extensionPosition >= -46500){
+          if(extensionPosition <= -0.048828125 && extensionPosition >= -22.705078125){
             s_Arm.setExtension(extensionPosition);
             s_Arm.setWrist(wristPosition);
           }
           else{
-            s_Arm.setExtension(-46500);
+            s_Arm.setExtension(-22.705078125);
             s_Arm.setWrist(wristPosition);
           }
         }
         else if(!s_Photon.getAuto() || !track){
-          if(turretPosition >= -6 && turretPosition <= 6 && extensionPosition <= -100 && extensionPosition >= -46500){
+          if(turretPosition >= -6 && turretPosition <= 6 && extensionPosition <= -0.048828125 && extensionPosition >= -22.705078125){
             s_Arm.setTurret(turretPosition);
             s_Arm.setExtension(extensionPosition);
             s_Arm.setWrist(wristPosition);
@@ -332,23 +332,23 @@ public class RunArm extends CommandBase {
           s_Arm.setTurret(0);
           s_Arm.setWrist(wristPosition);
         }
-        if(extensionPosition <= -100 && extensionPosition >= -46500){
+        if(extensionPosition <= -0.048828125 && extensionPosition >= -22.705078125){
           s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
         }
         else{
-          s_Arm.setExtension(-46500);
+          s_Arm.setExtension(-22.705078125);
           s_Arm.setWrist(wristPosition);
         }
       }
       else if(!s_Photon.getAuto() || !track){
-        if(turretPosition >= -6 && turretPosition <= 6 && extensionPosition <= -100 && extensionPosition >= -46500){
+        if(turretPosition >= -6 && turretPosition <= 6 && extensionPosition <= -0.048828125 && extensionPosition >= -22.705078125){
           s_Arm.setTurret(turretPosition);
           s_Arm.setExtension(extensionPosition);
           s_Arm.setWrist(wristPosition);
         }
       }
-      if(s_Arm.getExtensionPosition() < extensionPosition + 125 && s_Arm.getExtensionPosition() > extensionPosition - 125 && !flag){
+      if(s_Arm.getExtensionPosition() < extensionPosition + 0.06103515625 && s_Arm.getExtensionPosition() > extensionPosition - 0.06103515625 && !flag){
         s_Arm.setShoulder(shoulderPosition);
         flag1 = false;
       }
