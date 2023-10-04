@@ -19,7 +19,7 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
   private final TalonFX intakeMotor;
-  private TalonFXConfiguration intakeMotorConfig;
+  private TalonFXConfiguration intakeMotorConfig = new TalonFXConfiguration();
   private final AnalogInput uSSensor, bBSensor;
   private final GenericEntry usDistance, bBDistance;
   private static boolean cone;

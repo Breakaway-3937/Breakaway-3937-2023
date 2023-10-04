@@ -34,7 +34,7 @@ public class Arm extends SubsystemBase {
   private final TalonFX leadExtension, followerExtension;
   private final CANSparkMax turret;
   private final CANSparkMax wristMotor;
-  private TalonFXConfiguration extensionConfig;
+  private TalonFXConfiguration extensionConfig = new TalonFXConfiguration();
   private double shoulderkP, shoulderkI, shoulderkD, shoulderkFF, extensionkP, extensionkI, extensionkD, turretkP, turretkI, turretkD, turretkFF, wristkP, wristkI, wristkD, wristkFF;
   private RelativeEncoder shoulderEncoder, turretEncoder, wristEncoder;
   private SparkMaxPIDController shoulderPIDController, turretPIDController, wristPIDController;
