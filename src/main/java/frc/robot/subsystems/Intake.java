@@ -6,10 +6,10 @@ package frc.robot.subsystems;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
@@ -18,17 +18,22 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  private final WPI_TalonFX intakeMotor;
+  private final TalonFX intakeMotor;
+  private TalonFXConfiguration intakeMotorConfig;
   private final AnalogInput uSSensor, bBSensor;
   private final GenericEntry usDistance, bBDistance;
   private static boolean cone;
   private boolean override;
 
   public Intake() {
-    intakeMotor = new WPI_TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
-    intakeMotor.configFactoryDefault();
-    intakeMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 25, 40, 0.1));
-    intakeMotor.setNeutralMode(NeutralMode.Brake);
+    intakeMotor = new TalonFX(Constants.Intake.INTAKE_MOTOR_ID);
+    intakeMotor.getConfigurator().apply(new TalonFXConfiguration());
+    intakeMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+    intakeMotorConfig.CurrentLimits.SupplyCurrentLimit = 25;
+    intakeMotorConfig.CurrentLimits.SupplyCurrentThreshold = 40;
+    intakeMotorConfig.CurrentLimits.SupplyTimeThreshold = 0.1;
+    intakeMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    intakeMotor.getConfigurator().apply(intakeMotorConfig);
     uSSensor = new AnalogInput(Constants.Intake.US_SENSOR_ID);
     uSSensor.resetAccumulator();
     bBSensor = new AnalogInput(Constants.Intake.BB_SENSOR_ID);
@@ -39,24 +44,24 @@ public class Intake extends SubsystemBase {
 
   public void runIntake(){
     if(getConeCubeMode()){
-      intakeMotor.set(ControlMode.PercentOutput, -1);
+      intakeMotor.setControl(new DutyCycleOut(-1));
     }
     else{
-      intakeMotor.set(ControlMode.PercentOutput, 1);
+      intakeMotor.setControl(new DutyCycleOut(1));
     }
   }
 
   public void spit(){
     if(getConeCubeMode()){
-      intakeMotor.set(ControlMode.PercentOutput, 1);
+      intakeMotor.setControl(new DutyCycleOut(1));
     }
     else{
-      intakeMotor.set(ControlMode.PercentOutput, -0.8);
+      intakeMotor.setControl(new DutyCycleOut(-0.8));
     }
   }
   
   public void stopIntake(){
-    intakeMotor.set(ControlMode.PercentOutput, 0);
+    intakeMotor.setControl(new DutyCycleOut(0));
   }
 
   public boolean intakeFull(){
