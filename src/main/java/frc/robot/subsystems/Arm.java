@@ -163,7 +163,6 @@ public class Arm extends SubsystemBase {
     leadExtension.getConfigurator().apply(new TalonFXConfiguration());
     followerExtension.getConfigurator().apply(new TalonFXConfiguration());
     extensionConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-    leadExtension.setRotorPosition(0);
     extensionConfig.Slot0.kP = extensionkP;
     extensionConfig.Slot0.kI = extensionkI;
     extensionConfig.Slot0.kD = extensionkD;

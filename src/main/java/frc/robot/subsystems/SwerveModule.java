@@ -58,9 +58,9 @@ public class SwerveModule {
         }
         else {
             double velocity = desiredState.speedMetersPerSecond * rotationsPerMeter;
-            mDriveMotor.setControl(new VelocityDutyCycle(velocity, true, 0, 0, false));
+            mDriveMotor.setControl(new VelocityDutyCycle(velocity, Constants.Auto.KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED, true, 0, 0, false));
         }
-        mAngleMotor.setControl(new PositionVoltage(desiredState.angle.getRotations(), false, 0, 0, false)); 
+        mAngleMotor.setControl(new PositionVoltage(desiredState.angle.getRotations(), Constants.Auto.KMAX_SPEED_METERS_PER_SECOND, false, 0, 0, false)); 
     }
 
     private void configAngleEncoder(double offset){        
@@ -80,7 +80,6 @@ public class SwerveModule {
     private void configDriveMotor(){        
         mDriveMotor.getConfigurator().apply(new TalonFXConfiguration());
         mDriveMotor.getConfigurator().apply(Robot.ctreConfigs.swerveDriveFXConfig);
-        mDriveMotor.setRotorPosition(0);
     }
 
     public double getCanCoder(){
@@ -106,6 +105,14 @@ public class SwerveModule {
     
     public double velocityRotationsToMeters(){
         return (driveVelocity.getValue() * Constants.Drivetrain.WHEEL_CIRCUMFERENCE) / Constants.Drivetrain.DRIVE_GEAR_RATIO;
+    }
+
+    public TalonFX getDriveMotor(){
+        return mDriveMotor;
+    }
+
+    public TalonFX getAngleMotor(){
+        return mAngleMotor;
     }
 
 }

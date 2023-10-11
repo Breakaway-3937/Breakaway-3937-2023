@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Drivetrain extends SubsystemBase {
     private final SwerveDriveOdometry swerveOdometry;
-    private final SwerveModule[] swerveMods;
+    public final SwerveModule[] swerveMods;
     private final Pigeon2 gyro;
     private GenericEntry mod0Cancoder, mod1Cancoder, mod2Cancoder, mod3Cancoder;
     private GenericEntry yaw, roll;

@@ -199,8 +199,8 @@ public final class Constants {
     }
 
     public static final class Auto {
-        public static final double KMAX_SPEED_METERS_PER_SECOND = 3;
-        public static final double KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 3;
+        public static final double KMAX_SPEED_METERS_PER_SECOND = Integer.MAX_VALUE;
+        public static final double KMAX_ACCELERATION_METERS_PER_SECOND_SQUARED = Integer.MAX_VALUE;
     
         public static final double KP_X_CONTROLLER = 1;
         public static final double KP_Y_CONTROLLER = 1;

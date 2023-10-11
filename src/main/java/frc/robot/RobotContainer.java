@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.autos.AutoChooser;
 import frc.robot.autos.AutoTrajectories;
 import frc.robot.commands.Align;
+import frc.robot.commands.Music;
 import frc.robot.commands.RunArm;
 import frc.robot.commands.RunClimber;
 import frc.robot.commands.RunIntake;
@@ -90,6 +91,7 @@ public class RobotContainer {
   public final RunClimber c_RunClimber = new RunClimber(s_Climber, xboxController);
   public final RunArm c_RunArm = new RunArm(s_Arm, xboxController, s_Photon);
   public final Align c_Align = new Align(s_Drivetrain);
+  public final Music c_Music = new Music(s_Drivetrain);
   
   /* Autos */
   private final AutoTrajectories autoTrajectories = new AutoTrajectories();
@@ -104,7 +106,9 @@ public class RobotContainer {
     CommandScheduler.getInstance().registerSubsystem(s_Climber);
     CommandScheduler.getInstance().registerSubsystem(s_Arm);
 
-    s_Drivetrain.setDefaultCommand(c_TeleopSwerve);
+    //s_Drivetrain.setDefaultCommand(c_TeleopSwerve);
+    c_Music.ignoringDisable(true);
+    s_Drivetrain.setDefaultCommand(c_Music);
     s_Intake.setDefaultCommand(c_RunIntake);
     s_Climber.setDefaultCommand(c_RunClimber);
     Shuffleboard.getTab("Auto").add("Chooser", autoChooser.getModeChooser());
