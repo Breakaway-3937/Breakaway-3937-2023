@@ -173,6 +173,7 @@ public class Arm extends SubsystemBase {
     extensionConfig.CurrentLimits.SupplyCurrentThreshold = 50;
     extensionConfig.CurrentLimits.SupplyTimeThreshold = 0.1;
     extensionConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    extensionConfig.Audio.AllowMusicDurDisable = true;
     leadExtension.getConfigurator().apply(extensionConfig);
     followerExtension.getConfigurator().apply(extensionConfig);
     followerExtension.setControl(new Follower(Constants.Arm.LEAD_EXTENSION_ID, false));
@@ -194,6 +195,14 @@ public class Arm extends SubsystemBase {
     wristkI = 0;
     wristkD = 0;
     wristkFF = 0.0005;
+  }
+
+  public TalonFX getExtension(){
+    return leadExtension;
+  }
+
+  public TalonFX getExtension1(){
+    return followerExtension;
   }
 
   @Override

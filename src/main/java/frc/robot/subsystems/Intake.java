@@ -33,6 +33,7 @@ public class Intake extends SubsystemBase {
     intakeMotorConfig.CurrentLimits.SupplyCurrentThreshold = 40;
     intakeMotorConfig.CurrentLimits.SupplyTimeThreshold = 0.1;
     intakeMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+    intakeMotorConfig.Audio.AllowMusicDurDisable = true;
     intakeMotor.getConfigurator().apply(intakeMotorConfig);
     uSSensor = new AnalogInput(Constants.Intake.US_SENSOR_ID);
     uSSensor.resetAccumulator();
@@ -105,6 +106,10 @@ public class Intake extends SubsystemBase {
 
   public double getDistance(){
     return -0.261 * Math.log(uSSensor.getVoltage()) + 0.3455;
+  }
+
+  public TalonFX getIntake(){
+    return intakeMotor;
   }
 
   @Override

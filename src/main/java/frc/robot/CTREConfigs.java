@@ -11,6 +11,10 @@ public final class CTREConfigs {
         swerveAngleFXConfig = new TalonFXConfiguration();
         swerveDriveFXConfig = new TalonFXConfiguration();
 
+        swerveAngleFXConfig.Audio.AllowMusicDurDisable = true;
+        swerveDriveFXConfig.Audio.AllowMusicDurDisable = true;
+
+
         swerveAngleFXConfig.CurrentLimits.SupplyCurrentLimitEnable = Constants.Drivetrain.ANGLE_ENABLE_CURRENT_LIMIT;
         swerveAngleFXConfig.CurrentLimits.SupplyCurrentLimit = Constants.Drivetrain.ANGLE_CONTINUOUS_CURRENT_LIMIT;
         swerveAngleFXConfig.CurrentLimits.SupplyCurrentThreshold = Constants.Drivetrain.ANGLE_PEAK_CURRENT_LIMIT;
